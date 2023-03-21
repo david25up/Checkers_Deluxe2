@@ -1,7 +1,6 @@
 package com.example.checkers_deluxe2;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 
 public class MainActivity extends AppCompatActivity {
