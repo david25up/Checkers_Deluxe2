@@ -1,4 +1,4 @@
-package edu.up.cs301.game.GameFramework.utilities;
+package com.example.GameFramework.utilities;
 
 import android.content.Context;
 
@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
-import edu.up.cs301.game.GameFramework.infoMessage.GameState;
+import com.example.GameFramework.infoMessage.GameState;
 
 /**
  * Helper-class for writing and reading save files

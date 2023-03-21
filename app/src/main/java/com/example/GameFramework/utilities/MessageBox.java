@@ -1,4 +1,4 @@
-package edu.up.cs301.game.GameFramework.utilities;
+package com.example.GameFramework.utilities;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -9,7 +9,7 @@ import android.widget.EditText;
 import java.io.File;
 import java.util.ArrayList;
 
-import edu.up.cs301.game.GameFramework.GameMainActivity;
+import com.example.GameFramework.GameMainActivity;
 import edu.up.cs301.game.R;
 
 /**

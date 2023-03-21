@@ -1,8 +1,8 @@
-package edu.up.cs301.game.GameFramework.actionMessage;
+package com.example.GameFramework.actionMessage;
 
 
 import java.io.Serializable;
-import edu.up.cs301.game.GameFramework.players.GamePlayer;
+import com.example.GameFramework.players.GamePlayer;
 
 /**
  * An action for a generic game.  A game action is something that a player

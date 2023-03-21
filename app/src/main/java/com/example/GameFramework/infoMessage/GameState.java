@@ -1,6 +1,6 @@
-package edu.up.cs301.game.GameFramework.infoMessage;
+package com.example.GameFramework.infoMessage;
 
-import static edu.up.cs301.game.GameFramework.utilities.Saving.SEPARATOR;
+import static com.example.GameFramework.utilities.Saving.SEPARATOR;
 
 /**
  * The state of the game. This class should be subclassed so that it holds

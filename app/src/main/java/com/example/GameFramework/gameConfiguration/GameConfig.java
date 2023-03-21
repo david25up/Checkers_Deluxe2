@@ -1,4 +1,4 @@
-package edu.up.cs301.game.GameFramework.gameConfiguration;
+package com.example.GameFramework.gameConfiguration;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -12,11 +12,11 @@ import java.util.Arrays;
 import android.content.Context;
 import android.util.Pair;
 
-import edu.up.cs301.game.GameFramework.GameMainActivity;
-import edu.up.cs301.game.GameFramework.players.GamePlayer;
-import edu.up.cs301.game.GameFramework.players.ProxyPlayer;
-import edu.up.cs301.game.GameFramework.utilities.Logger;
-import static edu.up.cs301.game.GameFramework.utilities.EqualityMethods.arrayEquals;
+import com.example.GameFramework.GameMainActivity;
+import com.example.GameFramework.players.GamePlayer;
+import com.example.GameFramework.players.ProxyPlayer;
+import com.example.GameFramework.utilities.Logger;
+import static com.example.GameFramework.utilities.EqualityMethods.arrayEquals;
 
 /**
  * GameConfig class

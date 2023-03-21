@@ -1,4 +1,4 @@
-package edu.up.cs301.game.GameFramework.utilities;
+package com.example.GameFramework.utilities;
 /* Methods to make your life easier when write equals methods
  *
  * @author Eric Imperio
