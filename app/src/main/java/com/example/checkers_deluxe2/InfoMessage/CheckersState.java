@@ -108,15 +108,15 @@ public class CheckersState extends GameState {
     }//validMove
 
     // *** createBoard //
-    public boolean initBoard(Tile[][] board) {
+    public boolean initBoard(Tile[][] board_) {
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
-                    board[i][j] = new Tile(i, j);
+                    board_[i][j] = new Tile(i, j);
                 if (i < 3 && j % 2 != 0) {
-                    board[i][j].setInTile(Tile.Value.RED);
+                    board_[i][j].setInTile(Tile.Value.RED);
                 }
                 else if (i > 4 && j % 2 == 0) {
-                    board[i][j].setInTile(Tile.Value.BLACK);
+                    board_[i][j].setInTile(Tile.Value.BLACK);
                 }
             }
         }
@@ -124,18 +124,18 @@ public class CheckersState extends GameState {
 
     }
     // *** RESET *** //
-    public boolean resetBoard() {
+    public boolean resetBoard(Tile[][] board_) {
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
-                board[i][j].setKing(false);
+                board_[i][j].setKing(false);
                 if (i < 3 && j % 2 != 0) {
-                    board[i][j].setInTile(Tile.Value.RED);
+                    board_[i][j].setInTile(Tile.Value.RED);
                 }
                 else if (i > 4 && j % 2 == 0) {
-                    board[i][j].setInTile(Tile.Value.BLACK);
+                    board_[i][j].setInTile(Tile.Value.BLACK);
                 }
                 else {
-                    board[i][j].setInTile(Tile.Value.EMPTY);
+                    board_[i][j].setInTile(Tile.Value.EMPTY);
                 }
             }
         }
@@ -144,9 +144,9 @@ public class CheckersState extends GameState {
     // *** DRAW *** //
 
 
-    public boolean drawGame() {
+    public boolean drawGame(Tile[][] board_) {
         // add Draw Message
-        resetBoard();
+        resetBoard(board_);
         return true;
     }
 
