@@ -107,6 +107,22 @@ public class CheckersState extends GameState {
         return true;
     }//validMove
 
+    // *** createBoard //
+    public boolean initBoard(Tile[][] board) {
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                    board[i][j] = new Tile(i, j);
+                if (i < 3 && j % 2 != 0) {
+                    board[i][j].setInTile(Tile.Value.RED);
+                }
+                else if (i > 4 && j % 2 == 0) {
+                    board[i][j].setInTile(Tile.Value.BLACK);
+                }
+            }
+        }
+        return true;
+
+    }
     // *** RESET *** //
     public Tile[][] resetBoard(Tile[][] board_) {
         for (int i = 0; i < 8; i++) {
