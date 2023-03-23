@@ -50,12 +50,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             //Instances after any changes/moves are made
             CheckersState thirdInstance = firstInstance;
-            CheckersState fourthInstance = new CheckersState(thirdInstance);
+
 
             // Prints out the text for both the before and after game
             // states and puts it into the multi-line Edit Text
             editText.append(secondInstance.toString());
-            editText.append(fourthInstance.toString());
+            editText.append(thirdInstance.toString());
         }
     }//onClick
 }
