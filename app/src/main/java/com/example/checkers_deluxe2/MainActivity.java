@@ -9,6 +9,15 @@ import android.widget.EditText;
 
 import com.example.checkers_deluxe2.InfoMessage.CheckersState;
 
+/*
+ * Contains the state of the game :)
+ *
+ * @author   Ashton Char
+ * @author   Eli Marcelino
+ * @author   Matt David
+ * @version  March 2023
+ */
+
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
