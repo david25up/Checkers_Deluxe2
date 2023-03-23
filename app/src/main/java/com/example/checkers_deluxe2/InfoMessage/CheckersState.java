@@ -108,15 +108,15 @@ public class CheckersState extends GameState {
     }//validMove
 
     // *** createBoard //
-    public boolean initBoard(Tile[][] board_) {
+    public boolean initBoard(Tile[][] board) {
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
-                    board_[i][j] = new Tile(i, j);
+                    board[i][j] = new Tile(i, j);
                 if (i < 3 && j % 2 != 0) {
-                    board_[i][j].setInTile(Tile.Value.RED);
+                    board[i][j].setInTile(Tile.Value.RED);
                 }
                 else if (i > 4 && j % 2 == 0) {
-                    board_[i][j].setInTile(Tile.Value.BLACK);
+                    board[i][j].setInTile(Tile.Value.BLACK);
                 }
             }
         }
@@ -124,7 +124,7 @@ public class CheckersState extends GameState {
 
     }
     // *** RESET *** //
-    public boolean resetBoard(Tile[][] board_) {
+    public Tile[][] resetBoard(Tile[][] board_) {
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 board_[i][j].setKing(false);
@@ -139,7 +139,7 @@ public class CheckersState extends GameState {
                 }
             }
         }
-        return true;
+        return board_;
     }
     // *** DRAW *** //
 

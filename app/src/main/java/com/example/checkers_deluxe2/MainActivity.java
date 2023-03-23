@@ -32,18 +32,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             CheckersState secondInstance = new CheckersState(firstInstance);
 
             //The simulated turn will now begin here moving one black piece
-            Tile[][] tempBoard = firstInstance.getBoard();
-            firstInstance.swapPieces(tempBoard[0][3], tempBoard[1][4]);
+            //Tile[][] tempBoard = firstInstance.getBoard();
+
+
+            //firstInstance.swapPieces(tempBoard[0][3], tempBoard[1][4]);
             editText.append("Player 1 (black) has moved their first piece");
 
             //Instances after any changes/moves are made
-            CheckersState thirdInstance = new CheckersState();
+            CheckersState thirdInstance = firstInstance;
             CheckersState fourthInstance = new CheckersState(thirdInstance);
 
             // Prints out the text for both the before and after game
             // states and puts it into the multi-line Edit Text
-            editText.append(secondInstance.toString());
-            editText.append(fourthInstance.toString());
+            //editText.append(secondInstance.toString());
+            //editText.append(fourthInstance.toString());
         }
     }//onClick
 }
