@@ -57,7 +57,7 @@ public class CheckersState extends GameState {
     @NonNull
     @Override
     public String toString() {
-        String result = "PlayerTurn: ";
+        String result = "Player's Turn: ";
         if (isTurn) {
             result += "Red's turn";
         } else if (!isTurn) {
@@ -73,7 +73,7 @@ public class CheckersState extends GameState {
                 String board1 = "";
                 switch (board[i][j].getInTile()) {
                     case EMPTY: {
-                        board1 = "X";
+                        board1 = "E";
                         break;
                     }
                     case BLACK: {
@@ -89,6 +89,7 @@ public class CheckersState extends GameState {
             }
             result += "\n ";
         }
+        result += "\n";
 
         return result;
     }//toString
