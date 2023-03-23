@@ -15,7 +15,7 @@
 
     <EditText
         android:id="@+id/editTextTextMultiLine"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:lines="2"
         android:ems="10"

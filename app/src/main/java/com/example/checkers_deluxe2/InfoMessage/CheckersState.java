@@ -30,6 +30,7 @@ public class CheckersState extends GameState {
     /** Default constructor for the game state */
     public CheckersState() {
         board = new Tile[HEIGHT][WIDTH];
+
         isTurn = true; //Allows player 1 to go first
         isClicked = false;
         timeElapsed = 0;
@@ -108,7 +109,7 @@ public class CheckersState extends GameState {
     }//validMove
 
     // *** createBoard //
-    public boolean initBoard(Tile[][] board) {
+    public boolean initBoard() {
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                     board[i][j] = new Tile(i, j);
@@ -121,7 +122,6 @@ public class CheckersState extends GameState {
             }
         }
         return true;
-
     }
     // *** RESET *** //
     public Tile[][] resetBoard(Tile[][] board_) {
