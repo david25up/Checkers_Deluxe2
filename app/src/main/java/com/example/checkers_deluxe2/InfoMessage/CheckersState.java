@@ -162,11 +162,11 @@ public class CheckersState extends GameState {
             return false;
         }
         //Start putting piece1's data into piece2
-        piece2.setInTile(piece1.getInTile());
-        if (piece1.getKing()) {piece2.setKing(true);}
+        board[piece2.getRow()][piece2.getRow()].setInTile(piece1.getInTile());
+        if (piece1.getKing()) {board[piece2.getRow()][piece2.getRow()].setKing(true);}
 
         //Make piece1 empty
-        piece1.setInTile(Tile.Value.EMPTY);
+        board[piece1.getRow()][piece1.getRow()].setInTile(Tile.Value.EMPTY);
         piece1.setKing(false);
 
         return true;
