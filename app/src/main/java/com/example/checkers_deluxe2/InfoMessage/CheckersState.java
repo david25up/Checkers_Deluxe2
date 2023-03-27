@@ -71,7 +71,7 @@ public class CheckersState extends GameState {
         for (int i = 0; i < HEIGHT; i++) {
             for (int j = 0; j < WIDTH; j++) {
                 String board1 = "";
-                switch (board[i][j].getInTile()) {
+                switch (board[i][j].getValue()) {
                     case EMPTY: {
                         board1 = "E";
                         break;
@@ -102,54 +102,43 @@ public class CheckersState extends GameState {
     public boolean validMove (int row, int col) {
         if (row < 0 || col < 0 || row > HEIGHT || col > HEIGHT) {
             return false;
-        } else if (board[row][col].getInTile() != Tile.Value.EMPTY) {
+        } else if (board[row][col].getValue() != Tile.Value.EMPTY) {
             return false;
         }
         return true;
     }//validMove
 
-    // *** createBoard //
-    public boolean initBoard() {
+    /**
+     * Creates a new board and initializes the pieces of the board to the right spots
+     */
+    public void initBoard() {
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
-                    board[i][j] = new Tile(i, j);
+                board[i][j] = new Tile(i, j);
+            }
+        }
+        resetBoard();
+    }//initBoard
+
+    /**
+     * --- HELPER METHOD ---
+     * Empties out the board and puts each piece back to their "starting positions"
+     */
+    public void resetBoard() {
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                board[i][j].setKing(false);
+                board[i][j].setValue(Tile.Value.EMPTY);
+
                 if (i < 3 && ((j % 2 != 0 && i % 2 == 0) || (j % 2 == 0 && i % 2 != 0))) {
-                    board[i][j].setInTile(Tile.Value.RED);
+                    board[i][j].setValue(Tile.Value.RED);
                 }
                 else if (i > 4 && ((j % 2 != 0 && i % 2 != 0) || (j % 2 == 0 && i % 2 == 0))) {
-                    board[i][j].setInTile(Tile.Value.BLACK);
+                    board[i][j].setValue(Tile.Value.BLACK);
                 }
             }
         }
-        return true;
-
-    }
-    // *** RESET *** //
-    public Tile[][] resetBoard(Tile[][] board_) {
-        for (int i = 0; i < 8; i++) {
-            for (int j = 0; j < 8; j++) {
-                board_[i][j].setKing(false);
-                if (i < 3 && j % 2 != 0) {
-                    board_[i][j].setInTile(Tile.Value.RED);
-                }
-                else if (i > 4 && j % 2 == 0) {
-                    board_[i][j].setInTile(Tile.Value.BLACK);
-                }
-                else {
-                    board_[i][j].setInTile(Tile.Value.EMPTY);
-                }
-            }
-        }
-        return board_;
-    }
-    // *** DRAW *** //
-
-
-    public boolean drawGame(Tile[][] board_) {
-        // add Draw Message
-        resetBoard(board_);
-        return true;
-    }
+    }//resetBoard
 
     /**
      * Swaps the position of two given pieces under the assumption that
@@ -165,16 +154,13 @@ public class CheckersState extends GameState {
         //Start putting piece1's data into piece2
         board[piece2.getRow()][piece2.getRow()] = piece1;
         //Make piece1 empty
-        board[piece1.getRow()][piece1.getRow()].setInTile(Tile.Value.EMPTY);
+        board[piece1.getRow()][piece1.getRow()].setValue(Tile.Value.EMPTY);
         piece1.setKing(false);
 
         return true;
     }//swapPieces
 
-    // *** MOVE PIECE *** //
-
     /** --- GETTER METHOD --- */
-
     public Tile[][] getBoard() {return board;}
 
 

@@ -19,20 +19,20 @@ public class Tile {
     }//Value
 
     // Instance Variables //
-    private Value inTile;
+    private Value value;
     private boolean isKing; //Empty spaces are assumed to be false
     private final int row;
     private final int col;
 
     public Tile(int row, int col) {
-        inTile = Value.EMPTY;
+        value = Value.EMPTY;
         isKing = false;
         this.row = row;
         this.col = col;
     }//ctor
 
     /** --- GETTER METHOD --- */
-    public Value getInTile() {return inTile;}//getInTile
+    public Value getValue() {return value;}//getValue
 
     /** --- GETTER METHOD --- */
     public boolean getKing() {return isKing;}//getKing
@@ -44,7 +44,7 @@ public class Tile {
     public int getCol() {return col;}//getCol
 
     /** --- SETTER METHOD --- */
-    public void setInTile(Value value) {inTile = value;}//setInTile
+    public void setValue(Value value) {this.value = value;}//setInTile
 
     /** --- SETTER METHOD --- */
     public void setKing(Boolean givenKing) {isKing = givenKing;} //setKing
