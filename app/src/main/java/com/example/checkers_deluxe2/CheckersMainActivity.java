@@ -7,6 +7,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.example.GameFramework.GameMainActivity;
+import com.example.GameFramework.LocalGame;
+import com.example.GameFramework.gameConfiguration.GameConfig;
+import com.example.GameFramework.infoMessage.GameState;
 import com.example.checkers_deluxe2.InfoMessage.CheckersState;
 
 /*
@@ -18,17 +22,7 @@ import com.example.checkers_deluxe2.InfoMessage.CheckersState;
  * @version  March 2023
  */
 
-public class CheckersMainActivity extends AppCompatActivity implements View.OnClickListener {
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-        Button run_test = findViewById(R.id.run_test);
-        run_test.setOnClickListener(this);
-    }
-
-
+public class CheckersMainActivity extends GameMainActivity {
     public void onClick(View button) {
         //Run Test Button
         if (button.getId() == R.id.run_test) {
@@ -59,7 +53,11 @@ public class CheckersMainActivity extends AppCompatActivity implements View.OnCl
         }
     }//onClick
 
-    // tap a piece and see its available moves
+    /**
+     * After a piece is clicked, the available moves will be shown
+     * by changing those tiles to "AVAIL"
+     * @param start
+     */
     public void checkMoves(Tile start) {
         // remove all present marks in a loop
         // flag if there is a legal capture elsewhere
@@ -69,11 +67,34 @@ public class CheckersMainActivity extends AppCompatActivity implements View.OnCl
         // invalidate
     }
 
+    /**
+     *
+     * @param curr
+     */
     private void checkMovesHelper(Tile curr) {
         // recursively check if available captures are available on curr
             // if (available capture, mark jump and recall helper method)
                 // if king, also check backward
             // call checkMovesHelper
-    }
+    }//checkMovesHelper
 
+    /**
+     * Creates the default configuration of the game with one human player
+     * and one computer player
+     * @return   The default configuration of the game
+     */
+    @Override
+    public GameConfig createDefaultConfig() {
+        //THIS NEEDS TO BE COMPLETED
+        return null;
+    }//createDefaultConfig
+
+    /**
+     * Creates a local game
+     * @return The local game, checkers
+     */
+    @Override
+    public LocalGame createLocalGame(GameState gameState) {
+        return new LocalCheckers(gameState);
+    }//createLocalGame
 }
