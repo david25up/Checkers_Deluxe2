@@ -138,7 +138,33 @@ public class CheckersState extends GameState {
                 }
             }
         }
-    }//resetBoard
+    }
+    // *** RESET *** //
+    public Tile[][] resetBoard(Tile[][] board_) {
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                board_[i][j].setKing(false);
+                if (i < 3 && j % 2 != 0) {
+                    board_[i][j].setValue(Tile.Value.RED);
+                }
+                else if (i > 4 && j % 2 == 0) {
+                    board_[i][j].setValue(Tile.Value.BLACK);
+                }
+                else {
+                    board_[i][j].setValue(Tile.Value.EMPTY);
+                }
+            }
+        }
+        return board_;
+    }
+    // *** DRAW *** //
+
+
+    public boolean drawGame(Tile[][] board_) {
+        // add Draw Message
+        resetBoard(board_);
+        return true;
+    }
 
     /**
      * Swaps the position of two given pieces under the assumption that
@@ -162,6 +188,7 @@ public class CheckersState extends GameState {
 
     /** --- GETTER METHOD --- */
     public Tile[][] getBoard() {return board;}
-
-
+    public boolean getTurn() {return isTurn;}
+    public double getTimeElapsed() {return timeElapsed;}
 }//CheckersState
+

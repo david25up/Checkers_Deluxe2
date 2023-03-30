@@ -139,7 +139,7 @@ public class AnimationSurface extends SurfaceView implements OnTouchListener {
      */
     private class AnimationThread extends Thread {
 
-        // a reference to a SurfaveView's holder. This is used to "lock" the
+        // a reference to a SurfaceView's holder. This is used to "lock" the
         // canvas when we want to write to it
         private SurfaceHolder surfaceHolder;
 
