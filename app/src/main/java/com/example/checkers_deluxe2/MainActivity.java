@@ -10,7 +10,7 @@ import android.widget.EditText;
 import com.example.checkers_deluxe2.InfoMessage.CheckersState;
 
 /*
- * Contains the state of the game :)
+ * Sets everything up
  *
  * @author   Ashton Char
  * @author   Eli Marcelino
@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Button run_test = (Button) findViewById(R.id.run_test);
+        Button run_test = findViewById(R.id.run_test);
         run_test.setOnClickListener(this);
     }
 

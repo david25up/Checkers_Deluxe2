@@ -31,24 +31,19 @@ public class Tile {
         this.col = col;
     }//ctor
 
-    /** --- GETTER METHOD --- */
+    ////////////////////////////
+    // --- GETTER METHODS --- //
+    ////////////////////////////
     public Value getValue() {return value;}//getValue
-
-    /** --- GETTER METHOD --- */
     public boolean getKing() {return isKing;}//getKing
-
-    /** --- GETTER METHOD --- */
     public int getRow() {return row;}//getKing
-
-    /** --- GETTER METHOD --- */
     public int getCol() {return col;}//getCol
 
-    /** --- SETTER METHOD --- */
+    ////////////////////////////
+    // --- SETTER METHODS --- //
+    ////////////////////////////
     public void setValue(Value value) {this.value = value;}//setInTile
-
-    /** --- SETTER METHOD --- */
     public void setKing(Boolean givenKing) {isKing = givenKing;} //setKing
-
 
 
 }//Tile
