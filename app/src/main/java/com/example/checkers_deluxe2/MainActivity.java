@@ -3,6 +3,7 @@ package com.example.checkers_deluxe2;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.SurfaceView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -58,4 +59,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             editText.append(thirdInstance.toString());
         }
     }//onClick
+
+    // tap a piece and see its available moves
+    public void checkMoves(Tile start) {
+        // remove all present marks in a loop
+        // flag if there is a legal capture elsewhere
+        // if (capture available, mark capture and call checkMovesHelper on that square)
+        // if (forward diagonals are empty, mark those diagonals)
+        // if (king, check backward diagonals)
+        // invalidate
+    }
+
+    private void checkMovesHelper(Tile curr) {
+        // recursively check if available captures are available on curr
+            // if (available capture, mark jump and recall helper method)
+                // if king, also check backward
+            // call checkMovesHelper
+    }
+
 }
