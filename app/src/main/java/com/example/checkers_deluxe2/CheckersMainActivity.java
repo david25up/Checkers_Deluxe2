@@ -3,7 +3,6 @@ package com.example.checkers_deluxe2;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.SurfaceView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,7 +18,7 @@ import com.example.checkers_deluxe2.InfoMessage.CheckersState;
  * @version  March 2023
  */
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class CheckersMainActivity extends AppCompatActivity implements View.OnClickListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

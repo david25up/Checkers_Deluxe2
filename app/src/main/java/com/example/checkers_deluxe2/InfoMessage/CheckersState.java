@@ -23,14 +23,14 @@ public class CheckersState extends GameState {
 
     // Instance Variables //
     private Tile[][] board;
-    private boolean isTurn; //true if P1's Turn, false if P2's turn
+    private int isTurn; //0 if P1's Turn, 1 if P2's turn
     private boolean isClicked; //A boolean
     private double timeElapsed;
 
     /** Default constructor for the game state */
     public CheckersState() {
         board = new Tile[HEIGHT][WIDTH];
-        isTurn = true; //Allows player 1 to go first
+        isTurn = 0; //Allows player 1 to go first
         isClicked = false;
         timeElapsed = 0;
     }//default ctor
@@ -58,7 +58,7 @@ public class CheckersState extends GameState {
     @Override
     public String toString() {
         String result = "Player's Turn: ";
-        if (isTurn) {
+        if (isTurn == 0) {
             result += "Red's turn";
         } else {
             result += "Black's turn";
@@ -189,12 +189,16 @@ public class CheckersState extends GameState {
      * Flips whose turn it is
      */
     public void flipTurn() {
-        isTurn = !isTurn;
+        if (isTurn == 0) {
+            isTurn = 1;
+        } else {
+            isTurn = 0;
+        }
     }//setWhoseTurn
 
     /** --- GETTER METHOD --- */
     public Tile[][] getBoard() {return board;}
-    public boolean getTurn() {return isTurn;}
+    public int getTurn() {return isTurn;}
     public double getTimeElapsed() {return timeElapsed;}
 }//CheckersState
 
