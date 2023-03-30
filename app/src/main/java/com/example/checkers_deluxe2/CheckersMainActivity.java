@@ -10,8 +10,14 @@ import android.widget.EditText;
 import com.example.GameFramework.GameMainActivity;
 import com.example.GameFramework.LocalGame;
 import com.example.GameFramework.gameConfiguration.GameConfig;
+import com.example.GameFramework.gameConfiguration.GamePlayerType;
 import com.example.GameFramework.infoMessage.GameState;
+import com.example.GameFramework.players.GamePlayer;
 import com.example.checkers_deluxe2.InfoMessage.CheckersState;
+import com.example.checkers_deluxe2.Players.CheckersComputerPlayer;
+import com.example.checkers_deluxe2.Players.CheckersHumanPlayer;
+
+import java.util.ArrayList;
 
 /*
  * Sets everything up
@@ -23,6 +29,8 @@ import com.example.checkers_deluxe2.InfoMessage.CheckersState;
  */
 
 public class CheckersMainActivity extends GameMainActivity {
+    //The port number to be used IF network implementation is made
+    private static final int PORT_NUMBER = 2278;
     public void onClick(View button) {
         //Run Test Button
         if (button.getId() == R.id.run_test) {
@@ -79,14 +87,34 @@ public class CheckersMainActivity extends GameMainActivity {
     }//checkMovesHelper
 
     /**
-     * Creates the default configuration of the game with one human player
-     * and one computer player
+     * Creates the default configuration of the game
+     *
+     * There are three types available: human, smart AI,
+     * and base AI, where the default chooses to add
      * @return   The default configuration of the game
      */
     @Override
     public GameConfig createDefaultConfig() {
-        //THIS NEEDS TO BE COMPLETED
-        return null;
+        //Define the allowed player types
+        ArrayList<GamePlayerType> playerTypes = new ArrayList<>();
+
+        //Adds the human and computer types
+        playerTypes.add(new GamePlayerType("Local Human Player") {
+            public GamePlayer createPlayer(String name) {
+                return new CheckersHumanPlayer(name);
+            }});
+        playerTypes.add(new GamePlayerType("Smart AI Player") {
+            public GamePlayer createPlayer(String name) {return new CheckersComputerPlayer(name);}});
+        playerTypes.add(new GamePlayerType("Base AI Player") {
+            public GamePlayer createPlayer(String name) {return new CheckersComputerPlayer(name);}});
+
+        // Create a game configuration class for Pig:
+        GameConfig defaultConfig = new GameConfig(playerTypes, 2, 2, "Checkers", PORT_NUMBER);
+        defaultConfig.addPlayer("Human", 0); // player 1: a human player
+        defaultConfig.addPlayer("Computer", 1); // player 2: a computer player
+        defaultConfig.setRemoteData("Remote Human Player", "", 0);
+
+        return defaultConfig;
     }//createDefaultConfig
 
     /**
