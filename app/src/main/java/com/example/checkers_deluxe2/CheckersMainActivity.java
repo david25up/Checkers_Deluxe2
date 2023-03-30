@@ -30,7 +30,7 @@ import java.util.ArrayList;
 
 public class CheckersMainActivity extends GameMainActivity {
     //The port number to be used IF network implementation is made
-    private static final int PORT_NUMBER = 2278;
+    private static final int PORT_NUMBER = 5888;
     public void onClick(View button) {
         //Run Test Button
         if (button.getId() == R.id.run_test) {
