@@ -60,7 +60,7 @@ public class CheckersState extends GameState {
         String result = "Player's Turn: ";
         if (isTurn) {
             result += "Red's turn";
-        } else if (!isTurn) {
+        } else {
             result += "Black's turn";
         }
         result += "\n ";
