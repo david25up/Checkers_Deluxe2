@@ -147,18 +147,24 @@ public class CheckersState extends GameState {
      * @param blank   The blank space the piece will move to
      * @return         Returns true if the swap worked
      */
-    public boolean swapPieces(Tile piece, Tile blank) {
+    public void swapPieces(Tile piece, Tile blank) {
         if (!validMove(piece.getRow(), piece.getCol())) {
-            return false;
+            return;
         }
         //Start putting piece1's data into piece2
         board[blank.getRow()][blank.getRow()] = piece;
         //Make piece1 empty
         board[piece.getRow()][piece.getRow()].setValue(Tile.Value.EMPTY);
         piece.setKing(false);
-
-        return true;
     }//swapPieces
+
+    /**
+     * --- HELPER METHOD ---
+     * Flips whose turn it is
+     */
+    public void flipTurn() {
+        isTurn = !isTurn;
+    }//setWhoseTurn
 
     /** --- GETTER METHOD --- */
     public Tile[][] getBoard() {return board;}

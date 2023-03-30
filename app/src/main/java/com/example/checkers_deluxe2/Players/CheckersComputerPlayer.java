@@ -11,6 +11,9 @@ package com.example.checkers_deluxe2.Players;
 
 import com.example.GameFramework.infoMessage.GameInfo;
 import com.example.GameFramework.players.GameComputerPlayer;
+import com.example.checkers_deluxe2.InfoMessage.CheckersState;
+
+import java.util.Random;
 
 public class CheckersComputerPlayer extends GameComputerPlayer {
 
@@ -25,6 +28,20 @@ public class CheckersComputerPlayer extends GameComputerPlayer {
 
     @Override
     protected void receiveInfo(GameInfo info) {
+        if (!(info instanceof CheckersState)) {
+            //info is not a CheckersState object
+            return;
+        }
 
+        CheckersState checkersState = new CheckersState( (CheckersState) info);
+
+        if (checkersState.getTurn() == playerNum) {
+            return;
+        } else {
+            //Create an action state via: "NameOfAction" action = new "NameOfAction(this)"
+            // and send action via: game.sendAction(action)
+        }
+
+        ((CheckersState) info).flipTurn();
     }
 }
