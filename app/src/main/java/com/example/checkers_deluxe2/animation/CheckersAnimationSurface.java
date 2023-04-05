@@ -22,8 +22,14 @@ import com.example.checkers_deluxe2.InfoMessage.CheckersState;
 import com.example.checkers_deluxe2.Tile;
 
 public class CheckersAnimationSurface extends AnimationSurface implements Tickable {
-    /** instance variables */
-    private CheckersState checkersState;
+    /* --- BOARD DIMENSIONS --- */
+    private final static float BOARD_SIZE = 64; //side length/width of the entire board
+    private final static float TILE_SIZE = 8; //size of individual tiles
+    private final static float PADDING = 4; //padding of the outside edge of the board
+
+
+    /* --- INSTANCE VARIABLES --- */
+    protected CheckersState checkersState;
 
 
     /**
@@ -36,15 +42,32 @@ public class CheckersAnimationSurface extends AnimationSurface implements Tickab
     }//ctor
 
     /**
+     * --- HELPER METHOD (for ctor) ---
+     */
+    private void init() {
+        setBackgroundColor(backgroundColor());
+    }//init
+
+    /* --- COLOR RETURN METHODS --- */
+    public int foregroundColor() {return Color.YELLOW;}//foregroundColor
+    public int backgroundColor() {return Color.BLUE;}//backgroundColor
+    public int whiteTile() {return Color.WHITE;}//whiteTile
+    public int blackTile() {return Color.BLACK;}//blackTile
+
+
+
+    /**
      * Called when a change is made so that the board itself
      * can be updated
      *
      * @param g   The canvas we are drawing on
      */
     public void onDraw(Canvas g) {
-        // Paints the board itself as well as the lines
+        // Paints the board itself with a trim around it
         Paint p = new Paint();
-        p.setColor(Color.YELLOW);
+        p.setColor(foregroundColor());
+
+
 
 
         // if we don't have any state, there's nothing more to draw, so return
@@ -80,4 +103,4 @@ public class CheckersAnimationSurface extends AnimationSurface implements Tickab
     public void tick(GameTimer timer) {}
 
 
-} // end of class
+}//CheckersAnimationSurface
