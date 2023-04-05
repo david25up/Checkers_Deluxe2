@@ -200,5 +200,7 @@ public class CheckersState extends GameState {
     public Tile[][] getBoard() {return board;}
     public int getTurn() {return isTurn;}
     public double getTimeElapsed() {return timeElapsed;}
+    public int getWidth() {return WIDTH;}
+    public int getHeight() {return HEIGHT;}
 }//CheckersState
 
