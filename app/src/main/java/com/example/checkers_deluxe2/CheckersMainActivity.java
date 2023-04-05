@@ -1,6 +1,8 @@
 package com.example.checkers_deluxe2;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -30,7 +32,7 @@ import java.util.ArrayList;
 
 public class CheckersMainActivity extends GameMainActivity {
     //The port number to be used IF network implementation is made
-    private static final int PORT_NUMBER = 5888;
+    private static final int PORT_NUMBER = 8080;
     public void onClick(View button) {
 
     }//onClick
@@ -82,11 +84,10 @@ public class CheckersMainActivity extends GameMainActivity {
         playerTypes.add(new GamePlayerType("Base AI Player") {
             public GamePlayer createPlayer(String name) {return new CheckersComputerPlayer(name);}});
 
-        // Create a game configuration class for Pig:
+        // Create a game configuration class for Checkers:
         GameConfig defaultConfig = new GameConfig(playerTypes, 2, 2, "Checkers", PORT_NUMBER);
         defaultConfig.addPlayer("Human", 0); // player 1: a human player
         defaultConfig.addPlayer("Computer", 1); // player 2: a computer player
-        defaultConfig.setRemoteData("Remote Human Player", "", 0);
 
         return defaultConfig;
     }//createDefaultConfig
