@@ -15,6 +15,7 @@ import java.awt.*;
 import org.testng.annotations.Test;
 import static org.junit.Assert.*;
 
+/** class to dummy test the game */
 public class CheckersTest {
 
 

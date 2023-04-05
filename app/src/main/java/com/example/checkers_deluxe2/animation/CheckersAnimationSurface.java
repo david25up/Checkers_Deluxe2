@@ -22,7 +22,6 @@ public class CheckersAnimationSurface extends AnimationSurface implements Tickab
     private CheckersState checkersState;
 
 
-
     /**
      * The inherited constructor from AnimationSurface class
      * @param context   The activity the animation is run on
@@ -30,19 +29,40 @@ public class CheckersAnimationSurface extends AnimationSurface implements Tickab
     public CheckersAnimationSurface(Context context) {
         super(context);
         init();
-
-
     }//ctor
 
-    private void init() {
+    /**
+     * initialize method
+     */
+    private void init() {}
+
+    void draw(){}
+
+    void onTouchEvent(){}
+
+    void updateGame(){}
+
+    void isGameOver(){}
+
+    void resetGame(){}
+
+    /**
+    drawBoard(): This method should draw the game board, including the squares and any other visual elements (such as borders or labels) that are part of the game.
+    drawPieces(): This method should draw the game pieces on the board based on their current positions.
+            movePiece(): This method should allow the user to select a piece and move it to a new location based on their input.
+            updateState(): This method should update the state of the game (such as the positions of the pieces) when a move is made.
+    animatePiece(): This method should handle the animation of a piece as it moves from one location to another.
+            tick(): This method should update the game state on each tick of the game timer, and trigger any necessary animation or movement of the pieces.
+*/
 
 
-
-    }
-
-
+    /**
+     * timer method
+     * @param timer
+     * 		the timer that is associated with the "tick"
+     */
     @Override
-    public void tick(GameTimer timer) {
+    public void tick(GameTimer timer) {}
 
-    }
-}
+
+} // end of class
