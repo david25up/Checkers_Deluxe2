@@ -10,6 +10,10 @@ package com.example.checkers_deluxe2.animation;
  * @version  March 2023
  */
 
+import static com.example.checkers_deluxe2.Tile.Value.AVAIL;
+import static com.example.checkers_deluxe2.Tile.Value.BLACK;
+import static com.example.checkers_deluxe2.Tile.Value.RED;
+
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Canvas;
@@ -32,10 +36,20 @@ public class CheckersAnimationSurface extends AnimationSurface implements Tickab
     /* --- SCREEN DIMENSIONS --- */
     private static final float SCREEN_VERT = Resources.getSystem().getDisplayMetrics().heightPixels;
     private static final float SCREEN_HORI = Resources.getSystem().getDisplayMetrics().widthPixels;
-
+    private final static float leanBoard = 12; // board shifted x amount of pixels to left
 
     /* --- INSTANCE VARIABLES --- */
     protected CheckersState checkersState;
+    /** instance variables */
+
+    private int circleRad = 100;
+
+    private Paint redCheck = new Paint(Color.RED);
+
+    private Paint blackCheck = new Paint(Color.BLACK);
+
+    private Paint grayCheck = new Paint(Color.GRAY);
+
 
 
     /**
@@ -46,6 +60,7 @@ public class CheckersAnimationSurface extends AnimationSurface implements Tickab
         super(context);
         init();
     }//ctor
+
 
     /**
      * --- HELPER METHOD (for ctor) ---
@@ -104,6 +119,29 @@ public class CheckersAnimationSurface extends AnimationSurface implements Tickab
             }
         }
     }//onDraw
+
+    private void drawSymbol(Canvas g, Tile piece) {
+
+        Tile.Value temp = piece.getValue();
+        int x = piece.getCol();
+        int y = piece.getRow();
+
+        Paint p = new Paint();
+        switch (temp) {
+            case RED: {
+                p = redCheck;
+       //         g.drawOval(leanBoard + x, y,);
+            }
+            case BLACK: {
+                p = blackCheck;
+     //           g.drawOval();
+            }
+            case AVAIL: {
+                p = grayCheck;
+       //         g.drawOval();
+            }
+        }
+    }
 
     /**
     drawBoard(): This method should draw the game board, including the squares and any other visual elements (such as borders or labels) that are part of the game.

@@ -47,6 +47,12 @@ public class CheckersHumanPlayer extends GameHumanPlayer {
         //Create an action state via: "NameOfAction" action = new "NameOfAction(this)"
         //and send action via: game.sendAction(action)
 
+        boolean movePiece = false;
+            while (movePiece) {
+                // if tap a piece checkAvailMoves
+                // if select square with AVAIL, move piece with checkersstate then send action
+
+            }
         ((CheckersState) info).flipTurn();
     }//receiveInfo
 
