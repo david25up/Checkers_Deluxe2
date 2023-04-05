@@ -11,11 +11,15 @@ package com.example.checkers_deluxe2.animation;
  */
 
 import android.content.Context;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 
 import com.example.GameFramework.animation.AnimationSurface;
 import com.example.GameFramework.utilities.GameTimer;
 import com.example.GameFramework.utilities.Tickable;
 import com.example.checkers_deluxe2.InfoMessage.CheckersState;
+import com.example.checkers_deluxe2.Tile;
 
 public class CheckersAnimationSurface extends AnimationSurface implements Tickable {
     /** instance variables */
@@ -32,19 +36,30 @@ public class CheckersAnimationSurface extends AnimationSurface implements Tickab
     }//ctor
 
     /**
-     * initialize method
+     * Called when a change is made so that the board itself
+     * can be updated
+     *
+     * @param g   The canvas we are drawing on
      */
-    private void init() {}
+    public void onDraw(Canvas g) {
+        // Paints the board itself as well as the lines
+        Paint p = new Paint();
+        p.setColor(Color.YELLOW);
 
-    void draw(){}
 
-    void onTouchEvent(){}
+        // if we don't have any state, there's nothing more to draw, so return
+        if (checkersState == null) {
+            return;
+        }
 
-    void updateGame(){}
-
-    void isGameOver(){}
-
-    void resetGame(){}
+        // Draws the different types of pieces (either black, red, empty, or highlighted)
+        Tile[][] temp = checkersState.getBoard(); // get board
+        for (int row = 0; row < 3; row++) {
+            for (int col = 0; col < 3; col++) {
+                drawSymbol(g, temp[row][col]);
+            }
+        }
+    }//onDraw
 
     /**
     drawBoard(): This method should draw the game board, including the squares and any other visual elements (such as borders or labels) that are part of the game.
