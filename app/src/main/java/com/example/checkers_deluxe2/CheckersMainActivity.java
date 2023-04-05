@@ -32,33 +32,7 @@ public class CheckersMainActivity extends GameMainActivity {
     //The port number to be used IF network implementation is made
     private static final int PORT_NUMBER = 5888;
     public void onClick(View button) {
-        //Run Test Button
-        if (button.getId() == R.id.run_test) {
-            Log.d("Run Test Button", "Button has been clicked");
-            EditText editText = findViewById(R.id.editTextTextMultiLine);
-            editText.clearComposingText();
 
-            //Instances before any changes/moves are made
-            CheckersState firstInstance = new CheckersState();
-
-            //The simulated turn will now begin here moving one black piece
-            firstInstance.initBoard();
-            Tile[][] tempBoard = firstInstance.getBoard();
-
-            CheckersState secondInstance = new CheckersState(firstInstance);
-
-            firstInstance.swapPieces(tempBoard[2][3], tempBoard[3][4]);
-            editText.append("Player 1 (black) has moved their first piece\n\n");
-
-            //Instances after any changes/moves are made
-            CheckersState thirdInstance = firstInstance;
-
-
-            // Prints out the text for both the before and after game
-            // states and puts it into the multi-line Edit Text
-            editText.append(secondInstance.toString());
-            editText.append(thirdInstance.toString());
-        }
     }//onClick
 
     /**

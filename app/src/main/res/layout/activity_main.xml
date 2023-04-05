@@ -7,21 +7,8 @@
     android:orientation="vertical"
     tools:context=".CheckersMainActivity">
 
-    <Button
-        android:id="@+id/run_test"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/run_test" />
-
-    <EditText
-        android:id="@+id/editTextTextMultiLine"
+    <SurfaceView
+        android:id="@+id/surfaceView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:lines="15"
-        android:ems="10"
-        android:hint="@string/initial_text"
-        android:gravity="start|top"
-        android:inputType="textMultiLine"
-        android:importantForAutofill="no" />
-
+        android:layout_height="wrap_content" />
 </LinearLayout>
