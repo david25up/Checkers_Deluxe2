@@ -9,6 +9,8 @@ package com.example.checkers_deluxe2.Players;
  * @version  March 2023
  */
 
+import android.view.MotionEvent;
+import android.view.SurfaceView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -17,12 +19,16 @@ import android.widget.TextView;
 import com.example.GameFramework.GameMainActivity;
 import com.example.GameFramework.infoMessage.GameInfo;
 import com.example.GameFramework.players.GameHumanPlayer;
+import com.example.GameFramework.utilities.Logger;
 import com.example.checkers_deluxe2.CheckersMainActivity;
 import com.example.checkers_deluxe2.InfoMessage.CheckersState;
 import com.example.checkers_deluxe2.R;
+import com.example.checkers_deluxe2.animation.CheckersAnimationSurface;
 
-public class CheckersHumanPlayer extends GameHumanPlayer {
+public class CheckersHumanPlayer extends GameHumanPlayer implements View.OnTouchListener{
 
+    /* --- INSTANCE VARIABLES --- */
+    SurfaceView surfaceView;
 
     /**
      * The inherited constructor from GameComputerPlayer class
@@ -59,8 +65,14 @@ public class CheckersHumanPlayer extends GameHumanPlayer {
         // Load the layout resource for our GUI
         activity.setContentView(R.layout.activity_main);
 
-        //Initialize the widget reference member variables
-
-        //Set OnClickListeners
+        // set the surfaceView instance variable
+        surfaceView = (SurfaceView) myActivity.findViewById(R.id.surfaceView);
+        Logger.log("set listener","OnTouch");
+        surfaceView.setOnTouchListener(this);
     }//setAsGui
+
+    @Override
+    public boolean onTouch(View view, MotionEvent motionEvent) {
+        return false;
+    }
 }

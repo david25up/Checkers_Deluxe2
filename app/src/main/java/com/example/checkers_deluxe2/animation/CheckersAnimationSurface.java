@@ -100,7 +100,7 @@ public class CheckersAnimationSurface extends AnimationSurface implements Tickab
         Tile[][] temp = checkersState.getBoard(); // get board
         for (int row = 0; row < 3; row++) {
             for (int col = 0; col < 3; col++) {
-                drawSymbol(g, temp[row][col]);
+                //drawSymbol(g, temp[row][col]);
             }
         }
     }//onDraw
