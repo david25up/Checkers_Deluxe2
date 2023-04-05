@@ -13,8 +13,15 @@ package com.example.checkers_deluxe2.animation;
 import android.content.Context;
 
 import com.example.GameFramework.animation.AnimationSurface;
+import com.example.GameFramework.utilities.GameTimer;
+import com.example.GameFramework.utilities.Tickable;
+import com.example.checkers_deluxe2.InfoMessage.CheckersState;
 
-public class CheckersAnimationSurface extends AnimationSurface {
+public class CheckersAnimationSurface extends AnimationSurface implements Tickable {
+    /** instance variables */
+    private CheckersState checkersState;
+
+
 
     /**
      * The inherited constructor from AnimationSurface class
@@ -22,7 +29,20 @@ public class CheckersAnimationSurface extends AnimationSurface {
      */
     public CheckersAnimationSurface(Context context) {
         super(context);
+        init();
+
+
     }//ctor
 
+    private void init() {
 
+
+
+    }
+
+
+    @Override
+    public void tick(GameTimer timer) {
+
+    }
 }
