@@ -98,7 +98,7 @@ public class CheckersAnimationSurface extends AnimationSurface implements Tickab
     public int whiteTile() {return Color.WHITE;}//whiteTile
     public int blackTile() {return Color.BLACK;}//blackTile
     public int redPiece() {return Color.RED;}//redPiece
-    public int darkPiece() {return  Color.GRAY;}//darkPiece
+    public int darkPiece() {return Color.GRAY;}//darkPiece
     public int availPiece() {return Color.GREEN;}//availPiece
 
 
@@ -143,7 +143,6 @@ public class CheckersAnimationSurface extends AnimationSurface implements Tickab
     }//onDraw
 
     private void drawSymbol(Canvas g, Tile piece) {
-
         Tile.Value temp = piece.getValue();
 
         int row = piece.getRow();
@@ -153,14 +152,17 @@ public class CheckersAnimationSurface extends AnimationSurface implements Tickab
             case RED: {
                 p.setColor(redPiece());
                 g.drawOval(h(leftX + (TILE_WIDTH * col)), v(leftY + (TILE_HEIGHT * row)), h(leftX + (TILE_WIDTH * col) + TILE_WIDTH), v(leftY + (TILE_HEIGHT * row) + TILE_HEIGHT), p);
+                break;
             }
             case BLACK: {
                 p.setColor(darkPiece());
                 g.drawOval(h(leftX + (TILE_WIDTH * col)), v(leftY + (TILE_HEIGHT * row)), h(leftX + (TILE_WIDTH * col) + TILE_WIDTH), v(leftY + (TILE_HEIGHT * row) + TILE_HEIGHT), p);
+                break;
             }
             case AVAIL: {
                 p.setColor(availPiece());
                 g.drawOval(h(leftX + (TILE_WIDTH * col)), v(leftY + (TILE_HEIGHT * row)), h(leftX + (TILE_WIDTH * col) + TILE_WIDTH), v(leftY + (TILE_HEIGHT * row) + TILE_HEIGHT), p);
+                break;
             }
         }
     }
