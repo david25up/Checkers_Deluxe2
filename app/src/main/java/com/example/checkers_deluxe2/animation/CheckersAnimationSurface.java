@@ -146,21 +146,21 @@ public class CheckersAnimationSurface extends AnimationSurface implements Tickab
 
         Tile.Value temp = piece.getValue();
 
-        int i = piece.getRow();
-        int j = piece.getCol();
+        int row = piece.getRow();
+        int col = piece.getCol();
         Paint p;
         switch (temp) {
             case RED: {
                 p = redCheck;
-                g.drawOval(leftX, leftY, leftX + (TILE_SIZE), TILE_SIZE, p);;
+                g.drawOval(h(leftX + (TILE_WIDTH * col)), v(leftY + (TILE_HEIGHT * row)), h(leftX + (TILE_WIDTH * col) + TILE_WIDTH), v(leftY + (TILE_HEIGHT * row) + TILE_HEIGHT), p);
             }
             case BLACK: {
                 p = blackCheck;
-                g.drawOval(leftX, leftY, leftX + (TILE_SIZE), TILE_SIZE, p);;
+                g.drawOval(h(leftX + (TILE_WIDTH * col)), v(leftY + (TILE_HEIGHT * row)), h(leftX + (TILE_WIDTH * col) + TILE_WIDTH), v(leftY + (TILE_HEIGHT * row) + TILE_HEIGHT), p);
             }
             case AVAIL: {
                 p = grayCheck;
-                g.drawOval(leftX, leftY, leftX + (TILE_SIZE), TILE_SIZE, p);;
+                g.drawOval(h(leftX + (TILE_WIDTH * col)), v(leftY + (TILE_HEIGHT * row)), h(leftX + (TILE_WIDTH * col) + TILE_WIDTH), v(leftY + (TILE_HEIGHT * row) + TILE_HEIGHT), p);
             }
         }
     }
