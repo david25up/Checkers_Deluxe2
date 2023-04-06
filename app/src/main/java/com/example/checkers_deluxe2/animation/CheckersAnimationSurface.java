@@ -152,21 +152,23 @@ public class CheckersAnimationSurface extends AnimationSurface implements Tickab
 
         int row = piece.getRow();
         int col = piece.getCol();
+        float pieceX = leftX + (TILE_WIDTH * col);
+        float pieceY = leftY + (TILE_HEIGHT * row);
         Paint p = new Paint();
         switch (temp) {
             case RED: {
                 p.setColor(redPiece());
-                g.drawOval(h(leftX + (TILE_WIDTH * col)), v(leftY + (TILE_HEIGHT * row)), h(leftX + (TILE_WIDTH * col) + TILE_WIDTH), v(leftY + (TILE_HEIGHT * row) + TILE_HEIGHT), p);
+                g.drawOval(h(pieceX), v(pieceY), h(pieceX + TILE_WIDTH), v(pieceY + TILE_HEIGHT), p);
                 break;
             }
             case BLACK: {
                 p.setColor(darkPiece());
-                g.drawOval(h(leftX + (TILE_WIDTH * col)), v(leftY + (TILE_HEIGHT * row)), h(leftX + (TILE_WIDTH * col) + TILE_WIDTH), v(leftY + (TILE_HEIGHT * row) + TILE_HEIGHT), p);
+                g.drawOval(h(pieceX), v(pieceY), h(pieceX + TILE_WIDTH), v(pieceY + TILE_HEIGHT), p);
                 break;
             }
             case AVAIL: {
                 p.setColor(availPiece());
-                g.drawOval(h(leftX + (TILE_WIDTH * col)), v(leftY + (TILE_HEIGHT * row)), h(leftX + (TILE_WIDTH * col) + TILE_WIDTH), v(leftY + (TILE_HEIGHT * row) + TILE_HEIGHT), p);
+                g.drawOval(h(pieceX), v(pieceY), h(pieceX + TILE_WIDTH), v(pieceY + TILE_HEIGHT), p);
                 break;
             }
         }
