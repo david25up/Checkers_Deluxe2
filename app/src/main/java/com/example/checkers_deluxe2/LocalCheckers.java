@@ -82,6 +82,15 @@ public class LocalCheckers extends LocalGame {
         return true;
     }//makeMove
 
+    /**
+     * Checks the surrounding tiles for valid and available moves
+     * @param start
+     *      The starting tile the user clicked on
+     * @param board
+     *      The board object itself
+     * @return
+     *      The list of all the available moves to be used as a means of comparison
+     */
     public ArrayList<Tile> availMoves(Tile start, Tile[][] board) {
         toggleBoard(board);
         ArrayList<Tile> moveResult = new ArrayList<Tile>();
@@ -160,8 +169,16 @@ public class LocalCheckers extends LocalGame {
             captureResult.addAll(moveResult);
             return captureResult;
         }
-        }
+    }//availMoves
 
+    /**
+     * --- HELPER METHOD ---
+     * @param captureResult
+     * @param tile
+     * @param isKing
+     * @param color
+     * @param board
+     */
     private void availMovesHelper(ArrayList<Tile> captureResult, Tile tile, boolean isKing, Tile.Value color, Tile[][] board) {
         int row = tile.getRow();
         int col = tile.getCol();
@@ -203,7 +220,7 @@ public class LocalCheckers extends LocalGame {
                 availMovesHelper(captureResult, board[row-2][col+2], isKing, Tile.Value.RED, board);
             }
         }
-    }
+    }//availMovesHelper
 
     public void toggleBoard(Tile[][] board) {
         for (int row = 0; row < 8; row++) {
@@ -214,12 +231,9 @@ public class LocalCheckers extends LocalGame {
             }
         }
         return;
-    }
+    }//toggleBoard
 
     public int whoWon(){
-        String gameOver = checkIfGameOver();
-        if(gameOver == null || gameOver.equals("It's a cat's game.")) return -1;
-        if(gameOver.equals(playerNames[0]+" is the winner.")) return 0;
-        return 1;
+        return 0;
     }//whoWon
 }
