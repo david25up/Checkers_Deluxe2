@@ -182,11 +182,22 @@ public class CheckersAnimationSurface extends AnimationSurface {
             case MotionEvent.ACTION_DOWN:
                 if (withinBoard(event.getX(), event.getY())){
                     Log.d(TAG, "User touches screen in: " + rowClick + " " + colClick);
-                } else {
+                    Tile[][] board = checkersState.getBoard();
+                    if (board[rowClick][colClick].getValue() == Tile.Value.AVAIL) {
+                        // checkers swap pieces with current piece
+                    } else if (board[rowClick][colClick].getValue() == Tile.Value.EMPTY) {
+                        // toggle board in local game idk where it should go
+                    }
+                    // else {
+                        // call availmoves
+                      //  }
+
+                } else  {
                     Log.d(TAG, "The spot clicked was not on the board");
                 }
                 break;
         }
+        invalidate();
         return super.onTouchEvent(event);
     }//onTouchEvent
 

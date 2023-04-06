@@ -83,13 +83,17 @@ public class LocalCheckers extends LocalGame {
     }//makeMove
 
     public ArrayList<Tile> availMoves(Tile start, Tile[][] board) {
+        toggleBoard(board);
         ArrayList<Tile> moveResult = new ArrayList<Tile>();
-        // if captureResult has any moves, remove moveResult
+        // if captureResult has any moves, remove moveResult from possible moves (force capture)
         ArrayList<Tile> captureResult = new ArrayList<Tile>();
         int row = start.getRow();
         int col = start.getCol();
         boolean isKing = start.getKing();
-
+        // if black, go up by default
+        // if red, go down by default
+        // being a king allows for up and down searching
+        // if statements are divided by color then move/capture
         if (start.getValue() == Tile.Value.BLACK) {
             if ((row+1 < 8) && (col-1 > 0) && board[row+1][col-1].getValue() == Tile.Value.EMPTY) {
                 moveResult.add(board[row+1][col-1]);
@@ -161,6 +165,9 @@ public class LocalCheckers extends LocalGame {
     private void availMovesHelper(ArrayList<Tile> captureResult, Tile tile, boolean isKing, Tile.Value color, Tile[][] board) {
         int row = tile.getRow();
         int col = tile.getCol();
+        // if black, go up by default
+        // if red, go down by default
+        // being a king allows for up and down searching
         if (color == Tile.Value.BLACK) {
             if ((row+2 < 8) && (col-2 > 0) && board[row+1][col-1].getValue() == Tile.Value.RED && board[row+2][col-2].getValue() == Tile.Value.EMPTY) {
                 captureResult.add(board[row+2][col-2]);
@@ -195,23 +202,19 @@ public class LocalCheckers extends LocalGame {
                 captureResult.add(board[row-2][col+2]);
                 availMovesHelper(captureResult, board[row-2][col+2], isKing, Tile.Value.RED, board);
             }
-
         }
     }
 
-
-/*
-    public void swapPieces(Tile piece, Tile blank) {
-        if (!validMove(piece.getRow(), piece.getCol())) {
-            return;
+    public void toggleBoard(Tile[][] board) {
+        for (int row = 0; row < 8; row++) {
+            for (int col = 0; col < 8; col++) {
+                if (board[row][col].getValue() == Tile.Value.AVAIL) {
+                    board[row][col].setValue(Tile.Value.EMPTY);
+                }
+            }
         }
-        //Start putting piece1's data into piece2
-        board[blank.getRow()][blank.getRow()] = piece;
-        //Make piece1 empty
-        board[piece.getRow()][piece.getRow()].setValue(Tile.Value.EMPTY);
-        piece.setKing(false);
-    }//swapPieces
-*/
+        return;
+    }
 
     public int whoWon(){
         String gameOver = checkIfGameOver();
