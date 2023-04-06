@@ -54,9 +54,7 @@ public class CheckersAnimationSurface extends AnimationSurface {
     private float vBase;
     private float fullSquare;
 
-    // The row and column of the point the user clicks on the screen //
-    private int rowClick;
-    private int colClick;
+
 
     /* --- COLOR RETURN METHODS --- */
     public int foregroundColor() {return Color.YELLOW;}//foregroundColor
@@ -191,59 +189,6 @@ public class CheckersAnimationSurface extends AnimationSurface {
         }
     }//drawSymbol
 
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        switch (event.getAction()) {
-            //Screen was clicked
-            case MotionEvent.ACTION_DOWN:
-                if (withinBoard(event.getX(), event.getY())){
-                    Log.d(TAG, "User touches screen in: " + rowClick + " " + colClick);
-                    Tile[][] board = checkersState.getBoard();
-                    if (board[rowClick][colClick].getValue() == Tile.Value.AVAIL) {
-                        // checkers swap pieces with current piece
-                    } else if (board[rowClick][colClick].getValue() == Tile.Value.EMPTY) {
-                        // toggle board in local game idk where it should go
-                    }
-                    // else {
-                        // call availmoves
-                      //  }
-
-                } else  {
-                    Log.d(TAG, "The spot clicked was not on the board");
-                }
-                break;
-        }
-        invalidate();
-        return super.onTouchEvent(event);
-    }//onTouchEvent
-
-    /**
-     * --- HELPER METHOD (for onTouchEvent)
-     * Checks to make sure that the spot the user clicked was on the board
-     * @param x
-     *      The x coordinate the user clicked
-     * @param y
-     *      The y coordinate the user clicked
-     * @return
-     *      True if the spot clicked is on the board, false if not
-     */
-    private boolean withinBoard(float x, float y) {
-        for (int row = 0; row < 8; row++) {
-            for (int col = 0; col < 8; col++) {
-                float left = h(LEFT + (TILE_WIDTH * col));
-                float right = h(LEFT + (TILE_WIDTH * col) + TILE_WIDTH);
-                float top = v(TOP + (TILE_HEIGHT * row));
-                float bottom = v(TOP + (TILE_HEIGHT * row) + TILE_HEIGHT);
-                if ((x > left) != (x > right) && (y > top) != (y > bottom)) {
-                    this.rowClick = row;
-                    this.colClick = col;
-                    return true;
-                }
-            }
-        }
-        return false;
-    }//withinBoard
-
     /**
      * --- HELPER METHOD ---
      *
@@ -268,9 +213,10 @@ public class CheckersAnimationSurface extends AnimationSurface {
         return vBase + percent * fullSquare / 100;
     }//v
 
-    /** --- SETTER METHOD --- */
+    /* --- SETTER METHODS --- */
     public void setState(CheckersState state) {
         checkersState = state;
     }//setState
+
 
 }//CheckersAnimationSurface
