@@ -24,26 +24,18 @@ public class Tile {
     private final int row;
     private final int col;
 
-    private static int isBlack;
-
     public Tile(int row, int col) {
         this.value = Value.EMPTY;
         this.isKing = false;
         this.row = row;
         this.col = col;
-            if ((row*col) % 2 == 0) {
-                this.isBlack = 0; // black tiles are 0
-            }
-            else {
-                this.isBlack = 1; // red tiles are 1
-            }
     }//ctor
 
     ////////////////////////////
     // --- GETTER METHODS --- //
     ////////////////////////////
     public Value getValue() {return value;}//getValue
-    public boolean getKing() {return isKing;}//getKing
+    public boolean getIsKing() {return isKing;}//getKing
     public int getRow() {return row;}//getKing
     public int getCol() {return col;}//getCol
 

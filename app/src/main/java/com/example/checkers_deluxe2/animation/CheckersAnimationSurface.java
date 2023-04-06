@@ -10,16 +10,22 @@ package com.example.checkers_deluxe2.animation;
  * @version  March 2023
  */
 
+import static android.graphics.Bitmap.Config.ARGB_8888;
+
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 
 import com.example.GameFramework.animation.AnimationSurface;
 import com.example.checkers_deluxe2.InfoMessage.CheckersState;
+import com.example.checkers_deluxe2.R;
 import com.example.checkers_deluxe2.Tile;
 
 public class CheckersAnimationSurface extends AnimationSurface {
@@ -29,6 +35,7 @@ public class CheckersAnimationSurface extends AnimationSurface {
     private final static float WIDTH = 125; //The width of the board itself
     private final static float HEIGHT = 100; //The height of the board itself
     private final static float PADDING = 2; //Padding on the edge of the board
+    private final static float KING_PADDING = 1; //Padding around the king's icon
 
     // x and y coordinates for the board itself //
     private final static float LEFT = LEFT_PADDING + (PADDING * 2);
@@ -60,6 +67,8 @@ public class CheckersAnimationSurface extends AnimationSurface {
     public int darkPiece() {return Color.GRAY;}//darkPiece
     public int availPiece() {return Color.GREEN;}//availPiece
 
+    /* --- CROWN MARKER --- */
+    Bitmap crown = BitmapFactory.decodeResource(getResources(), R.drawable.crown);
 
     /**
      * The inherited constructor from AnimationSurface class
@@ -149,14 +158,14 @@ public class CheckersAnimationSurface extends AnimationSurface {
      *      The tile we are attempting to draw on
      */
     private void drawSymbol(Canvas g, Tile tile) {
-        Tile.Value temp = tile.getValue();
+        Tile.Value value = tile.getValue();
 
         int row = tile.getRow();
         int col = tile.getCol();
         float pieceX = LEFT + (TILE_WIDTH * col);
         float pieceY = TOP + (TILE_HEIGHT * row);
         Paint p = new Paint();
-        switch (temp) {
+        switch (value) {
             case RED: {
                 p.setColor(lightPiece());
                 g.drawOval(h(pieceX), v(pieceY), h(pieceX + TILE_WIDTH), v(pieceY + TILE_HEIGHT), p);
@@ -172,6 +181,13 @@ public class CheckersAnimationSurface extends AnimationSurface {
                 g.drawOval(h(pieceX), v(pieceY), h(pieceX + TILE_WIDTH), v(pieceY + TILE_HEIGHT), p);
                 break;
             }
+        }
+
+        //Adds a king marker to kings
+        if (tile.getIsKing()) {
+            Rect rect = new Rect((int) h(pieceX + KING_PADDING), (int) v(pieceY + KING_PADDING),
+                                    (int) h(pieceX + TILE_WIDTH - KING_PADDING), (int) v(pieceY + TILE_HEIGHT - KING_PADDING));
+            g.drawBitmap(crown, null, rect, p);
         }
     }//drawSymbol
 
