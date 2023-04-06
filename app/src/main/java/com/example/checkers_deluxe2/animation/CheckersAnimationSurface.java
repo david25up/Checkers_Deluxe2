@@ -25,6 +25,7 @@ import com.example.checkers_deluxe2.InfoMessage.CheckersState;
 import com.example.checkers_deluxe2.Tile;
 
 public class CheckersAnimationSurface extends AnimationSurface implements Tickable {
+    private final static String TAG = "CheckersAnimationSurface";
     /* --- BOARD DIMENSIONS (in percentages) --- */
     private final static float LEFT_PADDING = 30; //The space to the left of the board
     private final static float WIDTH = 125; //The width of the board itself
@@ -50,8 +51,10 @@ public class CheckersAnimationSurface extends AnimationSurface implements Tickab
     protected float hBase;
     protected float vBase;
     protected float fullSquare;
-    protected float xCoord;
-    protected float yCoord;
+
+    // The coordinates of the point the user clicks on the screen //
+    protected int rowClick;
+    protected int colClick;
 
 
     /**
@@ -128,7 +131,8 @@ public class CheckersAnimationSurface extends AnimationSurface implements Tickab
         for (int row = 0; row < 8; row++) { //White Tiles
             for (int col = 0; col < 8; col++) {
                 if ((row % 2 != 0 && col % 2 == 0) || (row % 2 == 0 && col % 2 != 0)) {
-                    g.drawRect(h(leftX + (TILE_WIDTH * col)), v(leftY + (TILE_HEIGHT * row)), h(leftX + (TILE_WIDTH * col) + TILE_WIDTH), v(leftY + (TILE_HEIGHT * row) + TILE_HEIGHT), p);
+                    g.drawRect(h(leftX + (TILE_WIDTH * col)), v(leftY + (TILE_HEIGHT * row)),
+                                h(leftX + (TILE_WIDTH * col) + TILE_WIDTH), v(leftY + (TILE_HEIGHT * row) + TILE_HEIGHT), p);
                 }
             }
        }
@@ -177,12 +181,14 @@ public class CheckersAnimationSurface extends AnimationSurface implements Tickab
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getAction()) {
+            //Screen was clicked
             case MotionEvent.ACTION_DOWN:
-                // do something when the user touches the screen
-                xCoord = event.getX();
-                yCoord = event.getY();
-                Log.d("MyApp", "User touches screen");
-
+                if (withinBoard(event.getX(), event.getY())){
+                    Log.d(TAG, "User touches screen in: " + rowClick + " " + colClick);
+                } else {
+                    Log.d(TAG, "The spot clicked was not on the board");
+                }
+                break;
         }
         return super.onTouchEvent(event);
     }
@@ -228,5 +234,29 @@ public class CheckersAnimationSurface extends AnimationSurface implements Tickab
     private float v(float percent) {
         return vBase + percent * fullSquare / 100;
     }//v
+
+    /**
+     * Checks to make sure that the spot the user clicked was on the board
+     * @param x
+     *      The x coordinate the user clicked
+     * @param y
+     *      The y coordinate the user clicked
+     */
+    private boolean withinBoard(float x, float y) {
+        for (int row = 0; row < 8; row++) {
+            for (int col = 0; col < 8; col++) {
+                float left = h(leftX + (TILE_WIDTH * col));
+                float right = h(left + TILE_WIDTH);
+                float top = v(leftY + (TILE_HEIGHT * row));
+                float bottom = v(top + TILE_HEIGHT);
+                if ((x > left) != (x > right) && (y > top) != (y > bottom)) {
+                    this.rowClick = row;
+                    this.colClick = col;
+                    return true;
+                }
+            }
+        }
+        return false;
+    }//pixelToTile
 
 }//CheckersAnimationSurface
