@@ -50,6 +50,9 @@ public class CheckersAnimationSurface extends AnimationSurface implements Tickab
     protected float hBase;
     protected float vBase;
     protected float fullSquare;
+    protected float xCoord;
+    protected float yCoord;
+
 
     /**
      * The inherited constructor from AnimationSurface class
@@ -174,18 +177,12 @@ public class CheckersAnimationSurface extends AnimationSurface implements Tickab
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 // do something when the user touches the screen
+                xCoord = event.getX();
+                yCoord = event.getY();
                 Log.d("MyApp", "User touches screen");
-                break;
-            case MotionEvent.ACTION_MOVE:
-                // do something when the user moves their finger on the screen
-                Log.d("MyApp", "User drags finger");
-                break;
-            case MotionEvent.ACTION_UP:
-                // do something when the user lifts their finger off the screen
-                Log.d("MyApp", "user lifts finger");
-                break;
+
         }
-        return true;
+        return super.onTouchEvent(event);
     }
 
     /**
