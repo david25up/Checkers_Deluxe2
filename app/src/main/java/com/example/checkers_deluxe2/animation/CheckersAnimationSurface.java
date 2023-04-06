@@ -43,13 +43,13 @@ public class CheckersAnimationSurface extends AnimationSurface {
 
     /* --- INSTANCE VARIABLES --- */
     protected CheckersState checkersState;
-    protected float hBase;
-    protected float vBase;
-    protected float fullSquare;
+    private float hBase;
+    private float vBase;
+    private float fullSquare;
 
-    // The coordinates of the point the user clicks on the screen //
-    protected int rowClick;
-    protected int colClick;
+    // The row and column of the point the user clicks on the screen //
+    private int rowClick;
+    private int colClick;
 
     /* --- COLOR RETURN METHODS --- */
     public int foregroundColor() {return Color.YELLOW;}//foregroundColor
@@ -204,9 +204,9 @@ public class CheckersAnimationSurface extends AnimationSurface {
         for (int row = 0; row < 8; row++) {
             for (int col = 0; col < 8; col++) {
                 float left = h(LEFT + (TILE_WIDTH * col));
-                float right = h(left + TILE_WIDTH);
+                float right = h(LEFT + (TILE_WIDTH * col) + TILE_WIDTH);
                 float top = v(TOP + (TILE_HEIGHT * row));
-                float bottom = v(top + TILE_HEIGHT);
+                float bottom = v(TOP + (TILE_HEIGHT * row) + TILE_HEIGHT);
                 if ((x > left) != (x > right) && (y > top) != (y > bottom)) {
                     this.rowClick = row;
                     this.colClick = col;
