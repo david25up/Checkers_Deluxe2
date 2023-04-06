@@ -15,6 +15,8 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
+import android.util.Log;
+import android.view.MotionEvent;
 
 import com.example.GameFramework.animation.AnimationSurface;
 import com.example.GameFramework.utilities.GameTimer;
@@ -165,6 +167,25 @@ public class CheckersAnimationSurface extends AnimationSurface implements Tickab
                 break;
             }
         }
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                // do something when the user touches the screen
+                Log.d("MyApp", "User touches screen");
+                break;
+            case MotionEvent.ACTION_MOVE:
+                // do something when the user moves their finger on the screen
+                Log.d("MyApp", "User drags finger");
+                break;
+            case MotionEvent.ACTION_UP:
+                // do something when the user lifts their finger off the screen
+                Log.d("MyApp", "user lifts finger");
+                break;
+        }
+        return true;
     }
 
     /**
