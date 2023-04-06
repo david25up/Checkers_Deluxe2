@@ -49,13 +49,6 @@ public class CheckersAnimationSurface extends AnimationSurface implements Tickab
     protected float vBase;
     protected float fullSquare;
 
-    private Paint redCheck = new Paint(Color.RED);
-
-    private Paint blackCheck = new Paint(Color.BLACK);
-
-    private Paint grayCheck = new Paint(Color.GRAY);
-
-
     /**
      * The inherited constructor from AnimationSurface class
      * @param context   The activity the animation is run on
@@ -104,6 +97,9 @@ public class CheckersAnimationSurface extends AnimationSurface implements Tickab
     public int backgroundColor() {return Color.BLUE;}//backgroundColor
     public int whiteTile() {return Color.WHITE;}//whiteTile
     public int blackTile() {return Color.BLACK;}//blackTile
+    public int redPiece() {return Color.RED;}//redPiece
+    public int darkPiece() {return  Color.GRAY;}//darkPiece
+    public int availPiece() {return Color.GREEN;}//availPiece
 
 
     /**
@@ -152,18 +148,18 @@ public class CheckersAnimationSurface extends AnimationSurface implements Tickab
 
         int row = piece.getRow();
         int col = piece.getCol();
-        Paint p;
+        Paint p = new Paint();
         switch (temp) {
             case RED: {
-                p = redCheck;
+                p.setColor(redPiece());
                 g.drawOval(h(leftX + (TILE_WIDTH * col)), v(leftY + (TILE_HEIGHT * row)), h(leftX + (TILE_WIDTH * col) + TILE_WIDTH), v(leftY + (TILE_HEIGHT * row) + TILE_HEIGHT), p);
             }
             case BLACK: {
-                p = blackCheck;
+                p.setColor(darkPiece());
                 g.drawOval(h(leftX + (TILE_WIDTH * col)), v(leftY + (TILE_HEIGHT * row)), h(leftX + (TILE_WIDTH * col) + TILE_WIDTH), v(leftY + (TILE_HEIGHT * row) + TILE_HEIGHT), p);
             }
             case AVAIL: {
-                p = grayCheck;
+                p.setColor(availPiece());
                 g.drawOval(h(leftX + (TILE_WIDTH * col)), v(leftY + (TILE_HEIGHT * row)), h(leftX + (TILE_WIDTH * col) + TILE_WIDTH), v(leftY + (TILE_HEIGHT * row) + TILE_HEIGHT), p);
             }
         }

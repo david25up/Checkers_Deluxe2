@@ -130,10 +130,10 @@ public class CheckersState extends GameState {
                 board[i][j].setKing(false);
                 board[i][j].setValue(Tile.Value.EMPTY);
 
-                if (i < 3 && ((j % 2 != 0 && i % 2 == 0) || (j % 2 == 0 && i % 2 != 0))) {
+                if (i < 3 && ((i % 2 != 0 && j % 2 == 0) || (i % 2 == 0 && j % 2 != 0))) {
                     board[i][j].setValue(Tile.Value.RED);
                 }
-                else if (i > 4 && ((j % 2 != 0 && i % 2 != 0) || (j % 2 == 0 && i % 2 == 0))) {
+                else if (i > 4 && ((i % 2 == 0 && j % 2 != 0) || (i % 2 != 0 && j % 2 == 0))) {
                     board[i][j].setValue(Tile.Value.BLACK);
                 }
             }
