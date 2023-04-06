@@ -29,13 +29,12 @@ public class CheckersAnimationSurface extends AnimationSurface implements Tickab
     private final static float TILE_SIZE = 3.75F; //Individual squares/tiles on the board
     private final static float PADDING = 2; //Padding on the edge of the board
 
-    /* --- SCREEN DIMENSIONS --- */
-    private static final float SCREEN_VERT = Resources.getSystem().getDisplayMetrics().heightPixels;
-    private static final float SCREEN_HORI = Resources.getSystem().getDisplayMetrics().widthPixels;
-
 
     /* --- INSTANCE VARIABLES --- */
     protected CheckersState checkersState;
+    protected float hBase;
+    protected float vBase;
+    protected float fullSquare;
 
 
     /**
@@ -54,6 +53,26 @@ public class CheckersAnimationSurface extends AnimationSurface implements Tickab
         setBackgroundColor(backgroundColor());
     }//init
 
+    /**
+     * --- HELPER METHOD (for ctor) ---
+     * @param g   The canvas we are drawing on
+     */
+    private void getDimensions(Canvas g) {
+        // Gets the width and height of the drawing surface
+        int width = g.getWidth();
+        int height = g.getHeight();
+
+        //Assigns the variables on the assumption the tablet is horizontal
+        fullSquare = height;
+        vBase = 0;
+        hBase = (width - height) / (float) 2.0;
+    }//getDimensions
+
+
+    public void setState(CheckersState state) {
+        checkersState = state;
+    }
+
 
     /* --- COLOR RETURN METHODS --- */
     public int foregroundColor() {return Color.YELLOW;}//foregroundColor
@@ -69,6 +88,8 @@ public class CheckersAnimationSurface extends AnimationSurface implements Tickab
      * @param g   The canvas we are drawing on
      */
     public void onDraw(Canvas g) {
+        getDimensions(g);
+
         Paint p = new Paint();
 
         // Paints the board itself with a trim around it
@@ -76,7 +97,7 @@ public class CheckersAnimationSurface extends AnimationSurface implements Tickab
         g.drawRect(h(BOARD_SIZE - PADDING), v(BOARD_SIZE - PADDING),
                     h(BOARD_SIZE + PADDING), v(BOARD_SIZE + PADDING), p); //Trim
 
-        p.setColor(blackTile());
+        p.setColor(whiteTile());
         g.drawRect(h(BOARD_SIZE), v(BOARD_SIZE), h(BOARD_SIZE), v(BOARD_SIZE), p); //Black Base
 
         float xCoord, yCoord;
@@ -132,7 +153,7 @@ public class CheckersAnimationSurface extends AnimationSurface implements Tickab
      * 		the pixel location that corresponds to that percentage
      */
     private float h(float percent) {
-        return (percent / 100) * SCREEN_HORI;
+        return hBase + percent * fullSquare / 100;
     }
 
     /**
@@ -144,7 +165,7 @@ public class CheckersAnimationSurface extends AnimationSurface implements Tickab
      * 		the pixel location that corresponds to that percentage
      */
     private float v(float percent) {
-        return (percent / 100) * SCREEN_VERT;
+        return vBase + percent * fullSquare / 100;
     }
 
 }//CheckersAnimationSurface

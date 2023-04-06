@@ -33,9 +33,6 @@ import java.util.ArrayList;
 public class CheckersMainActivity extends GameMainActivity {
     //The port number to be used IF network implementation is made
     private static final int PORT_NUMBER = 8080;
-    public void onClick(View button) {
-
-    }//onClick
 
     /**
      * After a piece is clicked, the available moves will be shown
@@ -77,7 +74,7 @@ public class CheckersMainActivity extends GameMainActivity {
         //Adds the human and computer types
         playerTypes.add(new GamePlayerType("Local Human Player") {
             public GamePlayer createPlayer(String name) {
-                return new CheckersHumanPlayer(name);
+                return new CheckersHumanPlayer(name, R.layout.activity_main);
             }});
         playerTypes.add(new GamePlayerType("Smart AI Player") {
             public GamePlayer createPlayer(String name) {return new CheckersComputerPlayer(name);}});
@@ -98,6 +95,10 @@ public class CheckersMainActivity extends GameMainActivity {
      */
     @Override
     public LocalGame createLocalGame(GameState gameState) {
-        return new LocalCheckers(gameState);
+        if (gameState == null) {
+            return new LocalCheckers();
+        }
+
+        return new LocalCheckers((CheckersState) gameState);
     }//createLocalGame
 }
