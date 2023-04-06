@@ -19,31 +19,26 @@ import android.util.Log;
 import android.view.MotionEvent;
 
 import com.example.GameFramework.animation.AnimationSurface;
-import com.example.GameFramework.utilities.GameTimer;
-import com.example.GameFramework.utilities.Tickable;
 import com.example.checkers_deluxe2.InfoMessage.CheckersState;
 import com.example.checkers_deluxe2.Tile;
 
-public class CheckersAnimationSurface extends AnimationSurface implements Tickable {
+public class CheckersAnimationSurface extends AnimationSurface {
     private final static String TAG = "CheckersAnimationSurface";
     /* --- BOARD DIMENSIONS (in percentages) --- */
     private final static float LEFT_PADDING = 30; //The space to the left of the board
     private final static float WIDTH = 125; //The width of the board itself
     private final static float HEIGHT = 100; //The height of the board itself
-    private final static float TILE_SIZE = 3.75F; //Individual squares or tiles on the board
     private final static float PADDING = 2; //Padding on the edge of the board
 
-    // The top left percentage of the board //
-    private final static float leftX = LEFT_PADDING + (PADDING * 2);
-    private final static float leftY = PADDING * 2;
+    // x and y coordinates for the board itself //
+    private final static float LEFT = LEFT_PADDING + (PADDING * 2);
+    private final static float TOP = PADDING * 2;
+    private final static float RIGHT = WIDTH - (PADDING * 2);
+    private final static float BOTTOM = HEIGHT - (PADDING * 2);
 
-    // The top right percentage of the board //
-    private final static float rightX = WIDTH - (PADDING * 2);
-    private final static float rightY = HEIGHT - (PADDING * 2);
-
-    // The individual tiles //
-    private final static float TILE_WIDTH = (rightX - leftX) / 8;
-    private final static float TILE_HEIGHT = (rightY - leftY) / 8;
+    // Dimensions for the tiles //
+    private final static float TILE_WIDTH = (RIGHT - LEFT) / 8;
+    private final static float TILE_HEIGHT = (BOTTOM - TOP) / 8;
 
 
     /* --- INSTANCE VARIABLES --- */
@@ -55,6 +50,15 @@ public class CheckersAnimationSurface extends AnimationSurface implements Tickab
     // The coordinates of the point the user clicks on the screen //
     protected int rowClick;
     protected int colClick;
+
+    /* --- COLOR RETURN METHODS --- */
+    public int foregroundColor() {return Color.YELLOW;}//foregroundColor
+    public int backgroundColor() {return Color.BLUE;}//backgroundColor
+    public int whiteTile() {return Color.WHITE;}//whiteTile
+    public int blackTile() {return Color.BLACK;}//blackTile
+    public int lightPiece() {return Color.RED;}//lightPiece
+    public int darkPiece() {return Color.GRAY;}//darkPiece
+    public int availPiece() {return Color.GREEN;}//availPiece
 
 
     /**
@@ -74,7 +78,50 @@ public class CheckersAnimationSurface extends AnimationSurface implements Tickab
     }//init
 
     /**
-     * --- HELPER METHOD (for ctor) ---
+     * Called when a change is made so that the board itself
+     * can be updated
+     *
+     * @param g   The canvas we are drawing on
+     */
+    public void onDraw(Canvas g) {
+        getDimensions(g);
+        Paint p = new Paint();
+
+        //The trim around the board
+        p.setColor(foregroundColor());
+        g.drawRect(h(LEFT - PADDING), v(TOP - PADDING), h(RIGHT + PADDING), v(BOTTOM + PADDING), p);
+
+        //White Base
+        p.setColor(whiteTile());
+        g.drawRect(h(LEFT), v(TOP), h(RIGHT), v(BOTTOM), p);
+
+        //Black Tiles
+        p.setColor(blackTile());
+        for (int row = 0; row < 8; row++) {
+            for (int col = 0; col < 8; col++) {
+                if ((row % 2 != 0 && col % 2 == 0) || (row % 2 == 0 && col % 2 != 0)) {
+                    g.drawRect(h(LEFT + (TILE_WIDTH * col)), v(TOP + (TILE_HEIGHT * row)),
+                                h(LEFT + (TILE_WIDTH * col) + TILE_WIDTH), v(TOP + (TILE_HEIGHT * row) + TILE_HEIGHT), p);
+                }
+            }
+       }
+
+        // If we don't have any state, there's nothing more to draw, so return
+        if (checkersState == null) {
+            return;
+        }
+
+        // Draws the different types of pieces (either black, red, empty, or available)
+        Tile[][] temp = checkersState.getBoard();
+        for (int row = 0; row < 8; row++) {
+            for (int col = 0; col < 8; col++) {
+                drawSymbol(g, temp[row][col]);
+            }
+        }
+    }//onDraw
+
+    /**
+     * --- HELPER METHOD (for onDraw) ---
      * @param g   The canvas we are drawing on
      */
     private void getDimensions(Canvas g) {
@@ -94,74 +141,24 @@ public class CheckersAnimationSurface extends AnimationSurface implements Tickab
         }
     }//getDimensions
 
-
-    public void setState(CheckersState state) {
-        checkersState = state;
-    }
-
-
-    /* --- COLOR RETURN METHODS --- */
-    public int foregroundColor() {return Color.YELLOW;}//foregroundColor
-    public int backgroundColor() {return Color.BLUE;}//backgroundColor
-    public int whiteTile() {return Color.WHITE;}//whiteTile
-    public int blackTile() {return Color.BLACK;}//blackTile
-    public int redPiece() {return Color.RED;}//redPiece
-    public int darkPiece() {return Color.GRAY;}//darkPiece
-    public int availPiece() {return Color.GREEN;}//availPiece
-
-
     /**
-     * Called when a change is made so that the board itself
-     * can be updated
-     *
-     * @param g   The canvas we are drawing on
+     * Responsible for drawing the pieces themselves
+     * @param g
+     *      The canvas we are drawing on
+     * @param tile
+     *      The tile we are attempting to draw on
      */
-    public void onDraw(Canvas g) {
-        getDimensions(g);
-        Paint p = new Paint();
+    private void drawSymbol(Canvas g, Tile tile) {
+        Tile.Value temp = tile.getValue();
 
-        // Paints the board itself with a trim around it
-        p.setColor(foregroundColor());
-        g.drawRect(h(leftX - PADDING), v(leftY - PADDING), h(rightX + PADDING), v(rightY + PADDING), p); //Trim
-
-        p.setColor(whiteTile());
-        g.drawRect(h(leftX), v(leftY), h(rightX), v(rightY), p); //Black Base
-
-        p.setColor(blackTile());
-        for (int row = 0; row < 8; row++) { //White Tiles
-            for (int col = 0; col < 8; col++) {
-                if ((row % 2 != 0 && col % 2 == 0) || (row % 2 == 0 && col % 2 != 0)) {
-                    g.drawRect(h(leftX + (TILE_WIDTH * col)), v(leftY + (TILE_HEIGHT * row)),
-                                h(leftX + (TILE_WIDTH * col) + TILE_WIDTH), v(leftY + (TILE_HEIGHT * row) + TILE_HEIGHT), p);
-                }
-            }
-       }
-
-        // If we don't have any state, there's nothing more to draw, so return
-        if (checkersState == null) {
-            return;
-        }
-
-        // Draws the different types of pieces (either black, red, empty, or highlighted)
-        Tile[][] temp = checkersState.getBoard(); // get board
-        for (int row = 0; row < 8; row++) {
-            for (int col = 0; col < 8; col++) {
-                drawSymbol(g, temp[row][col]);
-            }
-        }
-    }//onDraw
-
-    private void drawSymbol(Canvas g, Tile piece) {
-        Tile.Value temp = piece.getValue();
-
-        int row = piece.getRow();
-        int col = piece.getCol();
-        float pieceX = leftX + (TILE_WIDTH * col);
-        float pieceY = leftY + (TILE_HEIGHT * row);
+        int row = tile.getRow();
+        int col = tile.getCol();
+        float pieceX = LEFT + (TILE_WIDTH * col);
+        float pieceY = TOP + (TILE_HEIGHT * row);
         Paint p = new Paint();
         switch (temp) {
             case RED: {
-                p.setColor(redPiece());
+                p.setColor(lightPiece());
                 g.drawOval(h(pieceX), v(pieceY), h(pieceX + TILE_WIDTH), v(pieceY + TILE_HEIGHT), p);
                 break;
             }
@@ -176,7 +173,7 @@ public class CheckersAnimationSurface extends AnimationSurface implements Tickab
                 break;
             }
         }
-    }
+    }//drawSymbol
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
@@ -191,25 +188,34 @@ public class CheckersAnimationSurface extends AnimationSurface implements Tickab
                 break;
         }
         return super.onTouchEvent(event);
-    }
+    }//onTouchEvent
 
     /**
-    drawBoard(): This method should draw the game board, including the squares and any other visual elements (such as borders or labels) that are part of the game.
-    drawPieces(): This method should draw the game pieces on the board based on their current positions.
-            movePiece(): This method should allow the user to select a piece and move it to a new location based on their input.
-            updateState(): This method should update the state of the game (such as the positions of the pieces) when a move is made.
-    animatePiece(): This method should handle the animation of a piece as it moves from one location to another.
-            tick(): This method should update the game state on each tick of the game timer, and trigger any necessary animation or movement of the pieces.
-*/
-
-
-    /**
-     * timer method
-     * @param timer
-     * 		the timer that is associated with the "tick"
+     * --- HELPER METHOD (for onTouchEvent)
+     * Checks to make sure that the spot the user clicked was on the board
+     * @param x
+     *      The x coordinate the user clicked
+     * @param y
+     *      The y coordinate the user clicked
+     * @return
+     *      True if the spot clicked is on the board, false if not
      */
-    @Override
-    public void tick(GameTimer timer) {}
+    private boolean withinBoard(float x, float y) {
+        for (int row = 0; row < 8; row++) {
+            for (int col = 0; col < 8; col++) {
+                float left = h(LEFT + (TILE_WIDTH * col));
+                float right = h(left + TILE_WIDTH);
+                float top = v(TOP + (TILE_HEIGHT * row));
+                float bottom = v(top + TILE_HEIGHT);
+                if ((x > left) != (x > right) && (y > top) != (y > bottom)) {
+                    this.rowClick = row;
+                    this.colClick = col;
+                    return true;
+                }
+            }
+        }
+        return false;
+    }//withinBoard
 
     /**
      * --- HELPER METHOD ---
@@ -235,28 +241,9 @@ public class CheckersAnimationSurface extends AnimationSurface implements Tickab
         return vBase + percent * fullSquare / 100;
     }//v
 
-    /**
-     * Checks to make sure that the spot the user clicked was on the board
-     * @param x
-     *      The x coordinate the user clicked
-     * @param y
-     *      The y coordinate the user clicked
-     */
-    private boolean withinBoard(float x, float y) {
-        for (int row = 0; row < 8; row++) {
-            for (int col = 0; col < 8; col++) {
-                float left = h(leftX + (TILE_WIDTH * col));
-                float right = h(left + TILE_WIDTH);
-                float top = v(leftY + (TILE_HEIGHT * row));
-                float bottom = v(top + TILE_HEIGHT);
-                if ((x > left) != (x > right) && (y > top) != (y > bottom)) {
-                    this.rowClick = row;
-                    this.colClick = col;
-                    return true;
-                }
-            }
-        }
-        return false;
-    }//pixelToTile
+    /** --- SETTER METHOD --- */
+    public void setState(CheckersState state) {
+        checkersState = state;
+    }//setState
 
 }//CheckersAnimationSurface
