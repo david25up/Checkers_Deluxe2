@@ -76,7 +76,6 @@ public class LocalCheckers extends LocalGame {
 
     @Override
     protected boolean makeMove(GameAction action) {
-
         if (action instanceof CheckersTapAction) {
             Tile[][] board = ((CheckersTapAction) action).getBoard();
             int row = ((CheckersTapAction) action).getRow();
