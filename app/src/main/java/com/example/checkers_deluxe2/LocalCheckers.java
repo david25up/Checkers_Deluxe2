@@ -87,6 +87,8 @@ public class LocalCheckers extends LocalGame {
             int col = ((CheckersMoveAction) action).getCol();
             Tile result = findTile(availMoves(board[row][col], board), board[row][col]);
             ((CheckersState) state).swapPieces(result, board[row][col]);
+            ((CheckersState) state).flipTurn();
+            // swap pieces is supposed to find the original
         }
         //temp
         return true;
