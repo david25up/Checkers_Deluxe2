@@ -131,11 +131,10 @@ public class CheckersState extends GameState {
             for (int j = 0; j < 8; j++) {
                 board[i][j].setKing(false);
                 board[i][j].setValue(Tile.Value.EMPTY);
-
-                if (i < 3 && ((i % 2 != 0 && j % 2 == 0) || (i % 2 == 0 && j % 2 != 0))) {
+               if (i < 3 && ((j % 2 != 0 && i % 2 == 0) || (j % 2 == 0 && i % 2 != 0))) {
                     board[i][j].setValue(Tile.Value.RED);
                 }
-                else if (i > 4 && ((i % 2 == 0 && j % 2 != 0) || (i % 2 != 0 && j % 2 == 0))) {
+                else if (i > 4 && ((j % 2 == 0 && i % 2 != 0) || (j % 2 != 0 && i % 2 == 0))) {
                     board[i][j].setValue(Tile.Value.BLACK);
                 }
             }
@@ -150,16 +149,6 @@ public class CheckersState extends GameState {
      * @param blank   The blank space the piece will move to
      * @return         Returns true if the swap worked
      */
-    public void swapPieces(Tile piece, Tile blank) {
-        if (!validMove(piece.getRow(), piece.getCol())) {
-            return;
-        }
-        //Start putting piece1's data into piece2
-        board[blank.getRow()][blank.getRow()] = piece;
-        //Make piece1 empty
-        board[piece.getRow()][piece.getRow()].setValue(Tile.Value.EMPTY);
-        piece.setKing(false);
-    }//swapPieces
 
     /**
      * --- HELPER METHOD ---
