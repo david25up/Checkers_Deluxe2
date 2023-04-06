@@ -34,30 +34,6 @@ public class CheckersMainActivity extends GameMainActivity {
     //The port number to be used IF network implementation is made
     private static final int PORT_NUMBER = 8080;
 
-    /**
-     * After a piece is clicked, the available moves will be shown
-     * by changing those tiles to "AVAIL"
-     * @param start
-     */
-    public void checkMoves(Tile start) {
-        // remove all present marks in a loop
-        // flag if there is a legal capture elsewhere
-        // if (capture available, mark capture and call checkMovesHelper on that square)
-        // if (forward diagonals are empty, mark those diagonals)
-        // if (king, check backward diagonals)
-        // invalidate
-    }
-
-    /**
-     *
-     * @param curr
-     */
-    private void checkMovesHelper(Tile curr) {
-        // recursively check if available captures are available on curr
-            // if (available capture, mark jump and recall helper method)
-                // if king, also check backward
-            // call checkMovesHelper
-    }//checkMovesHelper
 
     /**
      * Creates the default configuration of the game

@@ -11,12 +11,15 @@ public class LocalCheckers extends LocalGame {
     /** Default constructor for LocalCheckers */
     public LocalCheckers() {
         super();
-        super.state = new CheckersState();
+        CheckersState checkersState = new CheckersState();
+        checkersState.initBoard();
+        super.state = checkersState;
     }//default ctor
 
     /** Constructor for LocalCheckers given a CheckersState object */
     public LocalCheckers(CheckersState checkersState) {
         super();
+        checkersState.initBoard();
         super.state = new CheckersState(checkersState);
     }//ctor
 

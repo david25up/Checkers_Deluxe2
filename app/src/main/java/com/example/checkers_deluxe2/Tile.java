@@ -27,19 +27,16 @@ public class Tile {
     private static int isBlack;
 
     public Tile(int row, int col) {
-        value = Value.EMPTY;
-        isKing = false;
+        this.value = Value.EMPTY;
+        this.isKing = false;
         this.row = row;
         this.col = col;
-
-        for (int i = 0; i < 64; i++) {
-            if (i % 2 == 0) {
+            if ((row*col) % 2 == 0) {
                 this.isBlack = 0; // black tiles are 0
             }
             else {
                 this.isBlack = 1; // red tiles are 1
             }
-        }
     }//ctor
 
     ////////////////////////////

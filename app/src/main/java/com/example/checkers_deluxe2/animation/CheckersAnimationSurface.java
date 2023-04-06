@@ -45,6 +45,12 @@ public class CheckersAnimationSurface extends AnimationSurface implements Tickab
     protected float vBase;
     protected float fullSquare;
 
+    private Paint redCheck = new Paint(Color.RED);
+
+    private Paint blackCheck = new Paint(Color.BLACK);
+
+    private Paint grayCheck = new Paint(Color.GRAY);
+
 
     /**
      * The inherited constructor from AnimationSurface class
@@ -129,12 +135,35 @@ public class CheckersAnimationSurface extends AnimationSurface implements Tickab
 
         // Draws the different types of pieces (either black, red, empty, or highlighted)
         Tile[][] temp = checkersState.getBoard(); // get board
-        for (int row = 0; row < 3; row++) {
-            for (int col = 0; col < 3; col++) {
-                //drawSymbol(g, temp[row][col]);
+        for (int row = 0; row < 8; row++) {
+            for (int col = 0; col < 8; col++) {
+                drawSymbol(g, temp[row][col]);
             }
         }
     }//onDraw
+
+    private void drawSymbol(Canvas g, Tile piece) {
+
+        Tile.Value temp = piece.getValue();
+
+        int i = piece.getRow();
+        int j = piece.getCol();
+        Paint p;
+        switch (temp) {
+            case RED: {
+                p = redCheck;
+                g.drawOval(leftX, leftY, leftX + (TILE_SIZE), TILE_SIZE, p);;
+            }
+            case BLACK: {
+                p = blackCheck;
+                g.drawOval(leftX, leftY, leftX + (TILE_SIZE), TILE_SIZE, p);;
+            }
+            case AVAIL: {
+                p = grayCheck;
+                g.drawOval(leftX, leftY, leftX + (TILE_SIZE), TILE_SIZE, p);;
+            }
+        }
+    }
 
     /**
     drawBoard(): This method should draw the game board, including the squares and any other visual elements (such as borders or labels) that are part of the game.
