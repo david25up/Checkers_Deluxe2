@@ -114,10 +114,10 @@ public class CheckersAnimationSurface extends AnimationSurface implements Tickab
         g.drawRect(h(leftX), v(leftY), h(rightX), v(rightY), p); //Black Base
 
         p.setColor(whiteTile());
-        for (int row = 0; row < 9; row++) { //White Tiles
-            for (int col = 0; col < 9; col++) {
+        for (int row = 0; row < 8; row++) { //White Tiles
+            for (int col = 0; col < 8; col++) {
                 if ((row % 2 != 0 && col % 2 == 0) || (row % 2 == 0 && col % 2 != 0)) {
-                    g.drawRect(h(leftX), v(leftY), h(leftX + (TILE_WIDTH * row)), v(leftY + (TILE_HEIGHT * col)), p);
+                    g.drawRect(h(leftX + (TILE_WIDTH * col)), v(leftY + (TILE_HEIGHT * row)), h(leftX + (TILE_WIDTH * col) + TILE_WIDTH), v(leftY + (TILE_HEIGHT * row) + TILE_HEIGHT), p);
                 }
             }
        }
