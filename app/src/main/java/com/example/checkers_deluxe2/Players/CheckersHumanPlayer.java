@@ -26,16 +26,21 @@ import com.example.checkers_deluxe2.R;
 import com.example.checkers_deluxe2.animation.CheckersAnimationSurface;
 
 public class CheckersHumanPlayer extends GameHumanPlayer implements View.OnTouchListener{
+    // Tag for logging //
+    private static final String TAG = "CheckersHumanPlayer";
+
 
     /* --- INSTANCE VARIABLES --- */
-    SurfaceView surfaceView;
+    private CheckersAnimationSurface surfaceView;
+    private int layoutId;
 
     /**
      * The inherited constructor from GameComputerPlayer class
      * @param name   The name of the player
      */
-    public CheckersHumanPlayer(String name) {
+    public CheckersHumanPlayer(String name, int layoutId) {
         super(name);
+        this.layoutId = layoutId;
     }//ctor
 
     @Override
@@ -45,11 +50,15 @@ public class CheckersHumanPlayer extends GameHumanPlayer implements View.OnTouch
 
     @Override
     public void receiveInfo(GameInfo info) {
+        if (surfaceView == null) {return;}
+
         //Makes sure info is a CheckersState object
         if (!(info instanceof CheckersState)) {return;}
-        CheckersState checkersState = new CheckersState( (CheckersState) info);
 
-        if (checkersState.getTurn() == playerNum) {return;}
+        surfaceView.setState((CheckersState)info);
+        surfaceView.invalidate();
+        Logger.log(TAG, "receiving");
+
         //Create an action state via: "NameOfAction" action = new "NameOfAction(this)"
         //and send action via: game.sendAction(action)
 
@@ -69,10 +78,10 @@ public class CheckersHumanPlayer extends GameHumanPlayer implements View.OnTouch
     @Override
     public void setAsGui(GameMainActivity activity) {
         // Load the layout resource for our GUI
-        activity.setContentView(R.layout.activity_main);
+        activity.setContentView(layoutId);
 
         // set the surfaceView instance variable
-        surfaceView = (SurfaceView) myActivity.findViewById(R.id.surfaceView);
+        surfaceView = (CheckersAnimationSurface) myActivity.findViewById(R.id.surfaceView);
         Logger.log("set listener","OnTouch");
         surfaceView.setOnTouchListener(this);
     }//setAsGui

@@ -7,22 +7,53 @@ import com.example.GameFramework.players.GamePlayer;
 import com.example.checkers_deluxe2.InfoMessage.CheckersState;
 
 public class LocalCheckers extends LocalGame {
-    CheckersState gameInstance;
 
-    public LocalCheckers (GameState gameState) {
-        gameInstance = (CheckersState) gameState;
+    /** Default constructor for LocalCheckers */
+    public LocalCheckers() {
+        super();
+        super.state = new CheckersState();
+    }//default ctor
+
+    /** Constructor for LocalCheckers given a CheckersState object */
+    public LocalCheckers(CheckersState checkersState) {
+        super();
+        super.state = new CheckersState(checkersState);
     }//ctor
 
+    /**
+     *  This is where you should initialize anything specific to the
+     *  number of players.  For example you may need to init your
+     *  game state or part of it.  Loading data could also happen here.
+     *
+     * 	 @param players
+     * 	      the array that holds all of the players in the game
+     */
+    @Override
+    public void start(GamePlayer[] players) {
+        super.start(players);
+    }//start
+
+    /**
+     *
+     * @param p
+     * 			the player to notify
+     */
     @Override
     protected void sendUpdatedStateTo(GamePlayer p) {
-        CheckersState temp = new CheckersState(gameInstance);
-        p.sendInfo(temp);
-    }
+        p.sendInfo(new CheckersState((CheckersState) state));
+    }//sendUpdatedStateTo
 
+    /**
+     *
+     * @param playerIdx
+     * 		the player's player-number (ID)
+     * @return
+     *      returns true if the given player is allowed to move
+     */
     @Override
     protected boolean canMove(int playerIdx) {
-        return (playerIdx == gameInstance.getTurn());
-    }
+        return (playerIdx == ((CheckersState)state).getTurn());
+    }//canMove
 
     @Override
     protected String checkIfGameOver() {
@@ -44,5 +75,12 @@ public class LocalCheckers extends LocalGame {
 
         //temp
         return true;
-    }
+    }//makeMove
+
+    public int whoWon(){
+        String gameOver = checkIfGameOver();
+        if(gameOver == null || gameOver.equals("It's a cat's game.")) return -1;
+        if(gameOver.equals(playerNames[0]+" is the winner.")) return 0;
+        return 1;
+    }//whoWon
 }
