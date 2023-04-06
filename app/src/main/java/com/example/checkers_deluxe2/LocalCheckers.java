@@ -89,7 +89,7 @@ public class LocalCheckers extends LocalGame {
         ArrayList<Tile> captureResult = new ArrayList<Tile>();
         int row = start.getRow();
         int col = start.getCol();
-        boolean isKing = start.getKing();
+        boolean isKing = start.getIsKing();
         // if black, go up by default
         // if red, go down by default
         // being a king allows for up and down searching
@@ -194,7 +194,7 @@ public class LocalCheckers extends LocalGame {
                 captureResult.add(board[row+2][col+2]);
                 availMovesHelper(captureResult, board[row+2][col+2], isKing, Tile.Value.RED, board);
             }
-            if ( (row-2 > 0) && (col-2 > 0) && board[row+1][col+1].getValue() == Tile.Value.BLACK && board[row-2][col-2].getValue() == Tile.Value.EMPTY) {
+            if ((row-2 > 0) && (col-2 > 0) && board[row+1][col+1].getValue() == Tile.Value.BLACK && board[row-2][col-2].getValue() == Tile.Value.EMPTY) {
                 captureResult.add(board[row-2][col-2]);
                 availMovesHelper(captureResult, board[row-2][col-2], isKing, Tile.Value.RED, board);
             }
