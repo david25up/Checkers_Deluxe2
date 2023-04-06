@@ -15,6 +15,7 @@ import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 
 import com.example.GameFramework.animation.AnimationSurface;
@@ -41,8 +42,8 @@ public class CheckersAnimationSurface extends AnimationSurface implements Tickab
      * The inherited constructor from AnimationSurface class
      * @param context   The activity the animation is run on
      */
-    public CheckersAnimationSurface(Context context) {
-        super(context);
+    public CheckersAnimationSurface(Context context, AttributeSet attributeSet) {
+        super(context, attributeSet);
         init();
     }//ctor
 
@@ -102,8 +103,8 @@ public class CheckersAnimationSurface extends AnimationSurface implements Tickab
 
         float xCoord, yCoord;
         p.setColor(whiteTile());
-        for (int i = 0; i < checkersState.getWidth(); i++) { //White Tiles
-            for (int j = 0; j < checkersState.getHeight(); j++) {
+        for (int i = 0; i < 9; i++) { //White Tiles
+            for (int j = 0; j < 9; j++) {
                 if ((j % 2 != 0 && i % 2 == 0) || (j % 2 == 0 && i % 2 != 0)) {
                     xCoord = h(BOARD_SIZE + (TILE_SIZE * (float)i));
                     yCoord = v(BOARD_SIZE + (TILE_SIZE * (float)j));
