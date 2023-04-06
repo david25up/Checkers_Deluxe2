@@ -5,6 +5,8 @@ import com.example.GameFramework.actionMessage.GameAction;
 import com.example.GameFramework.infoMessage.GameState;
 import com.example.GameFramework.players.GamePlayer;
 import com.example.checkers_deluxe2.InfoMessage.CheckersState;
+import com.example.checkers_deluxe2.actionMessage.CheckersMoveAction;
+import com.example.checkers_deluxe2.actionMessage.CheckersTapAction;
 
 import java.util.ArrayList;
 
@@ -74,13 +76,44 @@ public class LocalCheckers extends LocalGame {
 
     @Override
     protected boolean makeMove(GameAction action) {
-        //if (action instanceof ...)
-            //perform action here
-            //return true
 
+        if (action instanceof CheckersTapAction) {
+            Tile[][] board = ((CheckersTapAction) action).getBoard();
+            int row = ((CheckersTapAction) action).getRow();
+            int col = ((CheckersTapAction) action).getCol();
+            toggleAvail(availMoves(board[row][col], board), board);
+        } else if (action instanceof CheckersMoveAction) {
+            Tile[][] board = ((CheckersMoveAction) action).getBoard();
+            int row = ((CheckersMoveAction) action).getRow();
+            int col = ((CheckersMoveAction) action).getCol();
+            Tile result = findTile(availMoves(board[row][col], board), board[row][col]);
+            ((CheckersState) state).swapPieces(result, board[row][col]);
+        }
         //temp
         return true;
     }//makeMove
+
+    // traverses availablemoves arraylist for the chosen move
+    private Tile findTile(ArrayList<Tile> availMoves, Tile tile) {
+        for (int i = 0; i < availMoves.size(); i++) {
+            int row = availMoves.get(i).getRow();
+            int col = availMoves.get(i).getCol();
+                if(row == tile.getRow() && col == tile.getCol()) {
+                    return availMoves.get(i);
+                }
+        }
+        return null;
+    }
+
+    // helper method to turn tiles into available given arraylist
+    private void toggleAvail(ArrayList<Tile> availMoves, Tile[][] board) {
+        for (int i = 0; i < availMoves.size(); i++) {
+            int row = availMoves.get(i).getRow();
+            int col = availMoves.get(i).getCol();
+            board[row][col].setValue(Tile.Value.AVAIL);
+        }
+    }
+
 
     public ArrayList<Tile> availMoves(Tile start, Tile[][] board) {
         toggleBoard(board);
@@ -155,9 +188,11 @@ public class LocalCheckers extends LocalGame {
                 }
             }
         if (captureResult.size() > 1) {
+            captureResult.add(start);
             return captureResult;
         } else {
             captureResult.addAll(moveResult);
+            captureResult.add(start);
             return captureResult;
         }
         }
@@ -205,6 +240,7 @@ public class LocalCheckers extends LocalGame {
         }
     }
 
+    // turns all available moves into empty squares
     public void toggleBoard(Tile[][] board) {
         for (int row = 0; row < 8; row++) {
             for (int col = 0; col < 8; col++) {

@@ -140,18 +140,13 @@ public class CheckersState extends GameState {
             }
         }
     }
-
     public void swapPieces(Tile piece, Tile blank) {
-        if (!validMove(piece.getRow(), piece.getCol())) {
-            return;
-        }
         //Start putting piece1's data into piece2
         board[blank.getRow()][blank.getRow()] = piece;
         //Make piece1 empty
         board[piece.getRow()][piece.getRow()].setValue(Tile.Value.EMPTY);
         piece.setKing(false);
     }//swapPieces
-
 
     /**
      * Swaps the position of two given pieces under the assumption that
