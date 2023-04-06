@@ -68,10 +68,46 @@ public class LocalCheckers extends LocalGame {
             //return "Player 2 has won the game";
         //else if (# of available moves for player 1 == 0){//Checks player2
             //return "Player 1 has won the game";
-        //else return null;
 
-        //temp
-        return null;
+        //assign playerValue
+        int turn = ((CheckersState) state).getTurn();
+            Tile.Value playerValue;
+            if(turn == 0) {
+                playerValue = Tile.Value.BLACK;
+            }
+            else {
+                playerValue = Tile.Value.RED;
+            }
+            boolean hasMoves = false;
+
+            // Loop through all tiles on the board and call availMoves
+            Tile[][] board = ((CheckersState) state).getBoard();
+            for (int row = 0; row < 8; row++) {
+                for (int col = 0; col < 8; col++) {
+                    Tile tile = board[row][col];
+                    if (tile.getValue() == playerValue) {
+                        ArrayList<Tile> moves = availMoves(tile, board);
+                        if (!moves.isEmpty()) {
+                            hasMoves = true;
+                            break;
+                        }
+                    }
+                }
+                if (hasMoves) {
+                    break;
+                }
+            }
+
+            if (!hasMoves) {
+                String winner = (turn == 0) ? "Player 2" : "Player 1";
+                return winner + " has won the game";
+            }
+
+            //else return null;
+            return null;
+
+
+
     }//checkIfGameOver
 
     @Override
