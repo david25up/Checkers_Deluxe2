@@ -30,11 +30,15 @@ public class CheckersAnimationSurface extends AnimationSurface implements Tickab
     private final static float TILE_SIZE = 3.75F; //Individual squares or tiles on the board
     private final static float PADDING = 2; //Padding on the edge of the board
 
+    // The top left percentage of the board //
     private final static float leftX = LEFT_PADDING + (PADDING * 2);
     private final static float leftY = PADDING * 2;
+
+    // The top right percentage of the board //
     private final static float rightX = WIDTH - (PADDING * 2);
     private final static float rightY = HEIGHT - (PADDING * 2);
 
+    // The individual tiles //
     private final static float TILE_WIDTH = (rightX - leftX) / 8;
     private final static float TILE_HEIGHT = (rightY - leftY) / 8;
 
@@ -116,10 +120,10 @@ public class CheckersAnimationSurface extends AnimationSurface implements Tickab
         p.setColor(foregroundColor());
         g.drawRect(h(leftX - PADDING), v(leftY - PADDING), h(rightX + PADDING), v(rightY + PADDING), p); //Trim
 
-        p.setColor(blackTile());
+        p.setColor(whiteTile());
         g.drawRect(h(leftX), v(leftY), h(rightX), v(rightY), p); //Black Base
 
-        p.setColor(whiteTile());
+        p.setColor(blackTile());
         for (int row = 0; row < 8; row++) { //White Tiles
             for (int col = 0; col < 8; col++) {
                 if ((row % 2 != 0 && col % 2 == 0) || (row % 2 == 0 && col % 2 != 0)) {
