@@ -17,9 +17,8 @@ import com.example.checkers_deluxe2.Tile;
 
 
 public class CheckersState extends GameState {
-
     // Board Dimensions //
-    private static final int WIDTH = 8, HEIGHT = 8;
+    public static final int WIDTH = 8, HEIGHT = 8;
 
     // Instance Variables //
     private Tile[][] board;
@@ -94,19 +93,7 @@ public class CheckersState extends GameState {
         return result;
     }//toString
 
-    /**
-     * --- HELPER METHOD ---
-     * Checks the surrounding tiles for valid moves
-     * @return True if valid, false if out of bounds
-     */
-    public boolean validMove (int row, int col) {
-        if (row < 0 || col < 0 || row > HEIGHT || col > HEIGHT) {
-            return false;
-        } else if (board[row][col].getValue() != Tile.Value.EMPTY) {
-            return false;
-        }
-        return true;
-    }//validMove
+
 
     /**
      * Creates a new board and initializes the pieces of the board to the right spots
