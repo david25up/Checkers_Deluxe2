@@ -53,8 +53,8 @@ public class CheckersComputerPlayer extends GameComputerPlayer {
         Logger.log(TAG, "receiving");
 
         //Looks for the first possible piece
-        for (int row = 0; row < 8; row++) {
-            for (int col = 0; col < 8; col++) {
+        for (int row = 0; row < CheckersState.WIDTH; row++) {
+            for (int col = 0; col < CheckersState.HEIGHT; col++) {
                 if (board[row][col].getValue() != Tile.Value.EMPTY) {
                     game.sendAction(new CheckersMoveAction(this, row, col, board));
                 } break;
@@ -63,10 +63,10 @@ public class CheckersComputerPlayer extends GameComputerPlayer {
         Logger.log(TAG, "Found a piece");
 
         //Moves on the first possible move
-        for (int row = 0; row < 8; row++) {
-            for (int col = 0; col < 8; col++) {
+        for (int row = 0; row < CheckersState.WIDTH; row++) {
+            for (int col = 0; col < CheckersState.HEIGHT; col++) {
                 if (board[row][col].getValue() == Tile.Value.AVAIL) {
-                    game.sendAction(new CheckersTapAction(this, row, col, board));
+                    game.sendAction(new CheckersTapAction(this, row, col));
                 } break;
             }
         }

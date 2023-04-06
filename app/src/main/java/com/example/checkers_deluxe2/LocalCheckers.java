@@ -1,5 +1,7 @@
 package com.example.checkers_deluxe2;
 
+import android.util.Log;
+
 import com.example.GameFramework.LocalGame;
 import com.example.GameFramework.actionMessage.GameAction;
 import com.example.GameFramework.players.GamePlayer;
@@ -10,6 +12,8 @@ import com.example.checkers_deluxe2.actionMessage.CheckersTapAction;
 import java.util.ArrayList;
 
 public class LocalCheckers extends LocalGame {
+    // Tag for logging //
+    private static final String TAG = "LocalCheckers";
 
     /** Default constructor for LocalCheckers */
     public LocalCheckers() {
@@ -63,89 +67,45 @@ public class LocalCheckers extends LocalGame {
     }//canMove
 
     @Override
-    protected String checkIfGameOver() {
-        //if (# of available moves for player 1) == 0
-            //return "Player 2 has won the game";
-        //else if (# of available moves for player 1 == 0){//Checks player2
-            //return "Player 1 has won the game";
-
-        //assign playerValue
-        int turn = ((CheckersState) state).getTurn();
-
-        Tile.Value playerValue;
-        if(turn == 0) {
-            playerValue = Tile.Value.BLACK;
-        }
-        else {
-            playerValue = Tile.Value.RED;
-        }
-        boolean hasMoves = false;
-
-        // Loop through all tiles on the board and call availMoves
-        Tile[][] board = ((CheckersState) state).getBoard();
-        for (int row = 0; row < 8; row++) {
-            for (int col = 0; col < 8; col++) {
-                Tile tile = board[row][col];
-                if (tile.getValue() == playerValue) {
-                    ArrayList<Tile> moves = availMoves(tile, board);
-                    if (!moves.isEmpty()) {
-                        hasMoves = true;
-                        break;
-                    }
-                }
-            }
-            if (hasMoves) {
-                break;
-            }
-        }
-
-        if (!hasMoves) {
-            String winner = (turn == 0) ? "Player 2" : "Player 1";
-            return winner + " has won the game";
-        }
-
-        //else return null;
-        return null;
-
-
-
-    }//checkIfGameOver
-
-    @Override
     protected boolean makeMove(GameAction action) {
-        Tile[][] board = ((CheckersTapAction) action).getBoard();
-        int row = ((CheckersTapAction) action).getRow();
-        int col = ((CheckersTapAction) action).getCol();
+        CheckersTapAction cm = (CheckersTapAction) action;
+        CheckersState state = (CheckersState) super.state;
 
-        if (action instanceof CheckersTapAction) {
-            toggleAvail(availMoves(board[row][col], board));
-        } else if (action instanceof CheckersMoveAction) {
-            Tile result = findTile(availMoves(board[row][col], board), board[row][col]);
-            ((CheckersState) state).swapPieces(result, board[row][col]);
-            ((CheckersState) state).flipTurn();
-            // swap pieces is supposed to find the original
+        int row = cm.getRow();
+        int col = cm.getCol();
+        int playerId = getPlayerIdx(cm.getPlayer());
+        Tile[][] board = state.getBoard();
+
+
+        if (board[row][col].getValue().equals(Tile.Value.AVAIL)) {
+            Log.d(TAG, "Piece will be moved");
+
+            state.swapPieces(findStart(board), board[row][col]);
+            state.setBoard((revertAvail(board)));
+            state.flipTurn();
+        } else if (!board[row][col].getValue().equals(Tile.Value.EMPTY)) {
+            Log.d(TAG, "Piece was tapped");
+
+            state.setBoard(revertAvail(board));
+            state.setBoard(toggleAvail(availMoves(board[row][col], board), board));
         }
-        //temp
         return true;
     }//makeMove
 
     /**
-     * Finds the tile clicked
-     * @param availMoves
-     * @param tile
+     * --- HELPER METHOD ---
+     * Finds the marked spot on the board
+     * @param board
      * @return
      */
-    private Tile findTile(ArrayList<Tile> availMoves, Tile tile) {
-        for (int i = 0; i < availMoves.size(); i++) {
-            int row = availMoves.get(i).getRow();
-            int col = availMoves.get(i).getCol();
-                if(row == tile.getRow() && col == tile.getCol()) {
-                    return availMoves.get(i);
-                }
+    private Tile findStart(Tile[][] board) {
+        for (int row = 0; row < CheckersState.HEIGHT; row++) {
+            for (int col = 0; col < CheckersState.WIDTH; col++) {
+                if (board[row][col].getIsStart()) return board[row][col];
+            }
         }
         return null;
-    }
-
+    }//findStart
 
     /**
      * Checks the surrounding tiles for valid and available moves
@@ -156,7 +116,7 @@ public class LocalCheckers extends LocalGame {
      * @return
      *      The list of all the available moves to be used as a means of comparison
      */
-    public ArrayList<Tile> availMoves(Tile start, Tile[][] board) {
+    private ArrayList<Tile> availMoves(Tile start, Tile[][] board) {
         revertAvail(board);
 
         // if captureResult has any moves, remove moveResult from possible moves (force capture)
@@ -291,29 +251,86 @@ public class LocalCheckers extends LocalGame {
      * @param availMoves
      *      The arraylist of all possible moves on the clicked piece
      */
-    private void toggleAvail(ArrayList<Tile> availMoves) {
-        for (int i = 0; i < availMoves.size(); i++) {
+    private Tile[][] toggleAvail(ArrayList<Tile> availMoves, Tile[][] board) {
+        if (availMoves.size() == 0) return null;
+
+        //Marks the clicked piece
+        Tile start = availMoves.get(0);
+        board[start.getRow()][start.getCol()].setIsStart(true);
+
+        for (int i = 1; i < availMoves.size(); i++) {
             int row = availMoves.get(i).getRow();
             int col = availMoves.get(i).getCol();
-            ((CheckersState)state).getBoard()[row][col].setValue(Tile.Value.AVAIL);
+            board[row][col].setValue(Tile.Value.AVAIL);
         }
+        return board;
     }//toggleAvail
 
     /**
      * Reverts back all the available tiles back into empty tiles
-     * after a turn has been completed
+     * and unmarks the marked starting piece
      * @param board
      */
-    public void revertAvail(Tile[][] board) {
+    public Tile[][] revertAvail(Tile[][] board) {
+        Tile temp;
         for (int row = 0; row < CheckersState.HEIGHT; row++) {
             for (int col = 0; col < CheckersState.WIDTH; col++) {
-                if (board[row][col].getValue() == Tile.Value.AVAIL) {
+                temp = board[row][col];
+                if (temp.getValue().equals(Tile.Value.AVAIL)) {
                     board[row][col].setValue(Tile.Value.EMPTY);
+                } else if (temp.getIsStart()){
+                    board[row][col].setIsStart(false);
                 }
             }
         }
+        return board;
     }//toggleBoard
 
+    @Override
+    protected String checkIfGameOver() {
+        //if (# of available moves for player 1) == 0
+        //return "Player 2 has won the game";
+        //else if (# of available moves for player 1 == 0){//Checks player2
+        //return "Player 1 has won the game";
 
+        //assign playerValue
+        int turn = ((CheckersState) state).getTurn();
+
+        Tile.Value playerValue;
+        if(turn == 0) {
+            playerValue = Tile.Value.BLACK;
+        }
+        else {
+            playerValue = Tile.Value.RED;
+        }
+        boolean hasMoves = false;
+
+        // Loop through all tiles on the board and call availMoves
+        Tile[][] board = ((CheckersState) state).getBoard();
+        for (int row = 0; row < 8; row++) {
+            for (int col = 0; col < 8; col++) {
+                Tile tile = board[row][col];
+                if (tile.getValue() == playerValue) {
+                    ArrayList<Tile> moves = availMoves(tile, board);
+                    if (!moves.isEmpty()) {
+                        hasMoves = true;
+                        break;
+                    }
+                }
+            }
+            if (hasMoves) {
+                break;
+            }
+        }
+
+        if (!hasMoves) {
+            String winner = (turn == 0) ? "Player 2" : "Player 1";
+            return winner + " has won the game";
+        }
+
+        //else return null;
+        return null;
+
+    }//checkIfGameOver
 
 }//LocalCheckers

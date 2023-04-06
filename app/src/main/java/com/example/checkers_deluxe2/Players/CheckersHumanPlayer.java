@@ -38,7 +38,6 @@ public class CheckersHumanPlayer extends GameHumanPlayer implements View.OnTouch
     /* --- INSTANCE VARIABLES --- */
     private CheckersAnimationSurface surfaceView;
     private int layoutId;
-    private Tile[][] board;
 
     // The row and column of the point the user clicks on the screen //
     private int rowClick;
@@ -64,7 +63,6 @@ public class CheckersHumanPlayer extends GameHumanPlayer implements View.OnTouch
 
         //Makes sure info is a CheckersState object
         if (!(info instanceof CheckersState)) {return;}
-        board = ((CheckersState) info).getBoard();
 
         surfaceView.setState((CheckersState)info);
         surfaceView.invalidate();
@@ -101,11 +99,7 @@ public class CheckersHumanPlayer extends GameHumanPlayer implements View.OnTouch
             colClick = point.y;
             Log.d(TAG, "User touches screen in: " + rowClick + " " + colClick);
 
-            if (board[rowClick][colClick].equals(Tile.Value.AVAIL)) {//Possible move tile selected
-                game.sendAction(new CheckersMoveAction(this, rowClick, colClick, board));
-            } else if (!(board[rowClick][colClick].equals(Tile.Value.EMPTY))) {//Non-empty tile selected
-                game.sendAction(new CheckersTapAction(this, rowClick, colClick, board));
-            }
+            game.sendAction(new CheckersTapAction(this, rowClick, colClick));
         }
         surfaceView.invalidate();
         return true;

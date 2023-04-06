@@ -23,14 +23,12 @@ public class CheckersState extends GameState {
     // Instance Variables //
     private Tile[][] board;
     private int isTurn; //0 if P1's Turn, 1 if P2's turn
-    private boolean isClicked; //A boolean
     private double timeElapsed;
 
     /** Default constructor for the game state */
     public CheckersState() {
         board = new Tile[HEIGHT][WIDTH];
         isTurn = 0; //Allows player 1 to go first
-        isClicked = false;
         timeElapsed = 0;
     }//default ctor
 
@@ -40,12 +38,13 @@ public class CheckersState extends GameState {
      */
     public CheckersState(CheckersState original) {
         board = new Tile[HEIGHT][WIDTH];
-        for (int i = 0; i < HEIGHT; i++) {
-            System.arraycopy(original.board[i], 0, board[i], 0, WIDTH);
+        for (int row = 0; row < HEIGHT; row++) {
+            for (int col = 0; col < WIDTH; col++) {
+                board[row][col] = original.board[row][col];
+            }
         }
 
         isTurn = original.isTurn;
-        isClicked = original.isClicked;
         timeElapsed = original.timeElapsed;
     }//ctor
 
@@ -116,7 +115,8 @@ public class CheckersState extends GameState {
     public void resetBoard() {
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
-                board[i][j].setKing(false);
+                board[i][j].setIsKing(false);
+                board[i][j].setIsStart(false);
                 board[i][j].setValue(Tile.Value.EMPTY);
                if (i < 3 && ((j % 2 != 0 && i % 2 == 0) || (j % 2 == 0 && i % 2 != 0))) {
                     board[i][j].setValue(Tile.Value.RED);
@@ -132,7 +132,7 @@ public class CheckersState extends GameState {
         board[blank.getRow()][blank.getRow()] = piece;
         //Make piece1 empty
         board[piece.getRow()][piece.getRow()].setValue(Tile.Value.EMPTY);
-        piece.setKing(false);
+        piece.setIsKing(false);
     }//swapPieces
 
     /**
@@ -155,11 +155,12 @@ public class CheckersState extends GameState {
         }
     }//setWhoseTurn
 
-    /** --- GETTER METHOD --- */
+    /* --- GETTER METHODS --- */
     public Tile[][] getBoard() {return board;}
     public int getTurn() {return isTurn;}
     public double getTimeElapsed() {return timeElapsed;}
-    public int getWidth() {return WIDTH;}
-    public int getHeight() {return HEIGHT;}
+
+    /* --- SETTER METHODS --- */
+    public void setBoard(Tile[][] board) {this.board = board;}
 }//CheckersState
 

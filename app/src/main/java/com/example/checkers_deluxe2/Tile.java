@@ -14,13 +14,13 @@ public class Tile {
         EMPTY,
         RED,
         BLACK,
-
         AVAIL, //Available move when displaying possible moves
     }//Value
 
     // Instance Variables //
     private Value value;
     private boolean isKing; //Empty spaces are assumed to be false
+    private boolean isStart; //A marker to signify the piece is clicked
     private final int row;
     private final int col;
 
@@ -35,7 +35,8 @@ public class Tile {
     // --- GETTER METHODS --- //
     ////////////////////////////
     public Value getValue() {return value;}//getValue
-    public boolean getIsKing() {return isKing;}//getKing
+    public boolean getIsKing() {return isKing;}//getIsKing
+    public boolean getIsStart() {return isStart;}//getIsStart
     public int getRow() {return row;}//getKing
     public int getCol() {return col;}//getCol
 
@@ -43,7 +44,8 @@ public class Tile {
     // --- SETTER METHODS --- //
     ////////////////////////////
     public void setValue(Value value) {this.value = value;}//setInTile
-    public void setKing(Boolean givenKing) {isKing = givenKing;} //setKing
+    public void setIsKing(Boolean givenKing) {isKing = givenKing;}//setKing
+    public void setIsStart(Boolean givenStart) {isStart = givenStart;}//setIsStart
 
 
 }//Tile

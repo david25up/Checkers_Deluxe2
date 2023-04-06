@@ -65,6 +65,7 @@ public class CheckersAnimationSurface extends AnimationSurface {
     public int lightPiece() {return Color.RED;}//lightPiece
     public int darkPiece() {return Color.GRAY;}//darkPiece
     public int availPiece() {return Color.GREEN;}//availPiece
+    public int startPiece() {return R.color.teal_200;}//startPiece
 
     /* --- CROWN MARKER --- */
     Bitmap crown = BitmapFactory.decodeResource(getResources(), R.drawable.crown);
@@ -167,19 +168,21 @@ public class CheckersAnimationSurface extends AnimationSurface {
         switch (value) {
             case RED: {
                 p.setColor(lightPiece());
-                g.drawOval(h(pieceX), v(pieceY), h(pieceX + TILE_WIDTH), v(pieceY + TILE_HEIGHT), p);
                 break;
             }
             case BLACK: {
                 p.setColor(darkPiece());
-                g.drawOval(h(pieceX), v(pieceY), h(pieceX + TILE_WIDTH), v(pieceY + TILE_HEIGHT), p);
                 break;
             }
             case AVAIL: {
                 p.setColor(availPiece());
-                g.drawOval(h(pieceX), v(pieceY), h(pieceX + TILE_WIDTH), v(pieceY + TILE_HEIGHT), p);
                 break;
             }
+        }
+        if (tile.getIsStart()) p.setColor(startPiece());
+
+        if (!value.equals(Tile.Value.EMPTY)) {
+            g.drawOval(h(pieceX), v(pieceY), h(pieceX + TILE_WIDTH), v(pieceY + TILE_HEIGHT), p);
         }
 
         //Adds a king marker to kings

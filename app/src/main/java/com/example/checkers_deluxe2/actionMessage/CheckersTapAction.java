@@ -17,7 +17,6 @@ public class CheckersTapAction extends GameAction {
     // Instance Variables //
     int row;
     int col;
-    Tile[][] board;
 
     /**
      * Constructor for CheckersTapAction
@@ -26,15 +25,13 @@ public class CheckersTapAction extends GameAction {
      * @param col
      * @param board
      */
-    public CheckersTapAction(GamePlayer player, int row, int col, Tile[][] board) {
+    public CheckersTapAction(GamePlayer player, int row, int col) {
         super(player);
         this.row = row;
         this.col = col;
-        this.board = board;
     }
 
     /* --- GETTER METHODS --- */
     public int getRow() {return row;}
     public int getCol() {return col;}
-    public Tile[][] getBoard() {return board;}
 }
