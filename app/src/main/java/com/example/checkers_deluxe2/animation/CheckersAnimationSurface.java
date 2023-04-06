@@ -26,9 +26,16 @@ public class CheckersAnimationSurface extends AnimationSurface implements Tickab
     /* --- BOARD DIMENSIONS (in percentages) --- */
     private final static float LEFT_PADDING = 30; //The space to the left of the board
     private final static float WIDTH = 125; //The width of the board itself
-    private final static float HEIGHT = 100; //The width of the board itself
+    private final static float HEIGHT = 100; //The height of the board itself
     private final static float TILE_SIZE = 3.75F; //Individual squares or tiles on the board
     private final static float PADDING = 2; //Padding on the edge of the board
+
+    private final static float leftX = LEFT_PADDING + (PADDING * 2);
+    private final static float leftY = PADDING * 2;
+    private final static float rightX = WIDTH - (PADDING * 2);
+    private final static float rightY = HEIGHT - (PADDING * 2);
+
+    private final static float TILE_WIDTH ;
 
 
     /* --- INSTANCE VARIABLES --- */
@@ -96,25 +103,20 @@ public class CheckersAnimationSurface extends AnimationSurface implements Tickab
      */
     public void onDraw(Canvas g) {
         getDimensions(g);
-
         Paint p = new Paint();
 
         // Paints the board itself with a trim around it
         p.setColor(foregroundColor());
-        g.drawRect(h(LEFT_PADDING + PADDING), v(0 + PADDING), h(WIDTH - PADDING), v(HEIGHT - PADDING), p); //Trim
+        g.drawRect(h(leftX - PADDING), v(leftY - PADDING), h(rightX + PADDING), v(rightY + PADDING), p); //Trim
 
         p.setColor(blackTile());
-        g.drawRect(h(LEFT_PADDING + (PADDING * 2)), v(0 + (PADDING * 2)), h(WIDTH - (PADDING * 2)), v(HEIGHT - (PADDING *2)), p); //Black Base
+        g.drawRect(h(leftX), v(leftY), h(rightX), v(rightY), p); //Black Base
 
-
-        float xCoord, yCoord;
         p.setColor(whiteTile());
         for (int i = 0; i < 9; i++) { //White Tiles
             for (int j = 0; j < 9; j++) {
                 if ((j % 2 != 0 && i % 2 == 0) || (j % 2 == 0 && i % 2 != 0)) {
-                    xCoord = h(LEFT_PADDING + (TILE_SIZE * 0));
-                    yCoord = v(LEFT_PADDING + (TILE_SIZE * 1));
-                    g.drawRect(xCoord, yCoord, TILE_SIZE, TILE_SIZE, p);
+                    g.drawRect(leftX, leftY, leftX + (TILE_SIZE), TILE_SIZE, p);
                 }
             }
        }
