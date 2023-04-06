@@ -18,6 +18,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Point;
 import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -188,6 +189,31 @@ public class CheckersAnimationSurface extends AnimationSurface {
             g.drawBitmap(crown, null, rect, p);
         }
     }//drawSymbol
+
+    /**
+     * --- HELPER METHOD (for onTouchEvent)
+     * Checks to make sure that the spot the user clicked was on the board
+     * @param x
+     *      The x coordinate the user clicked
+     * @param y
+     *      The y coordinate the user clicked
+     * @return
+     *      True if the spot clicked is on the board, false if not
+     */
+    public Point withinBoard(float x, float y) {
+        for (int row = 0; row < 8; row++) {
+            for (int col = 0; col < 8; col++) {
+                float left = h(LEFT + (TILE_WIDTH * col));
+                float right = h(LEFT + (TILE_WIDTH * col) + TILE_WIDTH);
+                float top = v(TOP + (TILE_HEIGHT * row));
+                float bottom = v(TOP + (TILE_HEIGHT * row) + TILE_HEIGHT);
+                if ((x > left) != (x > right) && (y > top) != (y > bottom)) {
+                    return new Point(row, col);
+                }
+            }
+        }
+        return null;
+    }//withinBoard
 
     /**
      * --- HELPER METHOD ---

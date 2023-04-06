@@ -93,56 +93,20 @@ public class CheckersHumanPlayer extends GameHumanPlayer implements View.OnTouch
         surfaceView.setOnTouchListener(this);
     }//setAsGui
 
-    public boolean onTouchEvent(MotionEvent event) {
-        switch (event.getAction()) {
-            //Screen was clicked
-            case MotionEvent.ACTION_DOWN:
-                if (withinBoard(event.getX(), event.getY()) == null){
-                    Log.d(TAG, "The spot clicked was not on the board");
-                }
+    @Override
+    public boolean onTouch(View view, MotionEvent event) {
+        //Screen was clicked
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            Point point = surfaceView.withinBoard(event.getX(), event.getY());
+            if (point == null) {
+                Log.d(TAG, "The spot clicked was not on the board");
+            }
 
-
-                Log.d(TAG, "User touches screen in: " + rowClick + " " + colClick);
-                Tile[][] board = surfaceView.getBoard();
-                if (board[rowClick][colClick].getValue() == Tile.Value.AVAIL) {
-                    // checkers swap pieces with current piece
-                } else if (board[rowClick][colClick].getValue() == Tile.Value.EMPTY) {
-                    // toggle board in local game idk where it should go
-                }
-                // else {
-                // call availmoves
-                //  }
-
-                break;
+            rowClick = point.x;
+            colClick = point.y;
+            Log.d(TAG, "User touches screen in: " + rowClick + " " + colClick);
         }
         surfaceView.invalidate();
-        return super.onTouchEvent(event);
-    }//onTouchEvent
-
-    /**
-     * --- HELPER METHOD (for onTouchEvent)
-     * Checks to make sure that the spot the user clicked was on the board
-     * @param x
-     *      The x coordinate the user clicked
-     * @param y
-     *      The y coordinate the user clicked
-     * @return
-     *      True if the spot clicked is on the board, false if not
-     */
-    public Point withinBoard(float x, float y) {
-        for (int row = 0; row < 8; row++) {
-            for (int col = 0; col < 8; col++) {
-                float left = h(LEFT + (TILE_WIDTH * col));
-                float right = h(LEFT + (TILE_WIDTH * col) + TILE_WIDTH);
-                float top = v(TOP + (TILE_HEIGHT * row));
-                float bottom = v(TOP + (TILE_HEIGHT * row) + TILE_HEIGHT);
-                if ((x > left) != (x > right) && (y > top) != (y > bottom)) {
-                    rowClick = row;
-                    colClick = col;
-                    return new Point(row, col);
-                }
-            }
-        }
-        return null;
-    }//withinBoard
+        return true;
+    }
 }
