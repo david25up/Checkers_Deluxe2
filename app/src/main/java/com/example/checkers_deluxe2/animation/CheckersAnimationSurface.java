@@ -35,7 +35,8 @@ public class CheckersAnimationSurface extends AnimationSurface implements Tickab
     private final static float rightX = WIDTH - (PADDING * 2);
     private final static float rightY = HEIGHT - (PADDING * 2);
 
-    private final static float TILE_WIDTH ;
+    private final static float TILE_WIDTH = (rightX - leftX) / 8;
+    private final static float TILE_HEIGHT = (rightY - leftY) / 8;
 
 
     /* --- INSTANCE VARIABLES --- */
@@ -113,10 +114,10 @@ public class CheckersAnimationSurface extends AnimationSurface implements Tickab
         g.drawRect(h(leftX), v(leftY), h(rightX), v(rightY), p); //Black Base
 
         p.setColor(whiteTile());
-        for (int i = 0; i < 9; i++) { //White Tiles
-            for (int j = 0; j < 9; j++) {
-                if ((j % 2 != 0 && i % 2 == 0) || (j % 2 == 0 && i % 2 != 0)) {
-                    g.drawRect(leftX, leftY, leftX + (TILE_SIZE), TILE_SIZE, p);
+        for (int row = 0; row < 9; row++) { //White Tiles
+            for (int col = 0; col < 9; col++) {
+                if ((row % 2 != 0 && col % 2 == 0) || (row % 2 == 0 && col % 2 != 0)) {
+                    g.drawRect(h(leftX), v(leftY), h(leftX + (TILE_WIDTH * row)), v(leftY + (TILE_HEIGHT * col)), p);
                 }
             }
        }
