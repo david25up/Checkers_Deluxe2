@@ -129,7 +129,12 @@ public class LocalCheckers extends LocalGame {
         return true;
     }//makeMove
 
-    // traverses available moves arraylist for the chosen move
+    /**
+     * Finds the tile clicked
+     * @param availMoves
+     * @param tile
+     * @return
+     */
     private Tile findTile(ArrayList<Tile> availMoves, Tile tile) {
         for (int i = 0; i < availMoves.size(); i++) {
             int row = availMoves.get(i).getRow();
@@ -139,15 +144,6 @@ public class LocalCheckers extends LocalGame {
                 }
         }
         return null;
-    }
-
-    // helper method to turn tiles into available given arraylist
-    private void toggleAvail(ArrayList<Tile> availMoves) {
-        for (int i = 0; i < availMoves.size(); i++) {
-            int row = availMoves.get(i).getRow();
-            int col = availMoves.get(i).getCol();
-            ((CheckersState)state).getBoard()[row][col].setValue(Tile.Value.AVAIL);
-        }
     }
 
 
@@ -161,7 +157,7 @@ public class LocalCheckers extends LocalGame {
      *      The list of all the available moves to be used as a means of comparison
      */
     public ArrayList<Tile> availMoves(Tile start, Tile[][] board) {
-        toggleBoard(board);
+        revertAvail(board);
 
         // if captureResult has any moves, remove moveResult from possible moves (force capture)
         ArrayList<Tile> moveResult = new ArrayList<Tile>();
@@ -290,11 +286,25 @@ public class LocalCheckers extends LocalGame {
     }//oppPiece
 
     /**
+     * Updates all available spots to the corresponding value
+     * within the board
+     * @param availMoves
+     *      The arraylist of all possible moves on the clicked piece
+     */
+    private void toggleAvail(ArrayList<Tile> availMoves) {
+        for (int i = 0; i < availMoves.size(); i++) {
+            int row = availMoves.get(i).getRow();
+            int col = availMoves.get(i).getCol();
+            ((CheckersState)state).getBoard()[row][col].setValue(Tile.Value.AVAIL);
+        }
+    }//toggleAvail
+
+    /**
      * Reverts back all the available tiles back into empty tiles
      * after a turn has been completed
      * @param board
      */
-    public void toggleBoard(Tile[][] board) {
+    public void revertAvail(Tile[][] board) {
         for (int row = 0; row < CheckersState.HEIGHT; row++) {
             for (int col = 0; col < CheckersState.WIDTH; col++) {
                 if (board[row][col].getValue() == Tile.Value.AVAIL) {
@@ -304,7 +314,6 @@ public class LocalCheckers extends LocalGame {
         }
     }//toggleBoard
 
-    public int whoWon(){
-        return 0;
-    }//whoWon
-}
+
+
+}//LocalCheckers
