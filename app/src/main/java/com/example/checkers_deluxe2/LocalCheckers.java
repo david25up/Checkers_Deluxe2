@@ -76,15 +76,13 @@ public class LocalCheckers extends LocalGame {
 
     @Override
     protected boolean makeMove(GameAction action) {
+        Tile[][] board = ((CheckersTapAction) action).getBoard();
+        int row = ((CheckersTapAction) action).getRow();
+        int col = ((CheckersTapAction) action).getCol();
+
         if (action instanceof CheckersTapAction) {
-            Tile[][] board = ((CheckersTapAction) action).getBoard();
-            int row = ((CheckersTapAction) action).getRow();
-            int col = ((CheckersTapAction) action).getCol();
             toggleAvail(availMoves(board[row][col], board), board);
         } else if (action instanceof CheckersMoveAction) {
-            Tile[][] board = ((CheckersMoveAction) action).getBoard();
-            int row = ((CheckersMoveAction) action).getRow();
-            int col = ((CheckersMoveAction) action).getCol();
             Tile result = findTile(availMoves(board[row][col], board), board[row][col]);
             ((CheckersState) state).swapPieces(result, board[row][col]);
             ((CheckersState) state).flipTurn();
@@ -94,7 +92,7 @@ public class LocalCheckers extends LocalGame {
         return true;
     }//makeMove
 
-    // traverses availablemoves arraylist for the chosen move
+    // traverses available moves arraylist for the chosen move
     private Tile findTile(ArrayList<Tile> availMoves, Tile tile) {
         for (int i = 0; i < availMoves.size(); i++) {
             int row = availMoves.get(i).getRow();

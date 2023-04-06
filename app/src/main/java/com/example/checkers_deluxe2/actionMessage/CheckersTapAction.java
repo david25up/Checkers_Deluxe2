@@ -1,7 +1,7 @@
 package com.example.checkers_deluxe2.actionMessage;
 
 /*
- *
+ * When the human player taps on a piece that they want to move
  *
  * @author   Ashton Char
  * @author   Eli Marcelino
@@ -14,15 +14,18 @@ import com.example.GameFramework.players.GamePlayer;
 import com.example.checkers_deluxe2.Tile;
 
 public class CheckersTapAction extends GameAction {
-    /**
-     * constructor for GameAction
-     *
-     * @param player the player who created the action
-     */
-
+    // Instance Variables //
     int row;
     int col;
     Tile[][] board;
+
+    /**
+     * Constructor for CheckersTapAction
+     * @param player
+     * @param row
+     * @param col
+     * @param board
+     */
     public CheckersTapAction(GamePlayer player, int row, int col, Tile[][] board) {
         super(player);
         this.row = row;
@@ -30,6 +33,7 @@ public class CheckersTapAction extends GameAction {
         this.board = board;
     }
 
+    /* --- GETTER METHODS --- */
     public int getRow() {return row;}
     public int getCol() {return col;}
     public Tile[][] getBoard() {return board;}
