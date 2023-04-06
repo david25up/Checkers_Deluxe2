@@ -26,6 +26,8 @@ import com.example.checkers_deluxe2.CheckersMainActivity;
 import com.example.checkers_deluxe2.InfoMessage.CheckersState;
 import com.example.checkers_deluxe2.R;
 import com.example.checkers_deluxe2.Tile;
+import com.example.checkers_deluxe2.actionMessage.CheckersMoveAction;
+import com.example.checkers_deluxe2.actionMessage.CheckersTapAction;
 import com.example.checkers_deluxe2.animation.CheckersAnimationSurface;
 
 public class CheckersHumanPlayer extends GameHumanPlayer implements View.OnTouchListener{
@@ -36,6 +38,7 @@ public class CheckersHumanPlayer extends GameHumanPlayer implements View.OnTouch
     /* --- INSTANCE VARIABLES --- */
     private CheckersAnimationSurface surfaceView;
     private int layoutId;
+    private Tile[][] board;
 
     // The row and column of the point the user clicks on the screen //
     private int rowClick;
@@ -61,6 +64,7 @@ public class CheckersHumanPlayer extends GameHumanPlayer implements View.OnTouch
 
         //Makes sure info is a CheckersState object
         if (!(info instanceof CheckersState)) {return;}
+        board = ((CheckersState) info).getBoard();
 
         surfaceView.setState((CheckersState)info);
         surfaceView.invalidate();
@@ -105,6 +109,12 @@ public class CheckersHumanPlayer extends GameHumanPlayer implements View.OnTouch
             rowClick = point.x;
             colClick = point.y;
             Log.d(TAG, "User touches screen in: " + rowClick + " " + colClick);
+
+            if (board[rowClick][colClick].equals(Tile.Value.AVAIL)) {//Possible move tile selected
+                game.sendAction(new CheckersMoveAction(this, rowClick, colClick, board));
+            } else if (!(board[rowClick][colClick].equals(Tile.Value.EMPTY))) {//Non-empty tile selected
+                game.sendAction(new CheckersTapAction(this, rowClick, colClick, board));
+            }
         }
         surfaceView.invalidate();
         return true;
