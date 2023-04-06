@@ -11,12 +11,10 @@ package com.example.checkers_deluxe2.animation;
  */
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
-import android.util.DisplayMetrics;
 
 import com.example.GameFramework.animation.AnimationSurface;
 import com.example.GameFramework.utilities.GameTimer;
@@ -26,8 +24,10 @@ import com.example.checkers_deluxe2.Tile;
 
 public class CheckersAnimationSurface extends AnimationSurface implements Tickable {
     /* --- BOARD DIMENSIONS (in percentages) --- */
-    private final static float BOARD_SIZE = 30; //The playing board
-    private final static float TILE_SIZE = 3.75F; //Individual squares/tiles on the board
+    private final static float LEFT_PADDING = 30; //The space to the left of the board
+    private final static float WIDTH = 125; //The width of the board itself
+    private final static float HEIGHT = 100; //The width of the board itself
+    private final static float TILE_SIZE = 3.75F; //Individual squares or tiles on the board
     private final static float PADDING = 2; //Padding on the edge of the board
 
 
@@ -64,9 +64,15 @@ public class CheckersAnimationSurface extends AnimationSurface implements Tickab
         int height = g.getHeight();
 
         //Assigns the variables on the assumption the tablet is horizontal
-        fullSquare = height;
-        vBase = 0;
-        hBase = (width - height) / (float) 2.0;
+        if (width > height) {
+            fullSquare = height;
+            vBase = 0;
+            hBase = (width - height) / (float) 2.0;
+        } else {
+            fullSquare = width;
+            hBase = 0;
+            vBase = (height - width) / (float) 2.0;
+        }
     }//getDimensions
 
 
@@ -95,23 +101,23 @@ public class CheckersAnimationSurface extends AnimationSurface implements Tickab
 
         // Paints the board itself with a trim around it
         p.setColor(foregroundColor());
-        g.drawRect(h(BOARD_SIZE - PADDING), v(BOARD_SIZE - PADDING),
-                    h(BOARD_SIZE + PADDING), v(BOARD_SIZE + PADDING), p); //Trim
+        g.drawRect(h(LEFT_PADDING + PADDING), v(0 + PADDING), h(WIDTH - PADDING), v(HEIGHT - PADDING), p); //Trim
 
-        p.setColor(whiteTile());
-        g.drawRect(h(BOARD_SIZE), v(BOARD_SIZE), h(BOARD_SIZE), v(BOARD_SIZE), p); //Black Base
+        p.setColor(blackTile());
+        g.drawRect(h(LEFT_PADDING + (PADDING * 2)), v(0 + (PADDING * 2)), h(WIDTH - (PADDING * 2)), v(HEIGHT - (PADDING *2)), p); //Black Base
+
 
         float xCoord, yCoord;
         p.setColor(whiteTile());
         for (int i = 0; i < 9; i++) { //White Tiles
             for (int j = 0; j < 9; j++) {
                 if ((j % 2 != 0 && i % 2 == 0) || (j % 2 == 0 && i % 2 != 0)) {
-                    xCoord = h(BOARD_SIZE + (TILE_SIZE * (float)i));
-                    yCoord = v(BOARD_SIZE + (TILE_SIZE * (float)j));
+                    xCoord = h(LEFT_PADDING + (TILE_SIZE * 0));
+                    yCoord = v(LEFT_PADDING + (TILE_SIZE * 1));
                     g.drawRect(xCoord, yCoord, TILE_SIZE, TILE_SIZE, p);
                 }
             }
-        }
+       }
 
         // If we don't have any state, there's nothing more to draw, so return
         if (checkersState == null) {
@@ -155,7 +161,7 @@ public class CheckersAnimationSurface extends AnimationSurface implements Tickab
      */
     private float h(float percent) {
         return hBase + percent * fullSquare / 100;
-    }
+    }//h
 
     /**
      * --- HELPER METHOD ---
@@ -167,6 +173,6 @@ public class CheckersAnimationSurface extends AnimationSurface implements Tickab
      */
     private float v(float percent) {
         return vBase + percent * fullSquare / 100;
-    }
+    }//v
 
 }//CheckersAnimationSurface
