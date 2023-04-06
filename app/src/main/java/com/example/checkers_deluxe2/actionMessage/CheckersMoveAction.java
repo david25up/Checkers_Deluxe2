@@ -3,14 +3,15 @@ package com.example.checkers_deluxe2.actionMessage;
 import com.example.GameFramework.actionMessage.GameAction;
 import com.example.GameFramework.players.GamePlayer;
 
-public class CheckersAction extends GameAction {
+public class CheckersMoveAction extends GameAction {
 
     /**
-     * The inherited constructor from AnimationSurface class
+     * constructor for GameAction
      *
      * @param player the player who created the action
      */
-    public CheckersAction(GamePlayer player) {
+    public CheckersMoveAction(GamePlayer player) {
         super(player);
-    }//ctor
-}
+    }
+
+ }
