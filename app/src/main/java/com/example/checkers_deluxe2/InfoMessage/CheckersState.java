@@ -128,9 +128,11 @@ public class CheckersState extends GameState {
         }
     }
     public void swapPieces(Tile piece, Tile avail) {
-        Tile temp = board[piece.getRow()][piece.getCol()];
-        board[piece.getRow()][piece.getCol()] = board[avail.getRow()][avail.getCol()];
-        board[avail.getRow()][avail.getCol()] = temp;
+        Tile temp = piece;
+        board[piece.getRow()][piece.getCol()].setIsKing(false);
+        board[avail.getRow()][avail.getCol()].setValue(temp.getValue());
+        board[avail.getRow()][avail.getCol()].setIsKing(temp.getIsKing());
+        board[piece.getRow()][piece.getCol()].setValue(Tile.Value.EMPTY);
     }//swapPieces
 
     /**

@@ -86,7 +86,6 @@ public class LocalCheckers extends LocalGame {
             ((CheckersState)state).flipTurn();
         } else if (!board[row][col].getValue().equals(Tile.Value.EMPTY)) {
             Log.d(TAG, "Piece was tapped");
-
             ((CheckersState)state).setBoard(revertAvail(board));
             ((CheckersState)state).setBoard(toggleAvail(availMoves(board[row][col], board), board));
         }
