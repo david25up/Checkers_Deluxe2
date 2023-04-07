@@ -101,7 +101,6 @@ public class CheckersHumanPlayer extends GameHumanPlayer implements View.OnTouch
 
             game.sendAction(new CheckersTapAction(this, rowClick, colClick));
         }
-        surfaceView.invalidate();
         return true;
     }
 }

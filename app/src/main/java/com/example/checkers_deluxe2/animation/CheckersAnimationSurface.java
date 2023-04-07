@@ -181,7 +181,7 @@ public class CheckersAnimationSurface extends AnimationSurface {
         }
         if (tile.getIsStart()) p.setColor(startPiece());
 
-        if (!value.equals(Tile.Value.EMPTY)) {
+        if (!value.equals(Tile.Value.EMPTY) || value.equals(Tile.Value.AVAIL)) {
             g.drawOval(h(pieceX), v(pieceY), h(pieceX + TILE_WIDTH), v(pieceY + TILE_HEIGHT), p);
         }
 

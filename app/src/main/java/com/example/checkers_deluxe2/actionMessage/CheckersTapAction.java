@@ -23,7 +23,6 @@ public class CheckersTapAction extends GameAction {
      * @param player
      * @param row
      * @param col
-     * @param board
      */
     public CheckersTapAction(GamePlayer player, int row, int col) {
         super(player);

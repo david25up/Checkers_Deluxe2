@@ -15,6 +15,8 @@ public class LocalCheckers extends LocalGame {
     // Tag for logging //
     private static final String TAG = "LocalCheckers";
 
+    /* --- INSTANCE VARIABLES --- */
+
     /** Default constructor for LocalCheckers */
     public LocalCheckers() {
         super();
@@ -69,25 +71,24 @@ public class LocalCheckers extends LocalGame {
     @Override
     protected boolean makeMove(GameAction action) {
         CheckersTapAction cm = (CheckersTapAction) action;
-        CheckersState state = (CheckersState) super.state;
 
         int row = cm.getRow();
         int col = cm.getCol();
         int playerId = getPlayerIdx(cm.getPlayer());
-        Tile[][] board = state.getBoard();
+        Tile[][] board = ((CheckersState)state).getBoard();
 
 
         if (board[row][col].getValue().equals(Tile.Value.AVAIL)) {
             Log.d(TAG, "Piece will be moved");
 
-            state.swapPieces(findStart(board), board[row][col]);
-            state.setBoard((revertAvail(board)));
-            state.flipTurn();
+            ((CheckersState)state).swapPieces(findStart(board), board[row][col]);
+            ((CheckersState)state).setBoard((revertAvail(board)));
+            ((CheckersState)state).flipTurn();
         } else if (!board[row][col].getValue().equals(Tile.Value.EMPTY)) {
             Log.d(TAG, "Piece was tapped");
 
-            state.setBoard(revertAvail(board));
-            state.setBoard(toggleAvail(availMoves(board[row][col], board), board));
+            ((CheckersState)state).setBoard(revertAvail(board));
+            ((CheckersState)state).setBoard(toggleAvail(availMoves(board[row][col], board), board));
         }
         return true;
     }//makeMove
@@ -117,11 +118,12 @@ public class LocalCheckers extends LocalGame {
      *      The list of all the available moves to be used as a means of comparison
      */
     private ArrayList<Tile> availMoves(Tile start, Tile[][] board) {
-        revertAvail(board);
-
         // if captureResult has any moves, remove moveResult from possible moves (force capture)
         ArrayList<Tile> moveResult = new ArrayList<Tile>();
         ArrayList<Tile> captureResult = new ArrayList<Tile>();
+
+        //Adds the starting Tile at the beginning of the array list
+        moveResult.add(start); captureResult.add(start);
 
         int row = start.getRow();
         int col = start.getCol();
@@ -129,13 +131,13 @@ public class LocalCheckers extends LocalGame {
         Tile.Value startVal = start.getValue();
 
         //Black piece movements
-        if (startVal == Tile.Value.BLACK || startIsKing) {
+        if (startVal.equals(Tile.Value.BLACK) || startIsKing) {
             if (validMove(row - 1, col - 1, board)) {//Top left
                 moveResult.add(board[row - 1][col - 1]);
-                }
+            }
             if (validMove(row - 1, col + 1, board)) {//Top right
                 moveResult.add(board[row - 1][col + 1]);
-                }
+            }
         }
 
         //Red piece movements
@@ -150,7 +152,7 @@ public class LocalCheckers extends LocalGame {
 
         captureResult = capturePiece(start, board, captureResult);
 
-        if (captureResult.size() != 0) {
+        if (captureResult.size() != 1) {
             return captureResult;
         } else {
             return moveResult;
@@ -163,7 +165,7 @@ public class LocalCheckers extends LocalGame {
      * @return True if valid, false if out of bounds or is empty
      */
     private boolean validMove(int row, int col, Tile[][] board) {
-        if (row < 0 || col < 0 || row > CheckersState.WIDTH || col > CheckersState.HEIGHT) {
+        if (row < 0 || col < 0 || row >= CheckersState.WIDTH || col >= CheckersState.HEIGHT) {
             return false;
         } else if (board[row][col].getValue() != Tile.Value.EMPTY) {
             return false;
