@@ -22,13 +22,13 @@ public class CheckersState extends GameState {
 
     // Instance Variables //
     private Tile[][] board;
-    private int isTurn; //0 if P1's Turn, 1 if P2's turn
+    private int whoseTurn; //0 if P1's Turn, 1 if P2's turn
     private double timeElapsed;
 
     /** Default constructor for the game state */
     public CheckersState() {
         board = new Tile[HEIGHT][WIDTH];
-        isTurn = 0; //Allows player 1 to go first
+        whoseTurn = 0; //Allows player 1 to go first
         timeElapsed = 0;
     }//default ctor
 
@@ -44,7 +44,7 @@ public class CheckersState extends GameState {
             }
         }
 
-        isTurn = original.isTurn;
+        whoseTurn = original.whoseTurn;
         timeElapsed = original.timeElapsed;
     }//ctor
 
@@ -56,7 +56,7 @@ public class CheckersState extends GameState {
     @Override
     public String toString() {
         String result = "Player's Turn: ";
-        if (isTurn == 0) {
+        if (whoseTurn == 0) {
             result += "Red's turn";
         } else {
             result += "Black's turn";
@@ -80,6 +80,10 @@ public class CheckersState extends GameState {
                     }
                     case RED: {
                         board1 = "R";
+                        break;
+                    }
+                    case AVAIL: {
+                        board1 = "A";
                         break;
                     }
                 }
@@ -127,6 +131,15 @@ public class CheckersState extends GameState {
             }
         }
     }
+
+    /**
+     * Swaps the position of two given pieces under the assumption that
+     * piece2 will always be a blank spot
+     * @param piece
+     *      The initial piece clicked that needs to be moved
+     * @param avail
+     *      The available space clicked that will inherit the original piece
+     */
     public void swapPieces(Tile piece, Tile avail) {
         Tile temp = piece;
         board[piece.getRow()][piece.getCol()].setIsKing(false);
@@ -135,30 +148,23 @@ public class CheckersState extends GameState {
         board[piece.getRow()][piece.getCol()].setValue(Tile.Value.EMPTY);
     }//swapPieces
 
-    /**
-     * Swaps the position of two given pieces under the assumption that
-     * piece2 will always be a blank spot
-     * @param piece   The initial piece clicked that needs to be moved
-     * @param blank   The blank space the piece will move to
-     * @return         Returns true if the swap worked
-     */
+
 
     /**
      * --- HELPER METHOD ---
      * Flips whose turn it is
      */
     public void flipTurn() {
-        if (isTurn == 0) {
-            isTurn = 1;
+        if (whoseTurn == 0) {
+            whoseTurn = 1;
         } else {
-            isTurn = 0;
+            whoseTurn = 0;
         }
-    }//setWhoseTurn
+    }//flipTurn
 
     /* --- GETTER METHODS --- */
     public Tile[][] getBoard() {return board;}
-    public int getTurn() {return isTurn;}
-    public double getTimeElapsed() {return timeElapsed;}
+    public int getTurn() {return whoseTurn;}
 
     /* --- SETTER METHODS --- */
     public void setBoard(Tile[][] board) {this.board = board;}

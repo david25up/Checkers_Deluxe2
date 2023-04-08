@@ -12,21 +12,14 @@ package com.example.checkers_deluxe2.Players;
 import android.graphics.Point;
 import android.util.Log;
 import android.view.MotionEvent;
-import android.view.SurfaceView;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.TextView;
 
 import com.example.GameFramework.GameMainActivity;
 import com.example.GameFramework.infoMessage.GameInfo;
 import com.example.GameFramework.players.GameHumanPlayer;
 import com.example.GameFramework.utilities.Logger;
-import com.example.checkers_deluxe2.CheckersMainActivity;
 import com.example.checkers_deluxe2.InfoMessage.CheckersState;
 import com.example.checkers_deluxe2.R;
-import com.example.checkers_deluxe2.Tile;
-import com.example.checkers_deluxe2.actionMessage.CheckersMoveAction;
 import com.example.checkers_deluxe2.actionMessage.CheckersTapAction;
 import com.example.checkers_deluxe2.animation.CheckersAnimationSurface;
 
@@ -60,15 +53,11 @@ public class CheckersHumanPlayer extends GameHumanPlayer implements View.OnTouch
     @Override
     public void receiveInfo(GameInfo info) {
         if (surfaceView == null) {return;}
-
-        //Makes sure info is a CheckersState object
         if (!(info instanceof CheckersState)) {return;}
 
         surfaceView.setState((CheckersState)info);
         surfaceView.invalidate();
         Logger.log(TAG, "receiving");
-
-        ((CheckersState) info).flipTurn();
     }//receiveInfo
 
     /**
@@ -81,7 +70,7 @@ public class CheckersHumanPlayer extends GameHumanPlayer implements View.OnTouch
         activity.setContentView(layoutId);
 
         // set the surfaceView instance variable
-        surfaceView = (CheckersAnimationSurface) myActivity.findViewById(R.id.surfaceView);
+        surfaceView = myActivity.findViewById(R.id.surfaceView);
         Logger.log("set listener","OnTouch");
         surfaceView.setOnTouchListener(this);
     }//setAsGui
@@ -93,6 +82,7 @@ public class CheckersHumanPlayer extends GameHumanPlayer implements View.OnTouch
             Point point = surfaceView.withinBoard(event.getX(), event.getY());
             if (point == null) {
                 Log.d(TAG, "The spot clicked was not on the board");
+                return false;
             }
 
             rowClick = point.x;

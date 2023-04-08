@@ -13,28 +13,14 @@ import com.example.GameFramework.actionMessage.GameAction;
 import com.example.GameFramework.players.GamePlayer;
 import com.example.checkers_deluxe2.Tile;
 
-public class CheckersMoveAction extends GameAction {
-    // Instance Variables //
-    int row;
-    int col;
-    Tile[][] board;
+public class CheckersCPUAction extends GameAction {
 
     /**
      * Constructor for CheckersMoveAction
      * @param player
-     * @param row
-     * @param col
-     * @param board
      */
-    public CheckersMoveAction(GamePlayer player, int row, int col, Tile[][] board) {
+    public CheckersCPUAction(GamePlayer player) {
         super(player);
-        this.row = row;
-        this.col = col;
-        this.board = board;
     }//CheckersMoveAction
 
-    /* --- GETTER METHODS --- */
-    public int getRow() {return row;}
-    public int getCol() {return col;}
-    public Tile[][] getBoard() {return board;}
  }

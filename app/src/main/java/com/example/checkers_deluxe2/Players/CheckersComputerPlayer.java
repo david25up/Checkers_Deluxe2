@@ -9,12 +9,15 @@ package com.example.checkers_deluxe2.Players;
  * @version  March 2023
  */
 
+import com.example.GameFramework.GameMainActivity;
 import com.example.GameFramework.infoMessage.GameInfo;
+import com.example.GameFramework.infoMessage.NotYourTurnInfo;
 import com.example.GameFramework.players.GameComputerPlayer;
 import com.example.GameFramework.utilities.Logger;
 import com.example.checkers_deluxe2.InfoMessage.CheckersState;
+import com.example.checkers_deluxe2.R;
 import com.example.checkers_deluxe2.Tile;
-import com.example.checkers_deluxe2.actionMessage.CheckersMoveAction;
+import com.example.checkers_deluxe2.actionMessage.CheckersCPUAction;
 import com.example.checkers_deluxe2.actionMessage.CheckersTapAction;
 import com.example.checkers_deluxe2.animation.CheckersAnimationSurface;
 
@@ -36,42 +39,30 @@ public class CheckersComputerPlayer extends GameComputerPlayer {
     }//ctor
 
     /**
+     * Taken from GameHumanPlayer
+     * @param activity   The activity we are running under
+     */
+    @Override
+    public void setAsGui(GameMainActivity activity) {
+        // Load the layout resource for our GUI
+        activity.setContentView(layoutId);
+
+        // set the surfaceView instance variable
+        surfaceView = (CheckersAnimationSurface) myActivity.findViewById(R.id.surfaceView);
+    }//setAsGui
+
+    /**
      * Takes in the information for the game, performs an action,
      * and flips whose turn it is
      * @param info   The information from the game
      */
     @Override
     protected void receiveInfo(GameInfo info) {
-        if (surfaceView == null) {return;}
-
-        //Makes sure info is a CheckersState object
+        if (info instanceof NotYourTurnInfo) return;
         if (!(info instanceof CheckersState)) {return;}
-        board = ((CheckersState) info).getBoard();
 
-        surfaceView.setState((CheckersState)info);
-        surfaceView.invalidate();
         Logger.log(TAG, "receiving");
 
-        //Looks for the first possible piece
-        for (int row = 0; row < CheckersState.WIDTH; row++) {
-            for (int col = 0; col < CheckersState.HEIGHT; col++) {
-                if (board[row][col].getValue() != Tile.Value.EMPTY) {
-                    game.sendAction(new CheckersMoveAction(this, row, col, board));
-                } break;
-            }
-        }
-        Logger.log(TAG, "Found a piece");
-
-        //Moves on the first possible move
-        for (int row = 0; row < CheckersState.WIDTH; row++) {
-            for (int col = 0; col < CheckersState.HEIGHT; col++) {
-                if (board[row][col].getValue() == Tile.Value.AVAIL) {
-                    game.sendAction(new CheckersTapAction(this, row, col));
-                } break;
-            }
-        }
-        Logger.log(TAG, "Piece has been moved");
-
-        ((CheckersState) info).flipTurn();
+        game.sendAction(new CheckersCPUAction(this));
     }//receiveInfo
-}
+}//CheckersComputerPlayer

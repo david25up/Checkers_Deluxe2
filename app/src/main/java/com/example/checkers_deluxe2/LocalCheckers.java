@@ -3,10 +3,12 @@ package com.example.checkers_deluxe2;
 import android.util.Log;
 
 import com.example.GameFramework.LocalGame;
+import com.example.GameFramework.actionMessage.EndTurnAction;
 import com.example.GameFramework.actionMessage.GameAction;
 import com.example.GameFramework.players.GamePlayer;
 import com.example.checkers_deluxe2.InfoMessage.CheckersState;
-import com.example.checkers_deluxe2.actionMessage.CheckersMoveAction;
+import com.example.GameFramework.actionMessage.EndTurnAction;
+import com.example.checkers_deluxe2.actionMessage.CheckersCPUAction;
 import com.example.checkers_deluxe2.actionMessage.CheckersTapAction;
 
 import java.util.ArrayList;
@@ -70,26 +72,51 @@ public class LocalCheckers extends LocalGame {
 
     @Override
     protected boolean makeMove(GameAction action) {
-        CheckersTapAction cm = (CheckersTapAction) action;
+        if (action instanceof CheckersCPUAction) {
+            int row = (int) (Math.random() * (CheckersState.HEIGHT));
+            int col = (int) (Math.random() * (CheckersState.WIDTH));
+            Tile[][] board = ((CheckersState) state).getBoard();
 
-        int row = cm.getRow();
-        int col = cm.getCol();
-        int playerId = getPlayerIdx(cm.getPlayer());
-        Tile[][] board = ((CheckersState)state).getBoard();
+            while (board[row][col].getValue() != Tile.Value.RED) {//This needs to be changed so it's dependant on the player's color, not always red
+                row = (int) (Math.random() * (CheckersState.HEIGHT));
+                col = (int) (Math.random() * (CheckersState.WIDTH));
+            }
 
+            ArrayList<Tile> moves = availMoves(board[row][col], board);
+            if (moves.size() > 1) {//There is an available move
+                int randIndex = (int) (Math.random() * moves.size());
 
-        if (board[row][col].getValue().equals(Tile.Value.AVAIL)) {
-            Log.d(TAG, "Piece will be moved");
+                ((CheckersState) state).setBoard(toggleAvail(moves, board));
+                ((CheckersState) state).swapPieces(findStart(board), moves.get(randIndex));
+                ((CheckersState) state).setBoard((revertAvail(board)));
+                ((CheckersState) state).flipTurn();//ends turn here
+            }
+            return true;
+        }//Dumb AI's turn
 
-            ((CheckersState)state).swapPieces(findStart(board), board[row][col]);
-            ((CheckersState)state).setBoard((revertAvail(board)));
-            ((CheckersState)state).flipTurn();
-        } else if (!board[row][col].getValue().equals(Tile.Value.EMPTY)) {
-            Log.d(TAG, "Piece was tapped");
-            ((CheckersState)state).setBoard(revertAvail(board));
-            ((CheckersState)state).setBoard(toggleAvail(availMoves(board[row][col], board), board));
-        }
-        return true;
+        else if (action instanceof  CheckersTapAction) {
+            CheckersTapAction cm = (CheckersTapAction) action;
+
+            int row = cm.getRow();
+            int col = cm.getCol();
+            Tile[][] board = ((CheckersState) state).getBoard();
+
+            if (board[row][col].getValue().equals(Tile.Value.AVAIL)) {
+                Log.d(TAG, "Piece will be moved");
+
+                ((CheckersState) state).swapPieces(findStart(board), board[row][col]);
+                ((CheckersState) state).setBoard((revertAvail(board)));
+                ((CheckersState) state).flipTurn();//ends turn here
+            } else if (board[row][col].getValue().equals(Tile.Value.BLACK)) {//This needs to be changed so it's dependant on the player's color, not always black
+                Log.d(TAG, "Piece was tapped");
+
+                ((CheckersState) state).setBoard(revertAvail(board));
+                ((CheckersState) state).setBoard(toggleAvail(availMoves(board[row][col], board), board));
+                //does not end the player's turn
+            }
+            return true;
+        }//Human Player's turn
+        return false;
     }//makeMove
 
     /**
@@ -121,9 +148,6 @@ public class LocalCheckers extends LocalGame {
         ArrayList<Tile> moveResult = new ArrayList<Tile>();
         ArrayList<Tile> captureResult = new ArrayList<Tile>();
 
-        //Adds the starting Tile at the beginning of the array list
-        moveResult.add(start); captureResult.add(start);
-
         int row = start.getRow();
         int col = start.getCol();
         boolean startIsKing = start.getIsKing();
@@ -149,9 +173,12 @@ public class LocalCheckers extends LocalGame {
             }
         }
 
-        captureResult = capturePiece(start, board, captureResult);
+        captureResult = (capturePiece(start, board, captureResult));
+        captureResult.add(start); moveResult.add(start); //Adds the starting index in at the end to be marked later
 
         if (captureResult.size() != 1) {
+            captureResult.remove(start);
+            captureResult.addAll(moveResult);
             return captureResult;
         } else {
             return moveResult;
@@ -256,10 +283,10 @@ public class LocalCheckers extends LocalGame {
         if (availMoves.size() == 0) return null;
 
         //Marks the clicked piece
-        Tile start = availMoves.get(0);
+        Tile start = availMoves.get(availMoves.size() - 1);
         board[start.getRow()][start.getCol()].setIsStart(true);
 
-        for (int i = 1; i < availMoves.size(); i++) {
+        for (int i = 0; i < availMoves.size() - 1; i++) {
             int row = availMoves.get(i).getRow();
             int col = availMoves.get(i).getCol();
             board[row][col].setValue(Tile.Value.AVAIL);
