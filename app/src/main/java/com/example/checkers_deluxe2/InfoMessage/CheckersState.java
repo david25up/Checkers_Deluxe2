@@ -18,7 +18,7 @@ import com.example.checkers_deluxe2.Tile;
 
 public class CheckersState extends GameState {
     // Board Dimensions //
-    public static final int WIDTH = 8, HEIGHT = 8;
+    public static final int HEIGHT = 8, WIDTH = 8;
 
     // Instance Variables //
     private Tile[][] board;
@@ -27,7 +27,7 @@ public class CheckersState extends GameState {
 
     /** Default constructor for the game state */
     public CheckersState() {
-        board = new Tile[HEIGHT][WIDTH];
+        board = new Tile[WIDTH][HEIGHT];
         whoseTurn = 0; //Allows player 1 to go first
         timeElapsed = 0;
     }//default ctor
@@ -37,9 +37,9 @@ public class CheckersState extends GameState {
      * @param original   The game state object we are copying over
      */
     public CheckersState(CheckersState original) {
-        board = new Tile[HEIGHT][WIDTH];
-        for (int row = 0; row < HEIGHT; row++) {
-            for (int col = 0; col < WIDTH; col++) {
+        board = new Tile[WIDTH][HEIGHT];
+        for (int row = 0; row < WIDTH; row++) {
+            for (int col = 0; col < HEIGHT; col++) {
                 board[row][col] = original.board[row][col];
             }
         }
@@ -66,8 +66,8 @@ public class CheckersState extends GameState {
         result += "Time Elapsed: " + timeElapsed + "\n ";
 
         // Actual conversion of the board's content
-        for (int i = 0; i < HEIGHT; i++) {
-            for (int j = 0; j < WIDTH; j++) {
+        for (int i = 0; i < WIDTH; i++) {
+            for (int j = 0; j < HEIGHT; j++) {
                 String board1 = "";
                 switch (board[i][j].getValue()) {
                     case EMPTY: {

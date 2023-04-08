@@ -75,13 +75,13 @@ public class LocalCheckers extends LocalGame {
     @Override
     protected boolean makeMove(GameAction action) {
         if (action instanceof CheckersCPUAction) {
-            int row = (int) (Math.random() * (CheckersState.HEIGHT));
-            int col = (int) (Math.random() * (CheckersState.WIDTH));
+            int row = (int) (Math.random() * (CheckersState.WIDTH));
+            int col = (int) (Math.random() * (CheckersState.HEIGHT));
             Tile[][] board = ((CheckersState) state).getBoard();
 
             while (board[row][col].getValue() != Tile.Value.RED) {//This needs to be changed so it's dependant on the player's color, not always red
-                row = (int) (Math.random() * (CheckersState.HEIGHT));
-                col = (int) (Math.random() * (CheckersState.WIDTH));
+                row = (int) (Math.random() * (CheckersState.WIDTH));
+                col = (int) (Math.random() * (CheckersState.HEIGHT));
             }
 
             ArrayList<Tile> moves = availMoves(board[row][col], board);
@@ -129,8 +129,8 @@ public class LocalCheckers extends LocalGame {
      * @return
      */
     private Tile findStart(Tile[][] board) {
-        for (int row = 0; row < CheckersState.HEIGHT; row++) {
-            for (int col = 0; col < CheckersState.WIDTH; col++) {
+        for (int row = 0; row < CheckersState.WIDTH; row++) {
+            for (int col = 0; col < CheckersState.HEIGHT; col++) {
                 if (board[row][col].getIsStart()) return board[row][col];
             }
         }
@@ -194,7 +194,7 @@ public class LocalCheckers extends LocalGame {
      * @return True if valid, false if out of bounds or is empty
      */
     private boolean validMove(int row, int col, Tile[][] board) {
-        if (row < 0 || col < 0 || row >= CheckersState.WIDTH || col >= CheckersState.HEIGHT) {
+        if (row < 0 || col < 0 || row >= CheckersState.HEIGHT || col >= CheckersState.WIDTH) {
             return false;
         } else if (board[row][col].getValue() != Tile.Value.EMPTY) {
             return false;
@@ -307,8 +307,8 @@ public class LocalCheckers extends LocalGame {
      */
     public Tile[][] revertAvail(Tile[][] board) {
         Tile temp;
-        for (int row = 0; row < CheckersState.HEIGHT; row++) {
-            for (int col = 0; col < CheckersState.WIDTH; col++) {
+        for (int row = 0; row < CheckersState.WIDTH; row++) {
+            for (int col = 0; col < CheckersState.HEIGHT; col++) {
                 temp = board[row][col];
                 if (temp.getValue().equals(Tile.Value.AVAIL)) {
                     board[row][col].setValue(Tile.Value.EMPTY);
