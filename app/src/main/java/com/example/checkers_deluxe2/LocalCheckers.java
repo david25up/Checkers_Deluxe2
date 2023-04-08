@@ -1,13 +1,15 @@
 package com.example.checkers_deluxe2;
 
+
+
+import static android.os.SystemClock.sleep;
+
 import android.util.Log;
 
 import com.example.GameFramework.LocalGame;
-import com.example.GameFramework.actionMessage.EndTurnAction;
 import com.example.GameFramework.actionMessage.GameAction;
 import com.example.GameFramework.players.GamePlayer;
 import com.example.checkers_deluxe2.InfoMessage.CheckersState;
-import com.example.GameFramework.actionMessage.EndTurnAction;
 import com.example.checkers_deluxe2.actionMessage.CheckersCPUAction;
 import com.example.checkers_deluxe2.actionMessage.CheckersTapAction;
 
@@ -84,7 +86,8 @@ public class LocalCheckers extends LocalGame {
 
             ArrayList<Tile> moves = availMoves(board[row][col], board);
             if (moves.size() > 1) {//There is an available move
-                int randIndex = (int) (Math.random() * moves.size());
+                sleep(1000);
+                int randIndex = (int) (Math.random() * (moves.size() - 1));
 
                 ((CheckersState) state).setBoard(toggleAvail(moves, board));
                 ((CheckersState) state).swapPieces(findStart(board), moves.get(randIndex));
@@ -173,7 +176,7 @@ public class LocalCheckers extends LocalGame {
             }
         }
 
-        captureResult = (capturePiece(start, board, captureResult));
+        captureResult = (capturePiece(start, board, captureResult, startVal));
         captureResult.add(start); moveResult.add(start); //Adds the starting index in at the end to be marked later
 
         if (captureResult.size() != 1) {
@@ -210,44 +213,47 @@ public class LocalCheckers extends LocalGame {
      * @param captureResult
      *      The arraylist of tiles that are constantly being updated with
      *      all possible moves that capture a piece
+     * @param origin
+     *      The original value in the start square to be used when a
+     *      recursive call is made
      * @return
      *      The completed list of possible capture moves
      */
-    private ArrayList<Tile> capturePiece(Tile start, Tile[][] board, ArrayList<Tile> captureResult) {
+    private ArrayList<Tile> capturePiece(Tile start, Tile[][] board, ArrayList<Tile> captureResult, Tile.Value origin) {
         int row = start.getRow();
         int col = start.getCol();
         boolean startIsKing = start.getIsKing();
         Tile.Value startVal = start.getValue();
 
-        // Black piece captures + Red King captures
-        if (startVal.equals(Tile.Value.BLACK) || (startVal.equals(Tile.Value.RED) && startIsKing)) {
+        // Black piece captures + Black Recursive Call + Red King captures
+        if (startVal.equals(Tile.Value.BLACK) || origin.equals(Tile.Value.BLACK) || (startVal.equals(Tile.Value.RED) && startIsKing)) {
             //makes sure the diagonal piece is an opposing piece + the space afterwards is valid + the spot had not already been checked
-            if (validMove(row - 2, col - 2, board) && oppPiece(startVal, board[row - 1][col - 1].getValue()) && //Top Left
+            if (validMove(row - 2, col - 2, board) && oppPiece(origin, board[row - 1][col - 1].getValue()) && //Top Left
                     !captureResult.contains(board[row - 2][col - 2])) {
 
                 captureResult.add(board[row - 2][col - 2]);
 
                 //Recursive call for double captures
-                capturePiece(board[row - 2][col - 2], board, captureResult);
+                captureResult.addAll(capturePiece(board[row - 2][col - 2], board, captureResult, origin));
             }
-            if (validMove(row - 2, col + 2, board) && oppPiece(startVal, board[row - 1][col + 1].getValue()) && //Top right
+            if (validMove(row - 2, col + 2, board) && oppPiece(origin, board[row - 1][col + 1].getValue()) && //Top right
                     !captureResult.contains(board[row - 2][col + 2])) {
                 captureResult.add(board[row - 2][col + 2]);
-                capturePiece(board[row - 2][col + 2], board, captureResult);
+                captureResult.addAll(capturePiece(board[row - 2][col + 2], board, captureResult, origin));
             }
         }
 
-        // Red piece captures + Black King captures
-        if (startVal.equals(Tile.Value.RED) || (startVal.equals(Tile.Value.BLACK) && startIsKing)) {
-            if (validMove(row + 2, col - 2, board) && oppPiece(startVal, board[row + 1][col - 1].getValue()) && //Bottom left
+        // Red piece captures + Red recursive call + Black King captures
+        if (startVal.equals(Tile.Value.RED) || origin.equals(Tile.Value.RED) || (startVal.equals(Tile.Value.BLACK) && startIsKing)) {
+            if (validMove(row + 2, col - 2, board) && oppPiece(origin, board[row + 1][col - 1].getValue()) && //Bottom left
                     !captureResult.contains(board[row + 2][col - 2])) {
                 captureResult.add(board[row + 2][col - 2]);
-                capturePiece(board[row + 2][col - 2], board, captureResult);
+                captureResult.addAll(capturePiece(board[row + 2][col - 2], board, captureResult, origin));
             }
-            if (validMove(row + 2, col + 2, board) && oppPiece(startVal, board[row + 1][col + 1].getValue()) && //Bottom right
+            if (validMove(row + 2, col + 2, board) && oppPiece(origin, board[row + 1][col + 1].getValue()) && //Bottom right
                     !captureResult.contains(board[row + 2][col + 2])) {
                 captureResult.add(board[row + 2][col + 2]);
-                capturePiece(board[row + 2][col + 2], board, captureResult);
+                captureResult.addAll(capturePiece(board[row + 2][col + 2], board, captureResult, origin));
             }
         }
 

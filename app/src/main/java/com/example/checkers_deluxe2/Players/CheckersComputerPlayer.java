@@ -58,8 +58,8 @@ public class CheckersComputerPlayer extends GameComputerPlayer {
      */
     @Override
     protected void receiveInfo(GameInfo info) {
-        if (info instanceof NotYourTurnInfo) return;
         if (!(info instanceof CheckersState)) {return;}
+        if (((CheckersState) info).getTurn() != playerNum) {return;}
 
         Logger.log(TAG, "receiving");
 

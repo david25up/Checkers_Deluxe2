@@ -141,11 +141,26 @@ public class CheckersState extends GameState {
      *      The available space clicked that will inherit the original piece
      */
     public void swapPieces(Tile piece, Tile avail) {
-        Tile temp = piece;
-        board[piece.getRow()][piece.getCol()].setIsKing(false);
-        board[avail.getRow()][avail.getCol()].setValue(temp.getValue());
-        board[avail.getRow()][avail.getCol()].setIsKing(temp.getIsKing());
-        board[piece.getRow()][piece.getCol()].setValue(Tile.Value.EMPTY);
+        int pRow, pCol, aRow, aCol;
+        pRow = piece.getRow(); pCol = piece.getCol();
+        aRow = avail.getRow(); aCol = avail.getCol();
+
+        board[aRow][aCol].setValue(piece.getValue());
+
+        //Case where non-king piece reaches the corresponding end of the board
+        if (!avail.getIsKing() && (aRow == 0 && avail.getValue().equals(Tile.Value.BLACK) ||
+                                    aRow == 7 && avail.getValue().equals(Tile.Value.RED))) {
+            board[aRow][aCol].setIsKing(true);
+        } else { board[aRow][aCol].setIsKing(piece.getIsKing()); }
+
+        board[pRow][pCol].revertTile();
+
+        //Checks for captured piece between the two tiles
+        if (Math.abs(pRow - aRow)  > 1) {
+            int hRow = ((pRow + aRow) / 2);
+            int hCol = ((pCol + aCol) / 2);
+            board[hRow][hCol].revertTile();
+        }
     }//swapPieces
 
 

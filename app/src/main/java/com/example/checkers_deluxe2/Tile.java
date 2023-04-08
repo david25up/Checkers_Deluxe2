@@ -31,6 +31,14 @@ public class Tile {
         this.col = col;
     }//ctor
 
+    /**
+     * Reverts tile back to its "empty state"
+     */
+    public void revertTile() {
+        setValue(Value.EMPTY);
+        setIsKing(false);
+    }//revertTile
+
     ////////////////////////////
     // --- GETTER METHODS --- //
     ////////////////////////////
@@ -46,6 +54,7 @@ public class Tile {
     public void setValue(Value value) {this.value = value;}//setInTile
     public void setIsKing(Boolean givenKing) {isKing = givenKing;}//setKing
     public void setIsStart(Boolean givenStart) {isStart = givenStart;}//setIsStart
+
 
 
 }//Tile
