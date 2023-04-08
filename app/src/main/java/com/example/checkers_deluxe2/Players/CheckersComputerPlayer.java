@@ -11,14 +11,12 @@ package com.example.checkers_deluxe2.Players;
 
 import com.example.GameFramework.GameMainActivity;
 import com.example.GameFramework.infoMessage.GameInfo;
-import com.example.GameFramework.infoMessage.NotYourTurnInfo;
 import com.example.GameFramework.players.GameComputerPlayer;
 import com.example.GameFramework.utilities.Logger;
 import com.example.checkers_deluxe2.InfoMessage.CheckersState;
 import com.example.checkers_deluxe2.R;
 import com.example.checkers_deluxe2.Tile;
-import com.example.checkers_deluxe2.actionMessage.CheckersCPUAction;
-import com.example.checkers_deluxe2.actionMessage.CheckersTapAction;
+import com.example.checkers_deluxe2.actionMessage.CheckersDumbAIAction;
 import com.example.checkers_deluxe2.animation.CheckersAnimationSurface;
 
 public class CheckersComputerPlayer extends GameComputerPlayer {
@@ -63,6 +61,6 @@ public class CheckersComputerPlayer extends GameComputerPlayer {
 
         Logger.log(TAG, "receiving");
 
-        game.sendAction(new CheckersCPUAction(this));
+        game.sendAction(new CheckersDumbAIAction(this));
     }//receiveInfo
 }//CheckersComputerPlayer

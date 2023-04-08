@@ -10,7 +10,7 @@ import com.example.GameFramework.LocalGame;
 import com.example.GameFramework.actionMessage.GameAction;
 import com.example.GameFramework.players.GamePlayer;
 import com.example.checkers_deluxe2.InfoMessage.CheckersState;
-import com.example.checkers_deluxe2.actionMessage.CheckersCPUAction;
+import com.example.checkers_deluxe2.actionMessage.CheckersDumbAIAction;
 import com.example.checkers_deluxe2.actionMessage.CheckersTapAction;
 
 import java.util.ArrayList;
@@ -74,7 +74,7 @@ public class LocalCheckers extends LocalGame {
 
     @Override
     protected boolean makeMove(GameAction action) {
-        if (action instanceof CheckersCPUAction) {
+        if (action instanceof CheckersDumbAIAction) {
             int row = (int) (Math.random() * (CheckersState.WIDTH));
             int col = (int) (Math.random() * (CheckersState.HEIGHT));
             Tile[][] board = ((CheckersState) state).getBoard();
