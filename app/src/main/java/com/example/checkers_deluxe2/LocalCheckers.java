@@ -1,6 +1,14 @@
 package com.example.checkers_deluxe2;
 
-
+/*
+ * Makes changes to the game state given specific
+ * actions from players.
+ *
+ * @author   Ashton Char
+ * @author   Eli Marcelino
+ * @author   Matt David
+ * @version  April 2023
+ */
 
 import static android.os.SystemClock.sleep;
 
@@ -18,8 +26,6 @@ import java.util.ArrayList;
 public class LocalCheckers extends LocalGame {
     // Tag for logging //
     private static final String TAG = "LocalCheckers";
-
-    /* --- INSTANCE VARIABLES --- */
 
     /** Default constructor for LocalCheckers */
     public LocalCheckers() {
