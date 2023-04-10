@@ -152,11 +152,12 @@ public class LocalCheckers extends LocalGame {
      * @return
      *      The list of all the available moves to be used as a means of comparison
      */
-    private ArrayList<Tile> availMoves(Tile start, Tile[][] board) {
+    private ArrayList<TileTraversal> availMoves(Tile start, Tile[][] board) {
         // if captureResult has any moves, remove moveResult from possible moves (force capture)
-        ArrayList<Tile> moveResult = new ArrayList<Tile>();
-        ArrayList<Tile> captureResult = new ArrayList<Tile>();
-
+        ArrayList<TileTraversal> moveResult = new ArrayList<TileTraversal>();
+        ArrayList<TileTraversal> captureResult = new ArrayList<TileTraversal>();
+        // addendum before i forget
+        // making it return a traversal of tile always gives a list of possible movement actions instead of just a destionation
         int row = start.getRow();
         int col = start.getCol();
         boolean startIsKing = start.getIsKing();
