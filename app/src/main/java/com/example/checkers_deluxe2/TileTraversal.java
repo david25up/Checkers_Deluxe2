@@ -20,7 +20,26 @@ public class TileTraversal {
     /** Constructor for LocalCheckers given a CheckersState object */
     public TileTraversal(Tile start) {
         this.start = start;
+        this.start.setValue(start.getValue());
+        this.start.setIsKing(start.getIsKing());
         this.traversal = new ArrayList<Tile>();
         traversal.add(start);
     }//ctor
+
+    /* --- Getter Methods --- */
+
+    public Tile getStart() {return this.start;}
+
+    public ArrayList<Tile> getTraversal() {return this.traversal;}
+
+    public int getTraversalLength() {return this.traversal.size();}
+
+    /* --- Setter Variables --- */
+
+    public void setStart(Tile start) {this.start = start;}
+
+    public void setTraversal(ArrayList<Tile> traversal) {this.traversal = traversal;}
+    /* --- Methods --- */
+    public void addTile(Tile move) {this.traversal.add(move);}
+
 }

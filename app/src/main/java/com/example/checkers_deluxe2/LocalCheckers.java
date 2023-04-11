@@ -90,13 +90,13 @@ public class LocalCheckers extends LocalGame {
                 col = (int) (Math.random() * (CheckersState.HEIGHT));
             }
 
-            ArrayList<Tile> moves = availMoves(board[row][col], board);
+            ArrayList<TileTraversal> moves = availMoves(board[row][col], board);
             if (moves.size() > 1) {//There is an available move
                 sleep(1000);
                 int randIndex = (int) (Math.random() * (moves.size() - 1));
 
                 ((CheckersState) state).setBoard(toggleAvail(moves, board));
-                ((CheckersState) state).swapPieces(findStart(board), moves.get(randIndex));
+                ((CheckersState) state).movePieces(findStart(board), moves.get(randIndex));
                 ((CheckersState) state).setBoard((revertAvail(board)));
                 ((CheckersState) state).flipTurn();//ends turn here
             }
@@ -166,25 +166,33 @@ public class LocalCheckers extends LocalGame {
         //Black piece movements
         if (startVal.equals(Tile.Value.BLACK) || startIsKing) {
             if (validMove(row - 1, col - 1, board)) {//Top left
-                moveResult.add(board[row - 1][col - 1]);
+                TileTraversal result = new TileTraversal(start);
+                result.addTile(board[row - 1][col - 1]);
+                moveResult.add(result);
             }
             if (validMove(row - 1, col + 1, board)) {//Top right
-                moveResult.add(board[row - 1][col + 1]);
+                TileTraversal result = new TileTraversal(start);
+                result.addTile(board[row - 1][col - 1]);
+                moveResult.add(result);
             }
         }
 
         //Red piece movements
         if (startVal == Tile.Value.RED || startIsKing) {
             if (validMove(row + 1, col - 1, board)) {//Bottom left
-                moveResult.add(board[row + 1][col - 1]);
+                TileTraversal result = new TileTraversal(start);
+                result.addTile(board[row + 1][col - 1]);
+                moveResult.add(result);
             }
             if (validMove(row + 1, col + 1, board)) {//Bottom right
-                moveResult.add(board[row + 1][col + 1]);
+                TileTraversal result = new TileTraversal(start);
+                result.addTile(board[row + 1][col + 1]);
+                moveResult.add(result);
             }
         }
 
         captureResult = (capturePiece(start, board, captureResult, startVal));
-        captureResult.add(start); moveResult.add(start); //Adds the starting index in at the end to be marked later
+        // captureResult.add(start); moveResult.add(start); //Adds the starting index in at the end to be marked later
 
         if (captureResult.size() != 1) {
             captureResult.remove(start);
@@ -226,7 +234,7 @@ public class LocalCheckers extends LocalGame {
      * @return
      *      The completed list of possible capture moves
      */
-    private ArrayList<Tile> capturePiece(Tile start, Tile[][] board, ArrayList<Tile> captureResult, Tile.Value origin) {
+    private ArrayList<TileTraversal> capturePiece(Tile start, Tile[][] board, ArrayList<TileTraversal> captureResult, Tile.Value origin) {
         int row = start.getRow();
         int col = start.getCol();
         boolean startIsKing = start.getIsKing();
@@ -238,14 +246,17 @@ public class LocalCheckers extends LocalGame {
             if (validMove(row - 2, col - 2, board) && oppPiece(origin, board[row - 1][col - 1].getValue()) && //Top Left
                     !captureResult.contains(board[row - 2][col - 2])) {
 
-                captureResult.add(board[row - 2][col - 2]);
+                TileTraversal result = captureResult.get(captureResult.size()-1);
+                result.addTile(board[row - 2][col - 2]);
+                captureResult.add(result);
 
                 //Recursive call for double captures
                 captureResult.addAll(capturePiece(board[row - 2][col - 2], board, captureResult, origin));
             }
             if (validMove(row - 2, col + 2, board) && oppPiece(origin, board[row - 1][col + 1].getValue()) && //Top right
                     !captureResult.contains(board[row - 2][col + 2])) {
-                captureResult.add(board[row - 2][col + 2]);
+                TileTraversal result = captureResult.get(captureResult.size()-1);
+                result.addTile(board[row - 2][col + 2]);
                 captureResult.addAll(capturePiece(board[row - 2][col + 2], board, captureResult, origin));
             }
         }
@@ -254,12 +265,14 @@ public class LocalCheckers extends LocalGame {
         if (startVal.equals(Tile.Value.RED) || origin.equals(Tile.Value.RED) || (startVal.equals(Tile.Value.BLACK) && startIsKing)) {
             if (validMove(row + 2, col - 2, board) && oppPiece(origin, board[row + 1][col - 1].getValue()) && //Bottom left
                     !captureResult.contains(board[row + 2][col - 2])) {
-                captureResult.add(board[row + 2][col - 2]);
+                TileTraversal result = captureResult.get(captureResult.size()-1);
+                result.addTile(board[row + 2][col - 2]);
                 captureResult.addAll(capturePiece(board[row + 2][col - 2], board, captureResult, origin));
             }
             if (validMove(row + 2, col + 2, board) && oppPiece(origin, board[row + 1][col + 1].getValue()) && //Bottom right
                     !captureResult.contains(board[row + 2][col + 2])) {
-                captureResult.add(board[row + 2][col + 2]);
+                TileTraversal result = captureResult.get(captureResult.size()-1);
+                result.addTile(board[row + 2][col + 2]);
                 captureResult.addAll(capturePiece(board[row + 2][col + 2], board, captureResult, origin));
             }
         }
@@ -352,7 +365,7 @@ public class LocalCheckers extends LocalGame {
             for (int col = 0; col < 8; col++) {
                 Tile tile = board[row][col];
                 if (tile.getValue() == playerValue) {
-                    ArrayList<Tile> moves = availMoves(tile, board);
+                    ArrayList<TileTraversal> moves = availMoves(tile, board);
                     if (!moves.isEmpty()) {
                         hasMoves = true;
                         break;
