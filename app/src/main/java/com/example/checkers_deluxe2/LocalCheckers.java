@@ -327,32 +327,34 @@ public class LocalCheckers extends LocalGame {
         return board;
     }//toggleBoard
 
+    /**
+     * Determines whether or not a game is over based on the amount
+     * of available moves left for the current player's turn
+     * @return
+     *      Corresponding "Player _ wins" when an opposing player
+     *      has run out of moves
+     */
     @Override
     protected String checkIfGameOver() {
-        //if (# of available moves for player 1) == 0
-        //return "Player 2 has won the game";
-        //else if (# of available moves for player 1 == 0){//Checks player2
-        //return "Player 1 has won the game";
-
-        //assign playerValue
         int turn = ((CheckersState) state).getTurn();
 
         Tile.Value playerValue;
-        if(turn == 0) {
+        if(turn == 0) {//The human/1st player
             playerValue = Tile.Value.BLACK;
-        }
-        else {
+        } else {
             playerValue = Tile.Value.RED;
         }
         boolean hasMoves = false;
 
         // Loop through all tiles on the board and call availMoves
         Tile[][] board = ((CheckersState) state).getBoard();
-        for (int row = 0; row < 8; row++) {
-            for (int col = 0; col < 8; col++) {
+        for (int row = 0; row < CheckersState.HEIGHT; row++) {
+            for (int col = 0; col < CheckersState.WIDTH; col++) {
                 Tile tile = board[row][col];
-                if (tile.getValue() == playerValue) {
-                    ArrayList<Tile> moves = availMoves(tile, board);
+                if (tile.getValue().equals(playerValue)) {
+                    ArrayList<TileTraversal> moves = availMoves(tile, board);
+                    //Looks for a case where the player has moves, in which
+                    //case the game is not over
                     if (!moves.isEmpty()) {
                         hasMoves = true;
                         break;
@@ -365,13 +367,13 @@ public class LocalCheckers extends LocalGame {
         }
 
         if (!hasMoves) {
+            //This is a one-line if-else statement where if the condition is true,
+            //the first option is used, while the second option is used when false
             String winner = (turn == 0) ? "Player 2" : "Player 1";
             return winner + " has won the game";
         }
 
-        //else return null;
         return null;
-
     }//checkIfGameOver
 
 }//LocalCheckers
