@@ -113,7 +113,7 @@ public class LocalCheckers extends LocalGame {
             if (board[row][col].getValue().equals(Tile.Value.AVAIL)) {
                 Log.d(TAG, "Piece will be moved");
 
-                ((CheckersState) state).swapPieces(findStart(board), board[row][col]);
+                ((CheckersState) state).movePieces(findStart(board), board[row][col]);
                 ((CheckersState) state).setBoard((revertAvail(board)));
                 ((CheckersState) state).flipTurn();//ends turn here
             } else if (board[row][col].getValue().equals(Tile.Value.BLACK)) {//This needs to be changed so it's dependant on the player's color, not always black

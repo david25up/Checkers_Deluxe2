@@ -140,7 +140,7 @@ public class CheckersState extends GameState {
      * @param avail
      *      The available space clicked that will inherit the original piece
      */
-    public void swapPieces(Tile piece, Tile avail) {
+    public void movePieces(Tile piece, Tile avail) {
         int pRow, pCol, aRow, aCol;
         pRow = piece.getRow(); pCol = piece.getCol();
         aRow = avail.getRow(); aCol = avail.getCol();
