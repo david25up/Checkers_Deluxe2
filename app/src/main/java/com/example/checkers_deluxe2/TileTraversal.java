@@ -1,8 +1,9 @@
 package com.example.checkers_deluxe2;
 
 /*
- * Used to track down the path of a capture move
- * so that all captured pieces are removed properly.
+ * An ArrayList of ArrayLists that is used to track
+ * down the path of a capture move so that all captured
+ * pieces are removed properly.
  *
  * @author   Ashton Char
  * @author   Eli Marcelino
@@ -14,7 +15,7 @@ import java.util.ArrayList;
 
 public class TileTraversal {
     /* --- INSTANCE VARIABLES --- */
-    Tile start;
+    Tile start; //The tile that contains the piece we are moving
     ArrayList<Tile> traversal;
 
     /** Constructor for LocalCheckers given a CheckersState object */
