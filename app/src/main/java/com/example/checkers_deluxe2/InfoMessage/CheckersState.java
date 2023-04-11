@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import com.example.GameFramework.infoMessage.GameState;
 
 import com.example.checkers_deluxe2.Tile;
+import com.example.checkers_deluxe2.TileTraversal;
 
 
 public class CheckersState extends GameState {
@@ -140,11 +141,18 @@ public class CheckersState extends GameState {
      * @param avail
      *      The available space clicked that will inherit the original piece
      */
-    public void movePieces(Tile piece, Tile avail) {
+    public void movePieces(TileTraversal traversal, Tile avail) {
         int pRow, pCol, aRow, aCol;
+        Tile piece = traversal.getStart();
         pRow = piece.getRow(); pCol = piece.getCol();
         aRow = avail.getRow(); aCol = avail.getCol();
 
+        for (int i = 0; i < traversal.getTraversalLength(); i++) {
+            int row = traversal.getIndex(i).getRow();
+            int col = traversal.getIndex(i).getCol();
+            board[row][col].setIsKing(false);
+            board[row][col].setValue(Tile.Value.EMPTY);
+        }
         board[aRow][aCol].setValue(piece.getValue());
 
         //Case where non-king piece reaches the corresponding end of the board

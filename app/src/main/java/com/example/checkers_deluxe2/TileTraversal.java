@@ -35,7 +35,7 @@ public class TileTraversal {
 
     public int getTraversalLength() {return this.traversal.size();}
 
-    public Tile getDestination() {return this.traversal.get(traversal.getTraversalLength()-1);}
+    public Tile getDestination() {return this.traversal.get(traversal.size()-1);}
 
     /* --- Setter Variables --- */
 
@@ -44,5 +44,7 @@ public class TileTraversal {
     public void setTraversal(ArrayList<Tile> traversal) {this.traversal = traversal;}
     /* --- Methods --- */
     public void addTile(Tile move) {this.traversal.add(move);}
+
+    public Tile getIndex(int index) {return this.traversal.get(index);}
 
 }
