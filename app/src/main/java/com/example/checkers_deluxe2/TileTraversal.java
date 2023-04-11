@@ -31,20 +31,16 @@ public class TileTraversal {
 
     public Tile getStart() {return this.start;}
 
-    public ArrayList<Tile> getTraversal() {return this.traversal;}
-
     public int getTraversalLength() {return this.traversal.size();}
 
-    public Tile getDestination() {return this.traversal.get(traversal.size()-1);}
+    public Tile getDestination() {return this.traversal.get(traversal.size() - 1);}
 
     /* --- Setter Variables --- */
 
     public void setStart(Tile start) {this.start = start;}
-
-    public void setTraversal(ArrayList<Tile> traversal) {this.traversal = traversal;}
     /* --- Methods --- */
     public void addTile(Tile move) {this.traversal.add(move);}
 
-    public Tile getIndex(int index) {return this.traversal.get(index);}
+    public Tile get(int index) {return this.traversal.get(index);}
 
 }

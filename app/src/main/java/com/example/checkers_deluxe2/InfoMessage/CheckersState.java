@@ -16,6 +16,9 @@ import com.example.GameFramework.infoMessage.GameState;
 import com.example.checkers_deluxe2.Tile;
 import com.example.checkers_deluxe2.TileTraversal;
 
+import java.util.ArrayList;
+import java.util.Timer;
+
 
 public class CheckersState extends GameState {
     // Board Dimensions //
@@ -25,6 +28,7 @@ public class CheckersState extends GameState {
     private Tile[][] board;
     private int whoseTurn; //0 if P1's Turn, 1 if P2's turn
     private double timeElapsed;
+    private ArrayList<TileTraversal> moves;
 
     /** Default constructor for the game state */
     public CheckersState() {
@@ -136,40 +140,30 @@ public class CheckersState extends GameState {
     /**
      * Swaps the position of two given pieces under the assumption that
      * piece2 will always be a blank spot
-     * @param piece
-     *      The initial piece clicked that needs to be moved
-     * @param avail
-     *      The available space clicked that will inherit the original piece
+     * @param traversal
+     *      The TileTraversal object that contains the path the user
+     *      would like to move the piece along
      */
-    public void movePieces(TileTraversal traversal, Tile avail) {
-        int pRow, pCol, aRow, aCol;
+    public void movePieces(TileTraversal traversal) {
+        int eRow, eCol;
         Tile piece = traversal.getStart();
-        pRow = piece.getRow(); pCol = piece.getCol();
-        aRow = avail.getRow(); aCol = avail.getCol();
+        Tile avail = traversal.getDestination();
+        eRow = avail.getRow(); eCol = avail.getCol();
 
-        for (int i = 0; i < traversal.getTraversalLength(); i++) {
-            int row = traversal.getIndex(i).getRow();
-            int col = traversal.getIndex(i).getCol();
-            board[row][col].setIsKing(false);
-            board[row][col].setValue(Tile.Value.EMPTY);
-        }
-        board[aRow][aCol].setValue(piece.getValue());
+        board[eRow][eCol].setValue(piece.getValue());
 
         //Case where non-king piece reaches the corresponding end of the board
-        if (!avail.getIsKing() && (aRow == 0 && avail.getValue().equals(Tile.Value.BLACK) ||
-                                    aRow == 7 && avail.getValue().equals(Tile.Value.RED))) {
-            board[aRow][aCol].setIsKing(true);
-        } else { board[aRow][aCol].setIsKing(piece.getIsKing()); }
+        if (!avail.getIsKing() && (eRow == 0 && avail.getValue().equals(Tile.Value.BLACK) ||
+                                    eRow == (CheckersState.HEIGHT - 1) && avail.getValue().equals(Tile.Value.RED))) {
+            board[eRow][eCol].setIsKing(true);
+        } else { board[eRow][eCol].setIsKing(piece.getIsKing()); }
 
-        board[pRow][pCol].revertTile();
-
-        //Checks for captured piece between the two tiles
-        if (Math.abs(pRow - aRow)  > 1) {
-            int hRow = ((pRow + aRow) / 2);
-            int hCol = ((pCol + aCol) / 2);
-            board[hRow][hCol].revertTile();
+        for (int i = 0; i < traversal.getTraversalLength() - 1; i++) {
+            int row = traversal.get(i).getRow();
+            int col = traversal.get(i).getCol();
+            board[row][col].revertTile();
         }
-    }//swapPieces
+    }//movePieces
 
 
 
@@ -186,10 +180,12 @@ public class CheckersState extends GameState {
     }//flipTurn
 
     /* --- GETTER METHODS --- */
-    public Tile[][] getBoard() {return board;}
+    public ArrayList<TileTraversal> getMoves() {return moves;}
     public int getTurn() {return whoseTurn;}
+    public Tile[][] getBoard() {return board;}
 
     /* --- SETTER METHODS --- */
+    public void setMoves(ArrayList<TileTraversal> moves){this.moves = moves;}
     public void setBoard(Tile[][] board) {this.board = board;}
 }//CheckersState
 
