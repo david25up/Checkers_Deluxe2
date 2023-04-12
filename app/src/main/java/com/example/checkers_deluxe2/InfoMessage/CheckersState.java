@@ -147,14 +147,14 @@ public class CheckersState extends GameState {
     public void movePieces(TileTraversal traversal) {
         int eRow, eCol;
         Tile piece = traversal.getStart();
-        Tile avail = traversal.getDestination();
-        eRow = avail.getRow(); eCol = avail.getCol();
+        Tile empty = traversal.getDestination();
+        eRow = empty.getRow(); eCol = empty.getCol();
 
         board[eRow][eCol].setValue(piece.getValue());
 
         //Case where non-king piece reaches the corresponding end of the board
-        if (!avail.getIsKing() && (eRow == 0 && avail.getValue().equals(Tile.Value.BLACK) ||
-                                    eRow == (CheckersState.HEIGHT - 1) && avail.getValue().equals(Tile.Value.RED))) {
+        if (!empty.getIsKing() && (eRow == 0 && empty.getValue().equals(Tile.Value.BLACK) ||
+                                    eRow == (CheckersState.HEIGHT - 1) && empty.getValue().equals(Tile.Value.RED))) {
             board[eRow][eCol].setIsKing(true);
         } else { board[eRow][eCol].setIsKing(piece.getIsKing()); }
 

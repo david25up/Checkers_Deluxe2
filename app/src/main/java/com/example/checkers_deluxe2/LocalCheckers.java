@@ -81,6 +81,7 @@ public class LocalCheckers extends LocalGame {
     @Override
     protected boolean makeMove(GameAction action) {
         if (action instanceof CheckersDumbAIAction) {
+
             int row = (int) (Math.random() * (CheckersState.WIDTH)); //Generates numbers 0 - 7
             int col = (int) (Math.random() * (CheckersState.HEIGHT));
             Tile[][] board = ((CheckersState) state).getBoard();
@@ -118,6 +119,7 @@ public class LocalCheckers extends LocalGame {
 
                 ArrayList<TileTraversal> moves = ((CheckersState) state).getMoves();
                 ((CheckersState) state).movePieces(findTT(board[row][col], moves));
+                ((CheckersState) state).setMoves(null);
                 ((CheckersState) state).setBoard((revertAvail(board)));
                 ((CheckersState) state).flipTurn();//ends turn here
                 Log.d(TAG, "Job's done");
@@ -127,7 +129,7 @@ public class LocalCheckers extends LocalGame {
                 ((CheckersState) state).setBoard(revertAvail(board));
                 ArrayList<TileTraversal> moves = availMoves(board[row][col], board);
                 ((CheckersState) state).setMoves(moves);
-                ((CheckersState) state).setBoard(toggleAvail(moves, board));
+                if (toggleAvail(moves, board) != null) { ((CheckersState) state).setBoard(toggleAvail(moves, board));}
                 //does not end the player's turn, but changes visuals so the
                 //possible moves are shown
             }
@@ -282,7 +284,6 @@ public class LocalCheckers extends LocalGame {
                     path.addTile(board[row - 1][col + 1]);
                     path.addTile(board[row - 2][col + 2]);
                     captureResult.add(path);
-                    board[row - 2][col + 2].setValue(startVal);
                     captureResult.addAll(capturePiece(start, captureResult, board, board[row - 2][col + 2]));
                 }
             }
@@ -300,7 +301,6 @@ public class LocalCheckers extends LocalGame {
                     }
                     path.addTile(board[row + 1][col - 1]);
                     path.addTile(board[row + 2][col - 2]);
-                    board[row + 2][col - 2].setValue(startVal);
                     captureResult.addAll(capturePiece(start, captureResult, board, board[row + 2][col - 2]));
                 }
             }
@@ -314,7 +314,6 @@ public class LocalCheckers extends LocalGame {
                     }
                     path.addTile(board[row + 1][col + 1]);
                     path.addTile(board[row + 2][col + 2]);
-                    board[row + 2][col + 2].setValue(startVal);
                     captureResult.addAll(capturePiece(start, captureResult, board, board[row + 2][col + 2]));
                 }
             }
@@ -366,7 +365,7 @@ public class LocalCheckers extends LocalGame {
      *      The arraylist of all possible moves on the clicked piece
      */
     private Tile[][] toggleAvail(ArrayList<TileTraversal> moves, Tile[][] board) {
-        if (moves.size() == 0) return null;
+        if (moves.size() == 0) { return null; }
 
         //Marks the clicked piece
         Tile start = moves.get(0).getStart();
@@ -391,7 +390,7 @@ public class LocalCheckers extends LocalGame {
             for (int col = 0; col < CheckersState.HEIGHT; col++) {
                 temp = board[row][col];
                 if (temp.getValue().equals(Tile.Value.AVAIL)) {
-                    board[row][col].setValue(Tile.Value.EMPTY);
+                    board[row][col].revertTile();
                 } else if (temp.getIsStart()){
                     board[row][col].setIsStart(false);
                 }
@@ -443,7 +442,7 @@ public class LocalCheckers extends LocalGame {
             //This is a one-line if-else statement where if the condition is true,
             //the first option is used, while the second option is used when false
             String winner = (turn == 0) ? "Player 2" : "Player 1";
-            //return winner + " has won the game ";
+            return winner + " has won the game ";
         }
 
         return null;

@@ -27,6 +27,7 @@ public class Tile {
     public Tile(int row, int col) {
         this.value = Value.EMPTY;
         this.isKing = false;
+        this.isStart = false;
         this.row = row;
         this.col = col;
     }//ctor
