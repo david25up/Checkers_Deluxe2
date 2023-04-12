@@ -104,7 +104,7 @@ public class LocalCheckers extends LocalGame {
                 Log.d(TAG, "Job's done");
             }
             return true;
-        }//Dumb AI's turn
+        }//Dumb AI's turn :)
 
         else if (action instanceof  CheckersTapAction) {
             CheckersTapAction cm = (CheckersTapAction) action;
