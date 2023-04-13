@@ -36,7 +36,7 @@ public class TileTraversal {
         this.start.setValue(original.start.getValue());
         this.start.setIsKing(original.start.getIsKing());
         this.traversal = new ArrayList<Tile>();
-        for (int i = 0; i < traversal.size(); i++) {
+        for (int i = 0; i < original.traversal.size(); i++) {
             traversal.add(original.getTile(i));
         }
     }//ctor

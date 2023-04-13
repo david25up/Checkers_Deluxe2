@@ -299,7 +299,7 @@ public class LocalCheckers extends LocalGame {
 
                     TileTraversal path;
                     TileTraversal temp = findTT(board[row][col], captureResult);
-                    if (temp == null) {
+                    if (temp == null) {//Checks to see if this is a recursive call
                         path = new TileTraversal(start);
                     } else {
                         path = new TileTraversal(temp);
@@ -312,7 +312,7 @@ public class LocalCheckers extends LocalGame {
                     ArrayList<TileTraversal> recCall = capturePiece(start, captureResult, board, board[row - 2][col - 2]);
                     ArrayList<Tile> recDest = getDestList(recCall);
                     Tile dest;
-                    for (int i = 0; i < destinations.size(); i++) {
+                    for (int i = 0; i < destinations.size(); i++) {//Double check for duplicates
                         dest = destinations.get(i);
                         for (int j = 0; j < recDest.size(); j++)
                         if (!recDest.contains(dest)) {
@@ -514,7 +514,7 @@ public class LocalCheckers extends LocalGame {
                     ArrayList<TileTraversal> moves = availMoves(tile, board);
                     //Looks for a case where the player has moves, in which
                     //case the game is not over
-                    if (moves.size() != 1) {
+                    if (moves.size() != 0) {
                         hasMoves = true;
                         break;
                     }
@@ -529,7 +529,7 @@ public class LocalCheckers extends LocalGame {
             //This is a one-line if-else statement where if the condition is true,
             //the first option is used, while the second option is used when false
             String winner = (turn == 0) ? "Player 2" : "Player 1";
-            return winner + " has won the game ";
+            return winner + " has won! ";
         }
 
         return null;
