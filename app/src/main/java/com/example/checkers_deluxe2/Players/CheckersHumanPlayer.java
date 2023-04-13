@@ -80,7 +80,7 @@ public class CheckersHumanPlayer extends GameHumanPlayer implements View.OnTouch
         surfaceView.setOnTouchListener(this);
 
         //set up the reset button
-        ImageButton reset = myActivity.findViewById(R.id.reset_button);
+        Button reset = myActivity.findViewById(R.id.reset_button);
         Logger.log("set reset button", "OnClick");
         reset.setOnClickListener(this);
     }//setAsGui
