@@ -20,6 +20,6 @@ public class CheckersDumbAIAction extends GameAction {
      */
     public CheckersDumbAIAction(GamePlayer player) {
         super(player);
-    }//CheckersMoveAction
+    }//CheckersDumbAIAction
 
  }

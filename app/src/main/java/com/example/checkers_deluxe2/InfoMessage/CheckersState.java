@@ -158,7 +158,7 @@ public class CheckersState extends GameState {
             board[eRow][eCol].setIsKing(true);
         } else { board[eRow][eCol].setIsKing(piece.getIsKing()); }
 
-        for (int i = 0; i < traversal.getTraversalLength() - 1; i++) {
+        for (int i = 0; i < traversal.getTraversalLength()-1; i++) {
             int row = traversal.get(i).getRow();
             int col = traversal.get(i).getCol();
             board[row][col].revertTile();

@@ -19,6 +19,7 @@ import com.example.GameFramework.actionMessage.GameAction;
 import com.example.GameFramework.players.GamePlayer;
 import com.example.checkers_deluxe2.InfoMessage.CheckersState;
 import com.example.checkers_deluxe2.actionMessage.CheckersDumbAIAction;
+import com.example.checkers_deluxe2.actionMessage.CheckersSmartAIAction;
 import com.example.checkers_deluxe2.actionMessage.CheckersTapAction;
 
 import java.util.ArrayList;
@@ -107,6 +108,42 @@ public class LocalCheckers extends LocalGame {
             return true;
         }//Dumb AI's turn :)
 
+        else if (action instanceof CheckersSmartAIAction) {
+
+                int row = (int) (Math.random() * (CheckersState.WIDTH)); //Generates numbers 0 - 7
+                int col = (int) (Math.random() * (CheckersState.HEIGHT));
+                Tile[][] board = ((CheckersState) state).getBoard();
+
+                while (board[row][col].getValue() != Tile.Value.RED) {//This needs to be changed so it's dependant on the player's color, not always red
+                    row = (int) (Math.random() * (CheckersState.WIDTH));
+                    col = (int) (Math.random() * (CheckersState.HEIGHT));
+                }
+
+                Log.d(TAG, "Piece found at " + row + " " + col);
+                ArrayList<TileTraversal> moves = availMoves(board[row][col], board);
+                if (moves.size() != 0) {//There is an available move
+                    sleep(1000);
+                    int randIndex = (int) (Math.random() * (moves.size()));
+
+                    for (int i = 0; i < moves.size()-1; i++) {
+                        for (int j = 0; j < moves.get(i).getTraversalLength()-1; j++) {
+                            if (moves.get(i).get(j).getRow() != row || moves.get(i).get(j).getCol() != col) {
+                                randIndex = i;
+                                break;
+                            }
+                        }
+                    }
+
+
+                    Log.d(TAG, "Moving piece");
+                    ((CheckersState) state).setBoard(toggleAvail(moves, board));
+                    ((CheckersState) state).movePieces(moves.get(randIndex));
+                    ((CheckersState) state).setBoard((revertAvail(board)));
+                    ((CheckersState) state).flipTurn();//ends turn here
+                    Log.d(TAG, "Job's done");
+                }
+                return true;
+        }//Smart AI's turn :)
         else if (action instanceof  CheckersTapAction) {
             CheckersTapAction cm = (CheckersTapAction) action;
 
@@ -175,8 +212,8 @@ public class LocalCheckers extends LocalGame {
         // if captureResult has any moves, remove moveResult from possible moves (force capture)
         ArrayList<TileTraversal> moveResult = new ArrayList<TileTraversal>();
         ArrayList<TileTraversal> captureResult = new ArrayList<TileTraversal>();
-        // addendum before i forget
-        // making it return a traversal of tile always gives a list of possible movement actions instead of just a destination
+
+
         int row = start.getRow();
         int col = start.getCol();
         boolean startIsKing = start.getIsKing();

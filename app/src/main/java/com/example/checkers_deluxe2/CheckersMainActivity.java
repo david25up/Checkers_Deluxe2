@@ -17,6 +17,7 @@ import com.example.GameFramework.infoMessage.GameState;
 import com.example.GameFramework.players.GamePlayer;
 import com.example.checkers_deluxe2.InfoMessage.CheckersState;
 import com.example.checkers_deluxe2.Players.CheckersComputerPlayer;
+import com.example.checkers_deluxe2.Players.CheckersSmartAIPlayer;
 import com.example.checkers_deluxe2.Players.CheckersHumanPlayer;
 
 import java.util.ArrayList;
@@ -53,7 +54,7 @@ public class CheckersMainActivity extends GameMainActivity {
                 return new CheckersHumanPlayer(name, R.layout.activity_main);
             }});
         playerTypes.add(new GamePlayerType("Smart AI Player") {
-            public GamePlayer createPlayer(String name) {return new CheckersComputerPlayer(name);}});
+            public GamePlayer createPlayer(String name) {return new CheckersSmartAIPlayer(name);}});
         playerTypes.add(new GamePlayerType("Base AI Player") {
             public GamePlayer createPlayer(String name) {return new CheckersComputerPlayer(name);}});
 

@@ -20,6 +20,6 @@ public class CheckersSmartAIAction extends GameAction {
      */
     public CheckersSmartAIAction(GamePlayer player) {
         super(player);
-    }//CheckersMoveAction
+    }//heckersSmartAIAction
 
 }
