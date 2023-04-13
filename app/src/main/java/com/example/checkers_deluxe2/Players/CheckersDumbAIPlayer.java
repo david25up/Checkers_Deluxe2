@@ -19,7 +19,7 @@ import com.example.checkers_deluxe2.Tile;
 import com.example.checkers_deluxe2.actionMessage.CheckersDumbAIAction;
 import com.example.checkers_deluxe2.animation.CheckersAnimationSurface;
 
-public class CheckersComputerPlayer extends GameComputerPlayer {
+public class CheckersDumbAIPlayer extends GameComputerPlayer {
     // Tag for logging //
     private static final String TAG = "CheckersComputerPlayer";
 
@@ -32,7 +32,7 @@ public class CheckersComputerPlayer extends GameComputerPlayer {
      * The inherited constructor from GameComputerPlayer class
      * @param name the player's name
      */
-    public CheckersComputerPlayer(String name) {
+    public CheckersDumbAIPlayer(String name) {
         super(name);
     }//ctor
 

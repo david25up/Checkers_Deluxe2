@@ -1,14 +1,5 @@
 package com.example.checkers_deluxe2;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.app.Activity;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-
 import com.example.GameFramework.GameMainActivity;
 import com.example.GameFramework.LocalGame;
 import com.example.GameFramework.gameConfiguration.GameConfig;
@@ -16,7 +7,7 @@ import com.example.GameFramework.gameConfiguration.GamePlayerType;
 import com.example.GameFramework.infoMessage.GameState;
 import com.example.GameFramework.players.GamePlayer;
 import com.example.checkers_deluxe2.InfoMessage.CheckersState;
-import com.example.checkers_deluxe2.Players.CheckersComputerPlayer;
+import com.example.checkers_deluxe2.Players.CheckersDumbAIPlayer;
 import com.example.checkers_deluxe2.Players.CheckersSmartAIPlayer;
 import com.example.checkers_deluxe2.Players.CheckersHumanPlayer;
 
@@ -56,7 +47,7 @@ public class CheckersMainActivity extends GameMainActivity {
         playerTypes.add(new GamePlayerType("Smart AI Player") {
             public GamePlayer createPlayer(String name) {return new CheckersSmartAIPlayer(name);}});
         playerTypes.add(new GamePlayerType("Base AI Player") {
-            public GamePlayer createPlayer(String name) {return new CheckersComputerPlayer(name);}});
+            public GamePlayer createPlayer(String name) {return new CheckersDumbAIPlayer(name);}});
 
         // Create a game configuration class for Checkers:
         GameConfig defaultConfig = new GameConfig(playerTypes, 2, 2, "Checkers", PORT_NUMBER);

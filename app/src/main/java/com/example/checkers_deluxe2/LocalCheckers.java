@@ -84,66 +84,91 @@ public class LocalCheckers extends LocalGame {
 
     @Override
     protected boolean makeMove(GameAction action) {
-        if (action instanceof CheckersDumbAIAction) {
+        Tile.Value playerValue = findPlayerVal();
 
-            int row = (int) (Math.random() * (CheckersState.WIDTH)); //Generates numbers 0 - 7
-            int col = (int) (Math.random() * (CheckersState.HEIGHT));
+        if (action instanceof CheckersDumbAIAction) {
+            ArrayList<ArrayList<TileTraversal>> allPossMoves = new ArrayList<>();
+            ArrayList<TileTraversal> moves;
             Tile[][] board = ((CheckersState) state).getBoard();
 
-            while (board[row][col].getValue() != Tile.Value.RED) {//This needs to be changed so it's dependant on the player's color, not always red
-                row = (int) (Math.random() * (CheckersState.WIDTH));
-                col = (int) (Math.random() * (CheckersState.HEIGHT));
+            for (int row = 0; row < CheckersState.HEIGHT; row++) {
+                for (int col = 0; col < CheckersState.WIDTH; col++) {
+                    if (board[row][col].getValue().equals(playerValue)) {
+                        moves = availMoves(board[row][col], board);
+                        if (moves.size() != 0) {allPossMoves.add(moves);}
+                    }
+                }
             }
 
-            Log.d(TAG, "Piece found at " + row + " " + col);
-            ArrayList<TileTraversal> moves = availMoves(board[row][col], board);
-            if (moves.size() != 0) {//There is an available move
-                sleep(1000);
-                int randIndex = (int) (Math.random() * (moves.size()));
-
-                Log.d(TAG, "Moving piece");
-                ((CheckersState) state).setBoard(toggleAvail(moves, board));
-                ((CheckersState) state).movePieces(moves.get(randIndex));
-                ((CheckersState) state).setBoard((revertAvail(board)));
-                ((CheckersState) state).flipTurn();//ends turn here
-                Log.d(TAG, "Job's done");
-            }
+            int randPiece = (int) (Math.random() * (allPossMoves.size()));
+            moves = allPossMoves.get(randPiece);
+            int randMove = (int) (Math.random() * (moves.size()));
+            Log.d("Dumb AI", "Moving piece"); sleep(1000);
+            ((CheckersState) state).setBoard(toggleAvail(moves, board));
+            ((CheckersState) state).movePieces(moves.get(randMove));
+            ((CheckersState) state).setBoard((revertAvail(board)));
+            ((CheckersState) state).flipTurn();//ends turn here
+            Log.d("Dumb AI", "Job's done");
             return true;
         }//Dumb AI's turn :)
 
         else if (action instanceof CheckersSmartAIAction) {
-            int row = (int) (Math.random() * (CheckersState.WIDTH)); //Generates numbers 0 - 7
-            int col = (int) (Math.random() * (CheckersState.HEIGHT));
+            ArrayList<ArrayList<TileTraversal>> allPossMoves = new ArrayList<>();
+            ArrayList<TileTraversal> moves, maxMoves;
+            int numBackRow = 0;
+            maxMoves = new ArrayList<>();
             Tile[][] board = ((CheckersState) state).getBoard();
 
-            while (board[row][col].getValue() != Tile.Value.RED) {//This needs to be changed so it's dependant on the player's color, not always red
-                row = (int) (Math.random() * (CheckersState.WIDTH));
-                col = (int) (Math.random() * (CheckersState.HEIGHT));
+            //Counts the number of pieces in the back row
+            for (int col = 0; col < CheckersState.WIDTH; col++) {
+                if (board[0][col].getValue().equals(playerValue)) {
+                    numBackRow++;
+                }
             }
 
-            Log.d(TAG, "Piece found at " + row + " " + col);
-            ArrayList<TileTraversal> moves = availMoves(board[row][col], board);
-            if (moves.size() != 0) {//There is an available move
-                sleep(1000);
-                int randIndex = (int) (Math.random() * (moves.size()));
-
-                for (int i = 0; i < moves.size() - 1; i++) {
-                    for (int j = 0; j < moves.get(i).getTraversalLength() - 1; j++) {
-                        if (moves.get(i).getTile(j).getRow() != row || moves.get(i).getTile(j).getCol() != col) {
-                            randIndex = i;
-                            break;
-                        }
+            //Gets all possible moves excluding the back row
+            for (int row = 1; row < CheckersState.HEIGHT; row++) {
+                for (int col = 0; col < CheckersState.WIDTH; col++) {
+                    if (board[row][col].getValue().equals(playerValue)) {
+                        moves = availMoves(board[row][col], board);
+                        if (moves.size() != 0) {allPossMoves.add(moves);}
                     }
                 }
-
-
-                Log.d(TAG, "Moving piece");
-                ((CheckersState) state).setBoard(toggleAvail(moves, board));
-                ((CheckersState) state).movePieces(moves.get(randIndex));
-                ((CheckersState) state).setBoard((revertAvail(board)));
-                ((CheckersState) state).flipTurn();//ends turn here
-                Log.d(TAG, "Job's done");
             }
+
+            //Only checks the back row if there are no more possible moves forwards
+            //or one of the back row pieces have already been moved
+            if (allPossMoves.size() == 0 || numBackRow < 4) {
+                for (int col = 0; col < CheckersState.WIDTH; col++) {
+                    if (board[0][col].getValue().equals(playerValue)) {
+                        moves = availMoves(board[0][col], board);
+                        if (moves.size() != 0) {allPossMoves.add(moves);}
+                    }
+                }
+            } if (allPossMoves.size() == 0) {return true;}//No possible moves
+
+            //Finds the longest piece so among all the traversals to emphasize capturing pieces
+            int greatestSoFar = 0;
+            for (int i = 0; i < allPossMoves.size(); i++) {
+                moves = allPossMoves.get(i);
+                for (int j = 0; j < moves.size(); j++) {
+                    if (moves.get(j).getTraversalLength() > greatestSoFar) {
+                        maxMoves = new ArrayList<>();
+                        greatestSoFar = moves.get(j).getTraversalLength();//resets the list
+                        maxMoves.add(moves.get(j));
+                    } else if (moves.get(j).getTraversalLength() == greatestSoFar) {
+                        maxMoves.add(moves.get(j));
+                    }
+                }
+            }
+
+            int randMove = (int) (Math.random() * (maxMoves.size()));
+            Log.d("Smart AI", "Moving piece"); sleep(1000);
+            ((CheckersState) state).setBoard(toggleAvail(maxMoves, board));
+            ((CheckersState) state).movePieces(maxMoves.get(randMove));
+            ((CheckersState) state).setBoard((revertAvail(board)));
+            ((CheckersState) state).flipTurn();//ends turn here
+            Log.d("Smart AI", "Job's done");
             return true;
         }//Smart AI's turn :)
 
@@ -155,16 +180,14 @@ public class LocalCheckers extends LocalGame {
             Tile[][] board = ((CheckersState) state).getBoard();
 
             if (board[row][col].getValue().equals(Tile.Value.AVAIL)) {
-                Log.d(TAG, "Piece will be moved");
-
                 ArrayList<TileTraversal> moves = ((CheckersState) state).getMoves();
                 ((CheckersState) state).movePieces(findTT(board[row][col], moves));
                 ((CheckersState) state).setMoves(null);
                 ((CheckersState) state).setBoard((revertAvail(board)));
                 ((CheckersState) state).flipTurn();//ends turn here
-                Log.d(TAG, "Job's done");
+                Log.d("Human", "Job's done");
             } else if (board[row][col].getValue().equals(Tile.Value.BLACK)) {//This needs to be changed so it's dependant on the player's color, not always black
-                Log.d(TAG, "Piece was tapped");
+                Log.d("Human", "Piece was tapped");
 
                 ((CheckersState) state).setBoard(revertAvail(board));
                 ArrayList<TileTraversal> moves = availMoves(board[row][col], board);
@@ -219,7 +242,6 @@ public class LocalCheckers extends LocalGame {
         ArrayList<TileTraversal> moveResult = new ArrayList<TileTraversal>();
         ArrayList<TileTraversal> captureResult = new ArrayList<TileTraversal>();
 
-
         int row = start.getRow();
         int col = start.getCol();
         boolean startIsKing = start.getIsKing();
@@ -271,7 +293,7 @@ public class LocalCheckers extends LocalGame {
     private boolean validMove(int row, int col, Tile[][] board) {
         if (row < 0 || col < 0 || row >= CheckersState.HEIGHT || col >= CheckersState.WIDTH) {
             return false;
-        } else if (board[row][col].getValue() != Tile.Value.EMPTY) {
+        } else if (board[row][col].getValue() == Tile.Value.RED || board[row][col].getValue() == Tile.Value.BLACK) {
             return false;
         }
         return true;
@@ -492,6 +514,20 @@ public class LocalCheckers extends LocalGame {
     }//toggleBoard
 
     /**
+     * Determines what color the current player is
+     * @return
+     *      The color value of the player moving, where player 0
+     *      is always black and player 1 is always red
+     */
+    private Tile.Value findPlayerVal() {
+        if (((CheckersState) state).getTurn() == 0) {
+            return Tile.Value.BLACK;
+        } else {
+            return Tile.Value.RED;
+        }
+    }//findPlayerVal
+
+    /**
      * Determines whether or not a game is over based on the amount
      * of available moves left for the current player's turn
      *
@@ -502,12 +538,7 @@ public class LocalCheckers extends LocalGame {
     protected String checkIfGameOver() {
         int turn = ((CheckersState) state).getTurn();
 
-        Tile.Value playerValue;
-        if (turn == 0) {//The human/1st player
-            playerValue = Tile.Value.BLACK;
-        } else {
-            playerValue = Tile.Value.RED;
-        }
+        Tile.Value playerValue = findPlayerVal();
         boolean hasMoves = false;
 
         // Loop through all tiles on the board and call availMoves
@@ -534,6 +565,7 @@ public class LocalCheckers extends LocalGame {
             //This is a one-line if-else statement where if the condition is true,
             //the first option is used, while the second option is used when false
             String winner = (turn == 0) ? "Player 2" : "Player 1";
+            Log.d("GAME OVER", winner + " has won! ");
             return winner + " has won! ";
         }
 
