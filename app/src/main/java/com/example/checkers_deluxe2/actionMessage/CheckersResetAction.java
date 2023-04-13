@@ -1,7 +1,7 @@
 package com.example.checkers_deluxe2.actionMessage;
 
 /*
- * The action of a "smart computer"
+ * When the human player taps on a piece that they want to move
  *
  * @author   Ashton Char
  * @author   Eli Marcelino
@@ -12,15 +12,14 @@ package com.example.checkers_deluxe2.actionMessage;
 import com.example.GameFramework.actionMessage.GameAction;
 import com.example.GameFramework.players.GamePlayer;
 
-public class CheckersSmartAIAction extends GameAction {
+public class CheckersResetAction extends GameAction {
 
     /**
-     * Constructor for CheckersMoveAction
+     * Constructor for CheckersResetAction
      * @param player
-     *      The computer player
+     *      The human player seeking a reset
      */
-    public CheckersSmartAIAction(GamePlayer player) {
+    public CheckersResetAction(GamePlayer player) {
         super(player);
-    }//CheckersSmartAIAction
-
+    }//CheckersResetAction
 }

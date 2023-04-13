@@ -13,17 +13,22 @@ import android.graphics.Point;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ImageButton;
 
 import com.example.GameFramework.GameMainActivity;
 import com.example.GameFramework.infoMessage.GameInfo;
+import com.example.GameFramework.infoMessage.GameOverInfo;
 import com.example.GameFramework.players.GameHumanPlayer;
+import com.example.GameFramework.players.GamePlayer;
 import com.example.GameFramework.utilities.Logger;
 import com.example.checkers_deluxe2.InfoMessage.CheckersState;
 import com.example.checkers_deluxe2.R;
+import com.example.checkers_deluxe2.actionMessage.CheckersResetAction;
 import com.example.checkers_deluxe2.actionMessage.CheckersTapAction;
 import com.example.checkers_deluxe2.animation.CheckersAnimationSurface;
 
-public class CheckersHumanPlayer extends GameHumanPlayer implements View.OnTouchListener{
+public class CheckersHumanPlayer extends GameHumanPlayer implements View.OnTouchListener, View.OnClickListener {
     // Tag for logging //
     private static final String TAG = "CheckersHumanPlayer";
 
@@ -73,6 +78,11 @@ public class CheckersHumanPlayer extends GameHumanPlayer implements View.OnTouch
         surfaceView = myActivity.findViewById(R.id.surfaceView);
         Logger.log("set listener","OnTouch");
         surfaceView.setOnTouchListener(this);
+
+        //set up the reset button
+        ImageButton reset = myActivity.findViewById(R.id.reset_button);
+        Logger.log("set reset button", "OnClick");
+        reset.setOnClickListener(this);
     }//setAsGui
 
     @Override
@@ -92,5 +102,11 @@ public class CheckersHumanPlayer extends GameHumanPlayer implements View.OnTouch
             game.sendAction(new CheckersTapAction(this, rowClick, colClick));
         }
         return true;
+    }
+
+    @Override
+    public void onClick(View view) {
+        if (view.getId() != R.id.reset_button) {return;}
+        game.sendAction(new CheckersResetAction(this));
     }
 }

@@ -19,6 +19,7 @@ import com.example.GameFramework.actionMessage.GameAction;
 import com.example.GameFramework.players.GamePlayer;
 import com.example.checkers_deluxe2.InfoMessage.CheckersState;
 import com.example.checkers_deluxe2.actionMessage.CheckersDumbAIAction;
+import com.example.checkers_deluxe2.actionMessage.CheckersResetAction;
 import com.example.checkers_deluxe2.actionMessage.CheckersSmartAIAction;
 import com.example.checkers_deluxe2.actionMessage.CheckersTapAction;
 
@@ -177,6 +178,10 @@ public class LocalCheckers extends LocalGame {
             return true;
         }//Human Player's turn
 
+        if (action instanceof CheckersResetAction) {
+            ((CheckersState) state).resetBoard();
+        }//Reset Button Clicked
+
         return false;
     }//makeMove
 
@@ -315,7 +320,7 @@ public class LocalCheckers extends LocalGame {
                     for (int i = 0; i < destinations.size(); i++) {//Double check for duplicates
                         dest = destinations.get(i);
                         for (int j = 0; j < recDest.size(); j++)
-                        if (!recDest.contains(dest)) {
+                            if (!recDest.contains(dest)) {
                             captureResult.add(recCall.get(i));
                         }
                     }

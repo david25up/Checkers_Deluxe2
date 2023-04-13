@@ -28,7 +28,7 @@ public class CheckersTapAction extends GameAction {
         super(player);
         this.row = row;
         this.col = col;
-    }
+    }//ctor
 
     /* --- GETTER METHODS --- */
     public int getRow() {return row;}

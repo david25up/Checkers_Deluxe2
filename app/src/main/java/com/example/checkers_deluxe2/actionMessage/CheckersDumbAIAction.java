@@ -17,6 +17,7 @@ public class CheckersDumbAIAction extends GameAction {
     /**
      * Constructor for CheckersMoveAction
      * @param player
+     *      The computer player
      */
     public CheckersDumbAIAction(GamePlayer player) {
         super(player);
