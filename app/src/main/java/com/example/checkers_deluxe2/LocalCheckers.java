@@ -28,7 +28,9 @@ public class LocalCheckers extends LocalGame {
     // Tag for logging //
     private static final String TAG = "LocalCheckers";
 
-    /** Default constructor for LocalCheckers */
+    /**
+     * Default constructor for LocalCheckers
+     */
     public LocalCheckers() {
         super();
         CheckersState checkersState = new CheckersState();
@@ -36,7 +38,9 @@ public class LocalCheckers extends LocalGame {
         super.state = checkersState;
     }//default ctor
 
-    /** Constructor for LocalCheckers given a CheckersState object */
+    /**
+     * Constructor for LocalCheckers given a CheckersState object
+     */
     public LocalCheckers(CheckersState checkersState) {
         super();
         checkersState.initBoard();
@@ -44,12 +48,11 @@ public class LocalCheckers extends LocalGame {
     }//ctor
 
     /**
-     *  This is where you should initialize anything specific to the
-     *  number of players.  For example you may need to init your
-     *  game state or part of it.  Loading data could also happen here.
+     * This is where you should initialize anything specific to the
+     * number of players.  For example you may need to init your
+     * game state or part of it.  Loading data could also happen here.
      *
-     * 	 @param players
-     * 	      the array that holds all of the players in the game
+     * @param players the array that holds all of the players in the game
      */
     @Override
     public void start(GamePlayer[] players) {
@@ -58,8 +61,8 @@ public class LocalCheckers extends LocalGame {
 
     /**
      * Sends the updated state of the game to the player
-     * @param p
-     * 			the player to notify
+     *
+     * @param p the player to notify
      */
     @Override
     protected void sendUpdatedStateTo(GamePlayer p) {
@@ -69,14 +72,13 @@ public class LocalCheckers extends LocalGame {
     /**
      * --- HELPER METHOD ---
      * Makes sure the player can move
-     * @param playerIdx
-     * 		the player's player-number (ID)
-     * @return
-     *      returns true if the given player is allowed to move
+     *
+     * @param playerIdx the player's player-number (ID)
+     * @return returns true if the given player is allowed to move
      */
     @Override
     protected boolean canMove(int playerIdx) {
-        return (playerIdx == ((CheckersState)state).getTurn());
+        return (playerIdx == ((CheckersState) state).getTurn());
     }//canMove
 
     @Override
@@ -109,42 +111,42 @@ public class LocalCheckers extends LocalGame {
         }//Dumb AI's turn :)
 
         else if (action instanceof CheckersSmartAIAction) {
+            int row = (int) (Math.random() * (CheckersState.WIDTH)); //Generates numbers 0 - 7
+            int col = (int) (Math.random() * (CheckersState.HEIGHT));
+            Tile[][] board = ((CheckersState) state).getBoard();
 
-                int row = (int) (Math.random() * (CheckersState.WIDTH)); //Generates numbers 0 - 7
-                int col = (int) (Math.random() * (CheckersState.HEIGHT));
-                Tile[][] board = ((CheckersState) state).getBoard();
+            while (board[row][col].getValue() != Tile.Value.RED) {//This needs to be changed so it's dependant on the player's color, not always red
+                row = (int) (Math.random() * (CheckersState.WIDTH));
+                col = (int) (Math.random() * (CheckersState.HEIGHT));
+            }
 
-                while (board[row][col].getValue() != Tile.Value.RED) {//This needs to be changed so it's dependant on the player's color, not always red
-                    row = (int) (Math.random() * (CheckersState.WIDTH));
-                    col = (int) (Math.random() * (CheckersState.HEIGHT));
-                }
+            Log.d(TAG, "Piece found at " + row + " " + col);
+            ArrayList<TileTraversal> moves = availMoves(board[row][col], board);
+            if (moves.size() != 0) {//There is an available move
+                sleep(1000);
+                int randIndex = (int) (Math.random() * (moves.size()));
 
-                Log.d(TAG, "Piece found at " + row + " " + col);
-                ArrayList<TileTraversal> moves = availMoves(board[row][col], board);
-                if (moves.size() != 0) {//There is an available move
-                    sleep(1000);
-                    int randIndex = (int) (Math.random() * (moves.size()));
-
-                    for (int i = 0; i < moves.size()-1; i++) {
-                        for (int j = 0; j < moves.get(i).getTraversalLength()-1; j++) {
-                            if (moves.get(i).get(j).getRow() != row || moves.get(i).get(j).getCol() != col) {
-                                randIndex = i;
-                                break;
-                            }
+                for (int i = 0; i < moves.size() - 1; i++) {
+                    for (int j = 0; j < moves.get(i).getTraversalLength() - 1; j++) {
+                        if (moves.get(i).getTile(j).getRow() != row || moves.get(i).getTile(j).getCol() != col) {
+                            randIndex = i;
+                            break;
                         }
                     }
-
-
-                    Log.d(TAG, "Moving piece");
-                    ((CheckersState) state).setBoard(toggleAvail(moves, board));
-                    ((CheckersState) state).movePieces(moves.get(randIndex));
-                    ((CheckersState) state).setBoard((revertAvail(board)));
-                    ((CheckersState) state).flipTurn();//ends turn here
-                    Log.d(TAG, "Job's done");
                 }
-                return true;
+
+
+                Log.d(TAG, "Moving piece");
+                ((CheckersState) state).setBoard(toggleAvail(moves, board));
+                ((CheckersState) state).movePieces(moves.get(randIndex));
+                ((CheckersState) state).setBoard((revertAvail(board)));
+                ((CheckersState) state).flipTurn();//ends turn here
+                Log.d(TAG, "Job's done");
+            }
+            return true;
         }//Smart AI's turn :)
-        else if (action instanceof  CheckersTapAction) {
+
+        else if (action instanceof CheckersTapAction) {
             CheckersTapAction cm = (CheckersTapAction) action;
 
             int row = cm.getRow();
@@ -166,7 +168,9 @@ public class LocalCheckers extends LocalGame {
                 ((CheckersState) state).setBoard(revertAvail(board));
                 ArrayList<TileTraversal> moves = availMoves(board[row][col], board);
                 ((CheckersState) state).setMoves(moves);
-                if (toggleAvail(moves, board) != null) { ((CheckersState) state).setBoard(toggleAvail(moves, board));}
+                if (toggleAvail(moves, board) != null) {
+                    ((CheckersState) state).setBoard(toggleAvail(moves, board));
+                }
                 //does not end the player's turn, but changes visuals so the
                 //possible moves are shown
             }
@@ -180,11 +184,10 @@ public class LocalCheckers extends LocalGame {
      * --- HELPER METHOD ---
      * Finds the TileTraversal corresponding to the available
      * tile the user clicked
-     * @param avail
-     *      The spot the user clicked to move the piece to
-     * @return
-     *      The TileTraversal corresponding to the available
-     *      tile the user clicked
+     *
+     * @param avail The spot the user clicked to move the piece to
+     * @return The TileTraversal corresponding to the available
+     * tile the user clicked
      */
     private TileTraversal findTT(Tile avail, ArrayList<TileTraversal> moves) {
         Tile dest;
@@ -201,12 +204,10 @@ public class LocalCheckers extends LocalGame {
 
     /**
      * Checks the surrounding tiles for valid and available moves
-     * @param start
-     *      The starting tile the user clicked on
-     * @param board
-     *      The board object itself
-     * @return
-     *      The list of all the available moves to be used as a means of comparison
+     *
+     * @param start The starting tile the user clicked on
+     * @param board The board object itself
+     * @return The list of all the available moves to be used as a means of comparison
      */
     private ArrayList<TileTraversal> availMoves(Tile start, Tile[][] board) {
         // if captureResult has any moves, remove moveResult from possible moves (force capture)
@@ -259,6 +260,7 @@ public class LocalCheckers extends LocalGame {
     /**
      * --- HELPER METHOD  ---
      * Checks if the given tile is valid
+     *
      * @return True if valid, false if out of bounds or is empty
      */
     private boolean validMove(int row, int col, Tile[][] board) {
@@ -274,15 +276,12 @@ public class LocalCheckers extends LocalGame {
      * --- HELPER METHOD (for availMoves) ---
      * A recursive function that checks for moves that will
      * capture a diagonally placed piece
-     * @param start
-     *      The starting tile of the piece that has been clicked
-     * @param board
-     *      The board itself
-     * @param captureResult
-     *      The arraylist of tiles that are constantly being updated
-     *      with all possible moves that capture a piece
-     * @return
-     *      The completed list of possible capture moves
+     *
+     * @param start         The starting tile of the piece that has been clicked
+     * @param board         The board itself
+     * @param captureResult The arraylist of tiles that are constantly being updated
+     *                      with all possible moves that capture a piece
+     * @return The completed list of possible capture moves
      */
     private ArrayList<TileTraversal> capturePiece(Tile start, ArrayList<TileTraversal> captureResult, Tile[][] board, Tile updated) {
         int row = updated.getRow();
@@ -296,32 +295,57 @@ public class LocalCheckers extends LocalGame {
             //makes sure the diagonal piece is an opposing piece + the space afterwards is valid + the spot had not already been checked
             if (validMove(row - 2, col - 2, board)) {
                 if (oppPiece(startVal, board[row - 1][col - 1].getValue()) && //Top Left
-                    !destinations.contains(board[row - 2][col - 2])) {
+                        !destinations.contains(board[row - 2][col - 2])) {
 
-                    TileTraversal path = findTT(board[row][col], captureResult);
-                    if (path == null) {
+                    TileTraversal path;
+                    TileTraversal temp = findTT(board[row][col], captureResult);
+                    if (temp == null) {
                         path = new TileTraversal(start);
+                    } else {
+                        path = new TileTraversal(temp);
                     }
                     path.addTile(board[row - 1][col - 1]); //Adds the piece to be captured as well
                     path.addTile(board[row - 2][col - 2]);
                     captureResult.add(path);
 
                     //Recursive call for double captures
-                    captureResult.addAll(capturePiece(start, captureResult, board, board[row - 2][col - 2]));
+                    ArrayList<TileTraversal> recCall = capturePiece(start, captureResult, board, board[row - 2][col - 2]);
+                    ArrayList<Tile> recDest = getDestList(recCall);
+                    Tile dest;
+                    for (int i = 0; i < destinations.size(); i++) {
+                        dest = destinations.get(i);
+                        for (int j = 0; j < recDest.size(); j++)
+                        if (!recDest.contains(dest)) {
+                            captureResult.add(recCall.get(i));
+                        }
+                    }
                 }
             }
             if (validMove(row - 2, col + 2, board)) {
-                if (oppPiece(startVal, board[row - 1][col + 1].getValue()) && //Top Left
+                if (oppPiece(startVal, board[row - 1][col + 1].getValue()) && //Top Right
                         !destinations.contains(board[row - 2][col + 2])) {
 
-                    TileTraversal path = findTT(board[row][col], captureResult);
-                    if (path == null) {
+                    TileTraversal path;
+                    TileTraversal temp = findTT(board[row][col], captureResult);
+                    if (temp == null) {
                         path = new TileTraversal(start);
+                    } else {
+                        path = new TileTraversal(temp);
                     }
                     path.addTile(board[row - 1][col + 1]);
                     path.addTile(board[row - 2][col + 2]);
                     captureResult.add(path);
-                    captureResult.addAll(capturePiece(start, captureResult, board, board[row - 2][col + 2]));
+
+                    ArrayList<TileTraversal> recCall = capturePiece(start, captureResult, board, board[row - 2][col + 2]);
+                    ArrayList<Tile> recDest = getDestList(recCall);
+                    Tile dest;
+                    for (int i = 0; i < destinations.size(); i++) {
+                        dest = destinations.get(i);
+                        for (int j = 0; j < recDest.size(); j++)
+                            if (!recDest.contains(dest)) {
+                                captureResult.add(recCall.get(i));
+                            }
+                    }
                 }
             }
         }
@@ -329,45 +353,71 @@ public class LocalCheckers extends LocalGame {
         // Red piece captures + Red recursive call + Black King captures
         if (startVal.equals(Tile.Value.RED) || (startVal.equals(Tile.Value.BLACK) && startIsKing)) {
             if (validMove(row + 2, col - 2, board)) {
-                if (oppPiece(startVal, board[row + 1][col - 1].getValue()) && //Top Left
-                    !destinations.contains(board[row + 2][col - 2])) {
+                if (oppPiece(startVal, board[row + 1][col - 1].getValue()) && //Bottom Left
+                        !destinations.contains(board[row + 2][col - 2])) {
 
-                    TileTraversal path = findTT(board[row][col], captureResult);
-                    if (path == null) {
+                    TileTraversal path;
+                    TileTraversal temp = findTT(board[row][col], captureResult);
+                    if (temp == null) {
                         path = new TileTraversal(start);
+                    } else {
+                        path = new TileTraversal(temp);
                     }
                     path.addTile(board[row + 1][col - 1]);
                     path.addTile(board[row + 2][col - 2]);
-                    captureResult.addAll(capturePiece(start, captureResult, board, board[row + 2][col - 2]));
+                    captureResult.add(path);
+
+                    ArrayList<TileTraversal> recCall = capturePiece(start, captureResult, board, board[row + 2][col - 2]);
+                    ArrayList<Tile> recDest = getDestList(recCall);
+                    Tile dest;
+                    for (int i = 0; i < destinations.size(); i++) {
+                        dest = destinations.get(i);
+                        for (int j = 0; j < recDest.size(); j++)
+                            if (!recDest.contains(dest)) {
+                                captureResult.add(recCall.get(i));
+                            }
+                    }
                 }
             }
             if (validMove(row + 2, col + 2, board)) {
-                if (oppPiece(startVal, board[row + 1][col + 1].getValue()) && //Top Left
-                    !destinations.contains(board[row + 2][col + 2])) {
+                if (oppPiece(startVal, board[row + 1][col + 1].getValue()) && //Bottom Right
+                        !destinations.contains(board[row + 2][col + 2])) {
 
-                    TileTraversal path = findTT(board[row][col], captureResult);
-                    if (path == null) {
+                    TileTraversal path;
+                    TileTraversal temp = findTT(board[row][col], captureResult);
+                    if (temp == null) {
                         path = new TileTraversal(start);
+                    } else {
+                        path = new TileTraversal(temp);
                     }
                     path.addTile(board[row + 1][col + 1]);
                     path.addTile(board[row + 2][col + 2]);
-                    captureResult.addAll(capturePiece(start, captureResult, board, board[row + 2][col + 2]));
+                    captureResult.add(path);
+
+                    ArrayList<TileTraversal> recCall = capturePiece(start, captureResult, board, board[row + 2][col + 2]);
+                    ArrayList<Tile> recDest = getDestList(recCall);
+                    Tile dest;
+                    for (int i = 0; i < destinations.size(); i++) {
+                        dest = destinations.get(i);
+                        for (int j = 0; j < recDest.size(); j++)
+                            if (!recDest.contains(dest)) {
+                                captureResult.add(recCall.get(i));
+                            }
+                    }
                 }
             }
         }
 
         return captureResult;
-     }//capturePiece
+    }//capturePiece
 
     /**
      * --- HELPER METHOD (for capturePiece) ---
      * Checks if the piece to be captured is of the enemy team
-     * @param start
-     *      The value of the piece we are moving
-     * @param target
-     *      The value of the piece we are capturing
-     * @return
-     *      True if the target piece is an enemy piece, false if not
+     *
+     * @param start  The value of the piece we are moving
+     * @param target The value of the piece we are capturing
+     * @return True if the target piece is an enemy piece, false if not
      */
     private boolean oppPiece(Tile.Value start, Tile.Value target) {
         if (start.equals(Tile.Value.RED)) {
@@ -382,12 +432,11 @@ public class LocalCheckers extends LocalGame {
      * --- HELPER METHOD (for capturePiece) --
      * Used to check if a spot has been checked already to avoid
      * going backwards/stuck in a loop
-     * @param moves
-     *      The ArrayList of possible moves
-     * @return
-     *      An ArrayList of all the possible destinations
+     *
+     * @param moves The ArrayList of possible moves
+     * @return An ArrayList of all the possible destinations
      */
-    private ArrayList<Tile> getDestList (ArrayList<TileTraversal> moves) {
+    private ArrayList<Tile> getDestList(ArrayList<TileTraversal> moves) {
         ArrayList<Tile> destinations = new ArrayList<Tile>();
         for (int i = 0; i < moves.size(); i++) {
             destinations.add(moves.get(i).getDestination());
@@ -398,11 +447,11 @@ public class LocalCheckers extends LocalGame {
     /**
      * Updates all available spots to the corresponding value
      * within the board
-     * @param moves
-     *      The arraylist of all possible moves on the clicked piece
+     *
+     * @param moves The arraylist of all possible moves on the clicked piece
      */
     private Tile[][] toggleAvail(ArrayList<TileTraversal> moves, Tile[][] board) {
-        if (moves.size() == 0) { return null; }
+        if (moves.size() == 0) {return null;}
 
         //Marks the clicked piece
         Tile start = moves.get(0).getStart();
@@ -419,6 +468,7 @@ public class LocalCheckers extends LocalGame {
     /**
      * Reverts back all the available tiles back into empty tiles
      * and unmarks the marked starting piece
+     *
      * @param board
      */
     public Tile[][] revertAvail(Tile[][] board) {
@@ -428,7 +478,7 @@ public class LocalCheckers extends LocalGame {
                 temp = board[row][col];
                 if (temp.getValue().equals(Tile.Value.AVAIL)) {
                     board[row][col].revertTile();
-                } else if (temp.getIsStart()){
+                } else if (temp.getIsStart()) {
                     board[row][col].setIsStart(false);
                 }
             }
@@ -439,16 +489,16 @@ public class LocalCheckers extends LocalGame {
     /**
      * Determines whether or not a game is over based on the amount
      * of available moves left for the current player's turn
-     * @return
-     *      Corresponding "Player _ wins" when an opposing player
-     *      has run out of moves
+     *
+     * @return Corresponding "Player _ wins" when an opposing player
+     * has run out of moves
      */
     @Override
     protected String checkIfGameOver() {
         int turn = ((CheckersState) state).getTurn();
 
         Tile.Value playerValue;
-        if(turn == 0) {//The human/1st player
+        if (turn == 0) {//The human/1st player
             playerValue = Tile.Value.BLACK;
         } else {
             playerValue = Tile.Value.RED;
@@ -464,7 +514,7 @@ public class LocalCheckers extends LocalGame {
                     ArrayList<TileTraversal> moves = availMoves(tile, board);
                     //Looks for a case where the player has moves, in which
                     //case the game is not over
-                    if (moves.size() != 0) {
+                    if (moves.size() != 1) {
                         hasMoves = true;
                         break;
                     }

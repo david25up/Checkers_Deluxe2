@@ -27,20 +27,32 @@ public class TileTraversal {
         traversal.add(start);
     }//ctor
 
+    /**
+     * Copy constructor of a given tile traversal
+     * @param original   The tile traversal we are copying over
+     */
+    public TileTraversal (TileTraversal original) {
+        this.start = original.getStart();
+        this.start.setValue(original.start.getValue());
+        this.start.setIsKing(original.start.getIsKing());
+        this.traversal = new ArrayList<Tile>();
+        for (int i = 0; i < traversal.size(); i++) {
+            traversal.add(original.getTile(i));
+        }
+    }//ctor
+
     /* --- Getter Methods --- */
 
     public Tile getStart() {return this.start;}
-
     public int getTraversalLength() {return this.traversal.size();}
-
     public Tile getDestination() {return this.traversal.get(traversal.size() - 1);}
+    public Tile getTile(int index) {return this.traversal.get(index);}
 
     /* --- Setter Variables --- */
-
     public void setStart(Tile start) {this.start = start;}
     /* --- Methods --- */
     public void addTile(Tile move) {this.traversal.add(move);}
 
-    public Tile get(int index) {return this.traversal.get(index);}
+
 
 }

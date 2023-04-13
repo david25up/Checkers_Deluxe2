@@ -17,7 +17,6 @@ import com.example.checkers_deluxe2.Tile;
 import com.example.checkers_deluxe2.TileTraversal;
 
 import java.util.ArrayList;
-import java.util.Timer;
 
 
 public class CheckersState extends GameState {
@@ -158,9 +157,9 @@ public class CheckersState extends GameState {
             board[eRow][eCol].setIsKing(true);
         } else { board[eRow][eCol].setIsKing(piece.getIsKing()); }
 
-        for (int i = 0; i < traversal.getTraversalLength()-1; i++) {
-            int row = traversal.get(i).getRow();
-            int col = traversal.get(i).getCol();
+        for (int i = 0; i < traversal.getTraversalLength() - 1; i++) {
+            int row = traversal.getTile(i).getRow();
+            int col = traversal.getTile(i).getCol();
             board[row][col].revertTile();
         }
     }//movePieces
