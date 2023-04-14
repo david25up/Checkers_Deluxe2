@@ -14,11 +14,24 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal"
-        >
+        android:orientation="vertical">
 
         <Button
             android:id="@+id/reset_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/reset"
+            android:paddingLeft="160dp"
+            android:paddingTop="40dp"
+            android:paddingRight="0dp"
+            android:paddingBottom="40dp"
+            android:scaleType="fitCenter"
+            android:adjustViewBounds="true"
+
+            android:textSize="24sp" />
+
+        <Button
+            android:id="@+id/back_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="#009688"
@@ -26,7 +39,9 @@
             android:paddingTop="40dp"
             android:paddingRight="160dp"
             android:paddingBottom="40dp"
-            android:text="@string/reset_button"
+            android:text="back"
             android:textSize="24sp" />
+
+
     </LinearLayout>
 </FrameLayout>

@@ -54,4 +54,9 @@ public class CheckersSmartAIPlayer extends GameComputerPlayer {
 
         game.sendAction(new CheckersSmartAIAction(this));
     }//receiveInfo
+
+    /**
+     * returns type of player
+     */
+
 }//CheckersSmartAIPlayer

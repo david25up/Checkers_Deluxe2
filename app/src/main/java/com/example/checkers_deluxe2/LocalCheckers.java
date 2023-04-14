@@ -22,6 +22,8 @@ import com.example.checkers_deluxe2.actionMessage.CheckersDumbAIAction;
 import com.example.checkers_deluxe2.actionMessage.CheckersResetAction;
 import com.example.checkers_deluxe2.actionMessage.CheckersSmartAIAction;
 import com.example.checkers_deluxe2.actionMessage.CheckersTapAction;
+import com.example.GameFramework.gameConfiguration.GamePlayerType;
+import com.example.checkers_deluxe2.Players.CheckersSmartAIPlayer;
 
 import java.util.ArrayList;
 
