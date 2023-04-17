@@ -180,7 +180,7 @@ public class LocalCheckers extends LocalGame {
             int row = cm.getRow();
             int col = cm.getCol();
             Tile[][] board = ((CheckersState) state).getBoard();
-
+            int turn = ((CheckersState) state).getTurn();
             if (board[row][col].getValue().equals(Tile.Value.AVAIL)) {
                 ArrayList<TileTraversal> moves = ((CheckersState) state).getMoves();
                 ((CheckersState) state).movePieces(findTT(board[row][col], moves));
@@ -188,9 +188,8 @@ public class LocalCheckers extends LocalGame {
                 ((CheckersState) state).setBoard((revertAvail(board)));
                 ((CheckersState) state).flipTurn();//ends turn here
                 Log.d("Human", "Job's done");
-            } else if (board[row][col].getValue().equals(Tile.Value.BLACK)) {//This needs to be changed so it's dependant on the player's color, not always black
+            } else if (board[row][col].getValue().equals(Tile.Value.BLACK) && turn == 0) {//This needs to be changed so it's dependant on the player's color, not always black
                 Log.d("Human", "Piece was tapped");
-
                 ((CheckersState) state).setBoard(revertAvail(board));
                 ArrayList<TileTraversal> moves = availMoves(board[row][col], board);
                 ((CheckersState) state).setMoves(moves);
@@ -199,6 +198,13 @@ public class LocalCheckers extends LocalGame {
                 }
                 //does not end the player's turn, but changes visuals so the
                 //possible moves are shown
+            } else if (board[row][col].getValue().equals(Tile.Value.RED) && turn == 1) {
+                ((CheckersState) state).setBoard(revertAvail(board));
+                ArrayList<TileTraversal> moves = availMoves(board[row][col], board);
+                ((CheckersState) state).setMoves(moves);
+                if (toggleAvail(moves, board) != null) {
+                    ((CheckersState) state).setBoard(toggleAvail(moves, board));
+                }
             }
             return true;
         }//Human Player's turn
