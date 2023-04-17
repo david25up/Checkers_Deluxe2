@@ -65,7 +65,7 @@ public class CheckersAnimationSurface extends AnimationSurface {
     public int lightPiece() {return Color.RED;}//lightPiece
     public int darkPiece() {return Color.GRAY;}//darkPiece
     public int availPiece() {return Color.GREEN;}//availPiece
-    public int startPiece() {return R.color.teal_200;}//startPiece
+    public int startPiece() {return Color.rgb(0, 255, 255);}//startPiece
 
     /* --- CROWN MARKER --- */
     Bitmap crown = BitmapFactory.decodeResource(getResources(), R.drawable.crown);
