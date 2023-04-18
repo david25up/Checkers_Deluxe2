@@ -20,6 +20,10 @@ import java.util.ArrayList;
  * @author   Eli Marcelino
  * @author   Matt David
  * @version  March 2023
+ *
+ * Status of Game:
+ * Mostly niche interactions are being bug fixed (double jump in-betweens not showing up properly). Otherwise, the game's base is mostly finished.
+ * All that needs to be added is a reset/back button, and implement some sort of title screen.
  */
 
 public class CheckersMainActivity extends GameMainActivity {
@@ -47,7 +51,7 @@ public class CheckersMainActivity extends GameMainActivity {
         playerTypes.add(new GamePlayerType("Smart AI Player") {
             public GamePlayer createPlayer(String name) {return new CheckersSmartAIPlayer(name);}});
         playerTypes.add(new GamePlayerType("Base AI Player") {
-            public GamePlayer createPlayer(String name) {return new CheckersDumbAIPlayer(name);}});
+            public GamePlayer createPlayer(String name) {return new CheckersDumbAIPlayer(name);}}); 
 
         // Create a game configuration class for Checkers:
         GameConfig defaultConfig = new GameConfig(playerTypes, 2, 2, "Checkers", PORT_NUMBER);
