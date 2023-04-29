@@ -84,10 +84,6 @@ public class CheckersHumanPlayer extends GameHumanPlayer implements View.OnTouch
         Logger.log("set reset button", "OnClick");
         reset.setOnClickListener(this);
 
-        //set up the back button
-        Button back = myActivity.findViewById(R.id.back_button);
-        Logger.log("set back button", "OnClick");
-        back.setOnClickListener(this);
     }//setAsGui
 
     @Override
@@ -116,9 +112,5 @@ public class CheckersHumanPlayer extends GameHumanPlayer implements View.OnTouch
             game.sendAction(new CheckersResetAction(this));
         }
 
-        //back button
-        if (view.getId() == R.id.back_button) {
-            myActivity.setContentView(R.layout.game_config_main);
-        }
     }
 }
